@@ -32,5 +32,9 @@ if %resetSwitch% == 8 (
     if %weaponsix% == 1 (echo Sorry, you already have that item! && pause && set resetSwitch=0 && exit /b) else (if %Nodes% LSS 45000 (echo You cannot afford that item! && pause && set resetSwitch=0 && exit /b) else (set /a Nodes=%Nodes% - 45000 && set weaponsix=1 && echo Purchase successful. && pause && set resetSwitch=0 && exit /b))
 )
 
+if %resetSwitch% == 9 (
+    if %weaponseven% == 1 (echo Sorry, you already have that item! && pause && set resetSwitch=0 && exit /b) else (if %Nodes% LSS 750000 (echo You cannot afford that item! && pause && set resetSwitch=0 && exit /b) else (set /a Nodes=%Nodes% - 750000 && set weaponseven=1 && echo Purchase successful. && pause && set resetSwitch=0 && exit /b))
+)
+
 exit /b
 :: I would like to point out that I wasn't expecting it to work so well.

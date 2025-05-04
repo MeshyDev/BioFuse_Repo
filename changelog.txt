@@ -225,3 +225,20 @@ so like... no. Deal with the missing operands for a turn.
 - Changed frequency of crit chance (Instead of adding 7, adds 5 for more frequency)
 - Changed RNG equation on enemy magic use chance
 - Fixed partially blocking an attack not doing damage to the player
+
+1.8.0
+
+- Fixed sick enemies casting level 0 spells not casting the appropriate rage spell correctly
+- Enemies that drop below 0 after a rage spell take exertion damage.
+- Fixed enemies not casting spells after changing RNG equation from 1.7.2
+- Added music integration
+- Changed title, does not show version anymore - This was actually done due to the way PID works. Which actually breaks debug mode ^^
+- Added 3 new songs
+- Dying plays a tune <3
+- 3 new enemies you can fight after reaching level 85
+- New enemy health status: Presidential.
+- HP drain will flat-rate heal 10000 if your HP is high enough to roll the value negative.
+- Added several checks to reward gains for negative rewards.
+- Added some special messages for the old saves out there in the wild
+- New, most expensive weapon - Portable Death Laser
+- Added new syntaxes for weaponry on equip screen. Capitalization not necessary anymore!

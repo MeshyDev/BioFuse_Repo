@@ -1,6 +1,7 @@
 
 if %currentEP% LSS 50 echo Your energy supply is exhausted. && echo Cannot perform EP ability! && exit /b
 set /a MGCdrain=%RANDOM% * %maxHP% / 32768 + 1 
+if %MGCdrain% LSS 0 set MGCdrain=10000
 set /a EcurrentHP=%EcurrentHP% - %MGCdrain%
 set /a currentHP=%currentHP% + %MGCdrain%  
 set /a currentEP=%currentEP% - 50

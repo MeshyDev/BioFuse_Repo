@@ -7,7 +7,8 @@ set /a eTossHP = %EmaxHP% / 2
 if %EcurrentHP% LEQ %eTossHP% set EhealthStatus=Battered 
 if %EcurrentHP% LEQ 10 set EhealthStatus=Dying
 if %nulbool% == 1 set testvar=1 && echo Made it to test, enemy HP check %testvar% && pause &&  set /a testvar=%testvar% + 1 
-
+set /a quickmaths=%ebatteredDMG% - %EcurrentEP%
+if %EcurrentEP% LSS 0 echo %enemy% is overexerted! It takes %quickmaths% damage! && set /a EcurrentHP=%EcurrentHP% - %quickmaths%
 :: BURNING -- EP induced long-period damage 
 :: SICK -- Activates when enemy has sickness
 :: BATTERED -- Only activates during low health
@@ -16,6 +17,14 @@ if %nulbool% == 1 set testvar=1 && echo Made it to test, enemy HP check %testvar
 :: INFECTED -- Only activates randomly in robots
 
 if %nulbool% == 1 set testvar=1 && echo Made it to test, enemy HP check %testvar% && pause &&  set /a testvar=%testvar% + 1 
+
+if "%enemy%" == "The President" if not %EhealthStatus% == Battered if not %EhealthStatus% == Presidential echo The President shakes off his status effect. && set EHealthStatus=Presidential
+
+if %EhealthStatus% == Presidential (
+echo The President's aura is crushing... 
+echo You take %esickDMG% damage.
+if %EcurrentEP% LSS %EmaxEP% set /a EcurrentEP=%EcurrentEP% + 20 && echo The President regenerates some EP.
+)
 
 if %EhealthStatus% == Burning (
 echo The enemy burns! It takes %eburnDMG% damage! 

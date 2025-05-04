@@ -1,7 +1,9 @@
 :: This should only be called! This is a subroutine, not a fully accessible block.
 :: Magic Attack Logic
 :: Determine the magic attack level based on castLvl and perform the magic attack
-if %castLvl% == 5 (
+if %castLvl% == 6 (
+    call :Level6MagicAttack
+) else if %castLvl% == 5 (
     call :Level5MagicAttack
 ) else if %castLvl% == 4 (
     call :Level4MagicAttack
@@ -24,6 +26,16 @@ exit /b
 :: EcurrentEP = 100
 :: EmaxEP = 100
 :: Edmg=0/999999
+
+:Level6MagicAttack
+if %EcurrentEP% LSS 300 echo %enemy% attempted to use a forbidden spell, but is too weak! Take advantage of this! && exit /b
+set /a EcurrentEP=%EcurrentEP% - 300
+set /a crushDMG=%RANDOM% * 1000 / 32768 + 1
+set /a currentHP=%currentHP% - %crushDMG%
+set healthStatus=Battered
+echo The ground rumbles around %enemy%, but then a meteor squashes you moments later.
+echo You take %crushDMG% damage... ouch.
+exit /b
 
 :Level5MagicAttack
 if %EcurrentEP% LSS 50 echo %enemy% attempted to cast a spell, but didn't have enough EP! && exit /b
@@ -61,6 +73,7 @@ exit /b
 
 :Level2MagicAttack
 if %EcurrentEP% LSS 20 echo %enemy% attempted to cast a spell, but didn't have enough EP! && exit /b
+:Level2RageBypass
 set /a sickyDMG=%RANDOM% * %EmaxEP% / 32768 + 1
 set /a testHP=%currentHP% - %sickyDMG%
 set /a EcurrentEP=%EcurrentEP% - 20
@@ -83,9 +96,11 @@ echo %enemy% healed itself for %EHeal%!
 exit /b
 
 :Level0MagicAttack
+if %EhealthStatus% == Sick goto Level0RageBypass
 if %EcurrentEP% LSS 5 echo %enemy% attempted to cast a spell, but didn't have enough EP! && exit /b
+:Level0RageBypass
 set /a EcurrentEP=%EcurrentEP% - 5
-if %EhealthStatus% == Sick echo The sickness growls and bolsters %enemy% into a small rage && goto Level2MagicAttack
+if %EhealthStatus% == Sick echo The sickness growls and bolsters %enemy% into a small rage && goto Level2RageBypass
 echo %enemy% casts a spell!
 echo ...but it didn't do anything.
 :: Magic Attack for level 0

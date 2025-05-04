@@ -1,7 +1,7 @@
 @echo off
 
-set version=1.7.2
-set vmsg=The enemies... they grow stronger! (Bugfixes applied)
+set version=1.8.0
+set vmsg=The sickly are growing increasingly pissed off
 set vmsg2=And of course, thank you Meshcaid for adopting Nodes as currency
 
 :: This is a game with an engine strapped to it.
@@ -10,7 +10,7 @@ set vmsg2=And of course, thank you Meshcaid for adopting Nodes as currency
 :: DEFINE VARIABLES 
 
 set resetSwitch=0 
-
+title BioFuse
 :redef
 set dmg=5
 set item=0
@@ -45,6 +45,7 @@ set weaponthree=0
 set weaponfour=0
 set weaponfive=0
 set weaponsix=0
+set weaponseven=0
 set weaponarray=0
 set weaponname=Fists
 set weapondmg=0
@@ -61,6 +62,25 @@ if "%version%" == "6.1" mode con: cols=70 lines=60
 if "%version%" == "6.0" mode con: cols=70 lines=60
 endlocal
 
+:: Music prerequsites
+@set musicToggle=Musicing
+@set voiceToggle=nul
+if not exist "bin/config.mini" (echo Musicing) >> bin/config.mini && (echo Blabbing) >> bin/config.mini
+(
+set /p musicToggle=
+set /p voiceToggle=
+)<bin/config.mini
+
+@start /min "biofuse_client_monitor" bin\handler\monitor.bat
+REM I NEED TO STRESS THAT MONITOR.bat IS LITERALLY JUST TO KILL THE AUDIO WHEN
+REM CLOSED BY THE X BUTTON. I have this feeling people would get mad if I didn't
+REM include something like this because people are irrational and some aren't 
+REM computer savvy. Seriously, I had to learn about PID's. (process identification) 
+(echo plsstopmusicing) > bin\aud\loop.guru
+if %musicToggle% == Musicing set clientSound=null.mp3
+if %musicToggle% == Muted set clientSound=MUTED
+@start /min "audioHandler" bin\aud\audioHandler.bat
+
 set nulbool=0
 ::SETLOCAL ENABLEEXTENSIONS
 ::if errorlevel 1 echo Unable to enable extensions && ping localhost -n 2 >nul
@@ -74,7 +94,6 @@ if not exist bin md bin
 if not exist bin\sav md bin\sav
 
 cls
-title BioFuse %version%
 echo. 
 echo.
 
@@ -84,7 +103,6 @@ echo.
 echo.
 ping localhost -n 5 >nul
 :start
-title BioFuse %version% 
 color 0F
 cls 
 type MENUMOD.MOD
@@ -179,6 +197,7 @@ set /p weaponthree=
 set /p weaponfour=
 set /p weaponfive=
 set /p weaponsix=
+set /p weaponseven=
 set /p weaponarray=
 set /p weaponname=
 set /p weapondmg=
@@ -363,6 +382,7 @@ if exist bin/sav (
 (echo %weaponfour%) >> bin/sav/%lbnam%.set
 (echo %weaponfive%) >> bin/sav/%lbnam%.set
 (echo %weaponsix%) >> bin/sav/%lbnam%.set
+(echo %weaponseven%) >> bin/sav/%lbnam%.set
 (echo %weaponarray%) >> bin/sav/%lbnam%.set
 (echo %weaponname%) >> bin/sav/%lbnam%.set
 (echo %weapondmg%) >> bin/sav/%lbnam%.set
@@ -403,7 +423,7 @@ set /p input=Choice?::
 if %input%==1 goto A_Menu
 if %input%==2 goto q_SAV
 if %input%==3 goto C_Menu
-if %nulbool% == 1 if %input%==XP goto XP_Menu
+if %input%==XP goto XP_Menu
 if %input%==4 goto Start_adv
 echo Sorry, I don't understand that. Could you try again?
 pause
@@ -441,6 +461,9 @@ cls
 goto MainScreen
 
 :A_Menu 
+if "%enemy%" == "Mr. President" set clientSound=nullPresident.mp3 && set enemy=nul
+if "%enemy%" == "The President" set clientSound=nullPresident.mp3 && set enemy=nul
+if %clientSound% == nullPresident.mp3 call bin\handler\jukebox.bat && set clientSound=null.mp3
 cls
 if %currentHP% LEQ 0 set currentHP=1 
 if %loc% == Home goto Home_Menu
@@ -450,6 +473,7 @@ if %loc% == Forest goto Forrest_Menu
 if %loc% == JunkYard goto JunkYard_Menu
 if %loc% == TrainYard goto Trainyard_Menu
 if %loc% == DeepForest goto DeepForest_Menu
+if %loc% == President goto President_Menu
 if %loc% == Shop goto Shop_Menu
 echo Interesting, you seem to have gotten yourself trapped
 echo between dimentions^! An error may have occured in your
@@ -533,18 +557,41 @@ if %weaponthree% == 1 echo (Flaming Sword) A sword made of flames. +8 DMG
 if %weaponfour% == 1 echo (Rocket Launcher) Who let you buy this? +15 DMG
 if %weaponfive% == 1 echo (Death Machine) Remember me? +50 DMG
 if %weaponsix% == 1 echo (Bot Buster) It's a cannon! +85 DMG
+if %weaponseven% == 1 echo (Portable Death Laser) Whoa... +750 DMG
 if %weaponzero% == 1 echo (Back) Go back to the last menu
 echo.
 echo (Please note, syntax is important otherwise you may risk a crash)
 set /p equipRm=Please type in the item name you wish to equip:: 
 echo.
 if "%equipRm%" == "Fists" set weaponarray=0 && echo You screw in your hands. && pause && goto H_Equip
+if "%equipRm%" == "fists" set weaponarray=0 && echo You screw in your hands. && pause && goto H_Equip
 if "%equipRm%" == "Dagger" set weaponarray=1 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "dagger" set weaponarray=1 && call bin/item/checkArray.bat && goto H_Equip
 if "%equipRm%" == "Sword" set weaponarray=2 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "sword" set weaponarray=2 && call bin/item/checkArray.bat && goto H_Equip
 if "%equipRm%" == "Flaming Sword" set weaponarray=3 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "flaming sword" set weaponarray=3 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "Flaming sword" set weaponarray=3 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "flaming Sword" set weaponarray=3 && call bin/item/checkArray.bat && goto H_Equip
 if "%equipRm%" == "Rocket Launcher" set weaponarray=4 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "rocket rauncher" set weaponarray=4 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "Rocket launcher" set weaponarray=4 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "rocket Launcher" set weaponarray=4 && call bin/item/checkArray.bat && goto H_Equip
 if "%equipRm%" == "Death Machine" set weaponarray=5 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "death machine" set weaponarray=5 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "Death machine" set weaponarray=5 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "death Machine" set weaponarray=5 && call bin/item/checkArray.bat && goto H_Equip
 if "%equipRm%" == "Bot Buster" set weaponarray=6 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "bot buster" set weaponarray=6 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "Bot buster" set weaponarray=6 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "bot Buster" set weaponarray=6 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "Portable Death Laser" set weaponarray=7 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "portable death laser" set weaponarray=7 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "Portable death laser" set weaponarray=7 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "portable Death Laser" set weaponarray=7 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "Portable death Laser" set weaponarray=7 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "Portable Death laser" set weaponarray=7 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "portable Death laser" set weaponarray=7 && call bin/item/checkArray.bat && goto H_Equip
 if "%equipRm%" == "Back" goto Home_Menu 
 if "%equipRm%" == "back" goto Home_Menu
 goto H_Equip 
@@ -675,6 +722,28 @@ pause
 cls
 goto DeepForest_Menu
 
+:President_Menu
+if %exp% GEQ %expToNextLevel% goto levelUp
+cls
+echo HP: %currentHP% / %maxHP%
+:: No, I'm allowing overheal here.
+echo EP: %currentEP% / %maxEP%
+echo Status: %healthStatus%
+echo You are outside the President's office.
+echo.
+echo 1: Enter the President's office.
+echo 2: Change Location
+echo 3: Back
+set /p Pr_Inp=::
+if %Pr_Inp% == 1 goto Ene_HUB_President
+if %Pr_Inp% == 2 goto Map
+if %Pr_Inp% == 3 goto MainScreen
+echo This isn't the time to flub your inputs.
+echo The President is nearby.
+pause
+cls
+goto President_Menu
+
 :options
 cls
 echo Currently disabled. My apologies. 
@@ -719,6 +788,7 @@ if not exist bin/sav echo FATAL ERROR 4, system cannot save. && echo This means 
 (echo %weaponfour%) >> bin/sav/%lbnam%.set
 (echo %weaponfive%) >> bin/sav/%lbnam%.set
 (echo %weaponsix%) >> bin/sav/%lbnam%.set
+(echo %weaponseven%) >> bin/sav/%lbnam%.set
 (echo %weaponarray%) >> bin/sav/%lbnam%.set
 (echo %weaponname%) >> bin/sav/%lbnam%.set
 (echo %weapondmg%) >> bin/sav/%lbnam%.set
@@ -741,6 +811,7 @@ echo 5. Deep Forest
 echo 6. Junkyard
 echo 7. Trainyard
 echo 8. Shop
+if %level% GEQ 85 echo 9. President's Office
 set /p M_Inp=::
 if %M_Inp% == 1 (
 set loc=Home
@@ -772,6 +843,10 @@ goto A_Menu
 )
 if %M_Inp% == 8 (
 set loc=Shop
+goto A_Menu
+)
+if %level% GEQ 85 if %M_Inp% == 9 (
+set loc=President
 goto A_Menu
 )
 echo Invalid Choice. Try again.
@@ -814,11 +889,15 @@ if %RANval% LEQ 15 cls && echo This place feels incredibly unsafe. && echo You d
 
 :Ene_HUB_Df
 cls
-cls
 set /a RANval=%random% * 30 / 32768 + 1
 
 if %RANval% GTR 24 goto DeepForest_EnemyFind
 if %RANval% LEQ 24 cls && echo You can hear distant birds && echo You didn't find an enemy... && pause && goto A_Menu
+
+:Ene_Hub_President
+cls
+goto President_EnemyFind
+:: Yep, 100% chance of finding the president.
 
 :Outside_EnemyFind
 call bin/battle/b_var/outside.bat
@@ -844,9 +923,22 @@ goto Battle
 call bin/battle/b_var/deepforest.bat
 goto Battle
 
+:President_EnemyFind
+call bin/battle/b_var/president.bat
+if "%enemy%" == "Mr. President" set clientSound=ExaDevSillicone.mp3
+if "%enemy%" == "The President" set clientSound=ExaDevBeats2.mp3
+if "%enemy%" == "Deprecated President" set clientSound=ExaDevLowFid6.mp3
+call bin\handler\jukebox.bat
+goto Battle
+
 
 :Battle
 if %currentHP% LSS 1 (
+if "%enemy%" == "Mr. President" set clientSound=nullPresident.mp3
+if "%enemy%" == "The President" set clientSound=nullPresident.mp3
+if "%enemy%" == "Deprecated President" set clientSound=nullPresident.mp3 
+set clientSound=ExaDevTheHeist.mp3
+call bin\handler\jukebox.bat && set clientSound=null.mp3
 color 4F
 echo Ouch, %lbnam%, it looks like that %enemy% bested you. Luckily for you,
 echo I can allow you to load from another save. You can even load your
@@ -855,6 +947,7 @@ pause
 cls
 color 0F
 set resetSwitch=1
+call bin\handler\jukebox.bat
 goto loadGame
 )
 if %EcurrentHP% LSS 1 call bin/battle/checkVar.bat && goto A_Menu
@@ -884,6 +977,7 @@ if %input%==3 goto Battle_Inventory
 if %input%==4 goto FleeBattle
 if %input%==debugmode set nulbool=1 && title BioFuse %version% DEBUG && cls && goto Battle
 if %input%==BOLSTER set EmaxHP=9001 && set EcurrentHP=9001 && set EmaxEP=200 && set EcurrentEP=9001 && set EhealthStatus=Sick && cls && goto Battle
+if %input%==SICK set EmaxHP=9001 && set EcurrentHP=9001 && set EmaxEP=15 && set EcurrentEP=15 && set EhealthStatus=Sick && cls && goto Battle
 if %input%==CORRUPT set EhealthStatus=Corrupted
 if %input%==FAILFLEE set flee=4 && goto DebugFleeBattle
 if %input%==nobugmode set nulbool=0 && title BioFuse %version% && cls && goto Battle
@@ -894,6 +988,10 @@ goto Battle
 
 :CustomDeathMessage
 cls
+if "%enemy%" == "Deprecated President" set clientSound=null.mp3 && call bin\handler\jukebox.bat && echo Huh... didn't that one look like the last president? && pause && goto A_Menu
+if "%enemy%" == "Mr. President" set clientSound=null.mp3 && call bin\handler\jukebox.bat
+if "%enemy%" == "Mr. President" echo The President's clone was defeated... the real fight is yet to begin. && pause && goto A_Menu
+if "%enemy%" == "The President" echo You did it. && ping localhost -n 5 >nul && echo You defeated The President. && ping localhost -n 5 >nul && echo Enjoy the rewards you reap. && ping localhost -n 3 >nul && pause && goto A_Menu
 set /a CDMRand=%RANDOM% * 22 / 32768 + 1
 if %nulbool% == 1 echo Made it, random CDM is %CDMRand%
 if %CDMRand% == 1 echo %enemy%'s corpse slumps over, utterly evicerated. && pause && goto A_Menu
@@ -938,7 +1036,7 @@ call bin/battle/getCrit.bat
 if %critSwitch% == 1 goto critsuccess
 call bin/battle/getATK.bat
 set /a mgkChnc=%RANDOM% * 4 / 32768 + 1
-if %mgkChnc% == 0 set resetSwitch=3
+if %mgkChnc% == 1 set resetSwitch=3
 call bin/battle/getBlock.bat
 :: 0, not blocked.
 :: 1, full block and is handled by getBlock, getEATK.bat ignores.
@@ -960,8 +1058,8 @@ call bin/battle/getCritDMG.bat
 if %critDMG% GTR 450 echo You summon an orbital death laser. BVVVVVTTT!!!
 if %critDMG% GTR 1000 echo That was orbital death laser jr, this is Orbital Death Laser Sr.
 if %critDMG% GTR 5000 echo God forbid something survives after this crit. 
-if %critDMG% GTR 30000 echo Toast. That %enemy% is toast.
-if %critDMG% GTR 1000000 echo You are now outputting enough power to destroy the planet.
+if %critDMG% GTR 30000 echo Toast. %enemy% is toast.
+if %critDMG% GTR 100000 echo You are now outputting enough power to destroy the planet.
 echo You scored a Critial Hit^! 
 echo You did %critDMG% damage to %enemy%^!
 echo. 
@@ -1393,8 +1491,9 @@ echo 3) Flame Sword (+8 DMG, 1500 Nodes)
 echo 4) Rocket Launcher (+15 DMG, 5000 Nodes)
 echo 5) Death Machine (+50 DMG, 10000 Nodes)
 echo 6) Bot Buster (+100 DMG, 45000 Nodes)
-echo 7) +1 EP Potion (50 Nodes) 
-echo 8) +1 HP Potion (25 Nodes)
+echo 7) Portable Death Laser (+750 DMG, 750000 Nodes)
+echo 8) +1 EP Potion (50 Nodes) 
+echo 9) +1 HP Potion (25 Nodes)
 echo back) Back to map
 echo.
 set /p shopMenu=:: 
@@ -1404,8 +1503,9 @@ if %shopMenu% == 3 set resetSwitch=3 && call bin/item/shopKeep.bat && goto Shop_
 if %shopMenu% == 4 set resetSwitch=4 && call bin/item/shopKeep.bat && goto Shop_Menu
 if %shopMenu% == 5 set resetSwitch=7 && call bin/item/shopKeep.bat && goto Shop_Menu
 if %shopMenu% == 6 set resetSwitch=8 && call bin/item/shopKeep.bat && goto Shop_Menu
-if %shopMenu% == 7 set resetSwitch=6 && call bin/item/shopKeep.bat && goto Shop_Menu
-if %shopMenu% == 8 set resetSwitch=5 && call bin/item/shopKeep.bat && goto Shop_Menu
+if %shopMenu% == 7 set resetSwitch=9 && call bin/item/shopKeep.bat && goto Shop_Menu
+if %shopMenu% == 8 set resetSwitch=6 && call bin/item/shopKeep.bat && goto Shop_Menu
+if %shopMenu% == 9 set resetSwitch=5 && call bin/item/shopKeep.bat && goto Shop_Menu
 if %shopMenu% == back goto Map
 goto A_Menu
 
@@ -1425,12 +1525,30 @@ goto start
 
 
 :outdated
+set specialmsg=0
 cls
+set weaponarray=0
+set weaponname=Fists
+set weapondmg=0
+set weaponmod=Nothing
+if %versionnum% == 1.7.2 set specialmsg=1
+if %versionnum% == 1.7.1 set specialmsg=1
+if %versionnum% == 1.7.0 set specialmsg=1
+if %versionnum% == 1.6.0 set specialmsg=1
+if %versionnum% == 1.5.0 set specialmsg=2
+if %versionnum% == 1.4.0 set specialmsg=2
+if %versionnum% == 1.3.0 set specialmsg=2
+if %versionnum% == 1.2.1 set specialmsg=3
+if %versionnum% == 1.2.0 set specialmsg=3
 set versionnum=%version%
 echo Oh no! Your save file is out of date! We'll take the liberty of 
 echo updating your files for you. Don't want to have a bad save, right? 
 echo There is a chance this will crash the game, don't worry.
 echo Your data is fine. Just relaunch and load the game again.
+echo.
+if %specialmsg% == 1 echo (1.6.0, 1.7.x)Due to the addition of a weapon in 1.8.0 you may have to re-equip your last weapon. && echo This was done to prevent too much data loss upon upgrading.
+if %specialmsg% == 2 echo (1.3.0 - 1.5.0)I won't lie, I have no idea how this will go. Data loss may be inevitable due to the drastic changes between versions. && echo Good luck!
+if %specialmsg% == 3 echo (1.2.0 - 1.2.1)This can go either way. I won't support anything on the ye olde biofuse saves.
 pause 
 goto q_SAV
 :MainScreen_Check

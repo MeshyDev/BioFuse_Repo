@@ -5,4 +5,5 @@ if %weaponarray% == 3 echo You are currently equipped with: A fire sword, + 8 DM
 if %weaponarray% == 4 echo You are currently equipped with: A goddamn rocket launcher, + 15 DMG
 if %weaponarray% == 5 echo You are currently equipped with: Death Machine, +50 DMG
 if %weaponarray% == 6 echo You are currently equipped with: Bot Buster, + 100 DMG
+if %weaponarray% == 7 echo You are currently equipped with: Portable Death Laser, + 750 DMG
 exit /b

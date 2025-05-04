@@ -7,6 +7,9 @@ set /a levelBonus=%levelBonusRAND% * 2
 set /a expGained=%RANDOM% * %EmaxHP% / 32768 + 1
 set /a nodesGained=%RANDOM% * %EmaxHP% / 32768 + 1
 
+if %expGained% LSS 0 set expGained=20000
+if %nodesGained% LSS 0 set nodesGained=10000
+
 set /a nodes=%nodes% + %nodesGained% + %levelBonus%
 set /a exp=%exp% + %expGained% + %levelBonus%
 echo You gained %expGained% experience and grabbed %nodesGained% nodes from the body!
