@@ -7,6 +7,8 @@ if %enemyHS% == 66 set EhealthStatus=Burning
 
 if %enemyFind%==1 (
 set enemy=Prarie Dog
+set canCast=1
+set castLvl=0
 set EcurrentHP=20
 set EmaxHP=20
 set EcurrentEP=10
@@ -15,6 +17,8 @@ set Edmg=5
 )
 if %enemyFind%==2 (
 set enemy=Bird
+set canCast=1
+set castLvl=0
 set EcurrentHP=25
 set EmaxHP=25
 set EcurrentEP=30
@@ -23,6 +27,8 @@ set Edmg=7
 )
 if %enemyFind%==3 (
 set enemy=Small Ground Hog
+set canCast=1
+set castLvl=0
 set EcurrentHP=35
 set EmaxHP=35
 set EcurrentEP=20
@@ -31,6 +37,8 @@ set Edmg=7
 )
 if %enemyFind%==4 (
 set enemy=Ground Hog
+set canCast=1
+set castLvl=0
 set EcurrentHP=50
 set EmaxHP=50
 set EcurrentEP=70
@@ -39,6 +47,8 @@ set Edmg=11
 )
 if %enemyFind%==5 (
 set enemy=Hyena
+set canCast=1
+set castLvl=0
 set EcurrentHP=75
 set EmaxHP=75
 set EcurrentEP=100
@@ -47,6 +57,8 @@ set Edmg=13
 )
 if %enemyFind%==6 (
 set enemy=Giant
+set canCast=1
+set castLvl=1
 set EcurrentHP=100
 set EmaxHP=100
 set EcurrentEP=100

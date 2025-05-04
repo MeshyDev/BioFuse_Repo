@@ -7,6 +7,8 @@ if %enemyHS% == 66 set EhealthStatus=Burning
 
 if %enemyFind%==1 (
 set enemy=Hare
+set canCast=1
+set castLvl=0
 set EcurrentHP=40
 set EmaxHP=40
 set EcurrentEP=30
@@ -15,6 +17,8 @@ set Edmg=8
 )
 if %enemyFind%==2 (
 set enemy=Woodpecker
+set canCast=1
+set castLvl=0
 set EcurrentHP=25
 set EmaxHP=25
 set EcurrentEP=20
@@ -23,6 +27,8 @@ set Edmg=8
 )
 if %enemyFind%==3 (
 set enemy=Small Beaver
+set canCast=1
+set castLvl=0
 set EcurrentHP=45
 set EmaxHP=45
 set EcurrentEP=30
@@ -31,6 +37,8 @@ set Edmg=10
 )
 if %enemyFind%==4 (
 set enemy=Beaver
+set canCast=1
+set castLvl=1
 set EcurrentHP=65
 set EmaxHP=65
 set EcurrentEP=70
@@ -39,6 +47,8 @@ set Edmg=13
 )
 if %enemyFind%==5 (
 set enemy=Moose
+set canCast=1
+set castLvl=1
 set EcurrentHP=75
 set EmaxHP=75
 set EcurrentEP=100
@@ -47,6 +57,8 @@ set Edmg=18
 )
 if %enemyFind%==6 (
 set enemy=Bear
+set canCast=1
+set castLvl=1
 set EcurrentHP=150
 set EmaxHP=150
 set EcurrentEP=150

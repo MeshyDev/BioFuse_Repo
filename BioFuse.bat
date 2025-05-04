@@ -1,8 +1,8 @@
 @echo off
 
-set version=1.6.0
-set vmsg=Oooh, a new zones and stuff.
-set vmsg2=It's fun to update this.
+set version=1.7.0
+set vmsg=The enemies... they grow stronger!
+set vmsg2=And of course, thank you Meshcaid for adopting Nodes as currency
 
 :: This is a game with an engine strapped to it.
 :: How am I gonna make this an engine for other people to use lmao
@@ -30,11 +30,11 @@ set eloc=0
 set eppot=3
 set hppot=3
 set defense=12
-set blockcnce=5
-set critcnce=5
+set blockcnce=75
+set critcnce=75
 set critMult=2
-set evadecnce=5
-set willpower=10
+set evadecnce=50
+set mDmg=10
 set eppower=12
 set adventure=0
 set versionnum=%version%
@@ -52,9 +52,18 @@ set weaponmod=Nothing
 
 if %resetSwitch% == 1 exit /b
 
+setlocal
+for /f "tokens=4-5 delims=. " %%i in ('ver') do set VERSION=%%i.%%j
+if "%version%" == "10.0" mode 800 
+if "%version%" == "6.3" mode con: cols=70 lines=60 
+if "%version%" == "6.2" mode con: cols=70 lines=60 
+if "%version%" == "6.1" mode con: cols=70 lines=60 
+if "%version%" == "6.0" mode con: cols=70 lines=60
+endlocal
+
 set nulbool=0
-SETLOCAL ENABLEEXTENTIONS
-mode con: cols=70 lines=40 
+::SETLOCAL ENABLEEXTENSIONS
+::if errorlevel 1 echo Unable to enable extensions && ping localhost -n 2 >nul
 
 set EmaxHP=10
 
@@ -158,7 +167,7 @@ set /p blockcnce=
 set /p critcnce=
 set /p critMult=
 set /p evadecnce=
-set /p willpower=
+set /p mDmg=
 set /p eppower=
 set /p adventure=
 set /p versionnum=
@@ -218,7 +227,7 @@ echo.
 echo 1:DAMAGE  %tab% %dmg%
 echo 2:HEALTH  %tab% %maxHP%
 echo 3:MAGIC   %tab% %maxEP%
-echo 4:WILLPOWER%tab% %willpower%
+echo 4:MAGIC DMG%tab% %mDmg%
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
 set /a dmg=%dmg%+1
@@ -230,7 +239,7 @@ if /i %input%==3 (
 set /a maxEP=%maxEP%+1
 )
 if /i %input%==4 (
-set /a willpower=%willpower%+1
+set /a mDmg=%mDmg%+1
 )
 cls
 echo You have 4 stat points to divide up throughout your stats. 
@@ -239,7 +248,7 @@ echo.
 echo 1:DAMAGE  %tab% %dmg%
 echo 2:HEALTH  %tab% %maxHP%
 echo 3:MAGIC   %tab% %maxEP%
-echo 4:WILLPOWER%tab% %willpower%
+echo 4:MAGIC DMG%tab% %mDmg%
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
 set /a dmg=%dmg%+1
@@ -251,7 +260,7 @@ if /i %input%==3 (
 set /a maxEP=%maxEP%+1
 )
 if /i %input%==4 (
-set /a willpower=%willpower%+1
+set /a mDmg=%mDmg%+1
 )
 cls
 echo You have 3 stat points to divide up throughout your stats. 
@@ -260,7 +269,7 @@ echo.
 echo 1:DAMAGE  %tab% %dmg%
 echo 2:HEALTH  %tab% %maxHP%
 echo 3:MAGIC   %tab% %maxEP%
-echo 4:WILLPOWER%tab% %willpower%
+echo 4:MAGIC DMG%tab% %mDmg%
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
 set /a dmg=%dmg%+1
@@ -272,7 +281,7 @@ if /i %input%==3 (
 set /a maxEP=%maxEP%+1
 )
 if /i %input%==4 (
-set /a willpower=%willpower%+1
+set /a mDmg=%mDmg%+1
 )
 cls
 echo You have 2 stat points to divide up throughout your stats. 
@@ -281,7 +290,7 @@ echo.
 echo 1:DAMAGE  %tab% %dmg%
 echo 2:HEALTH  %tab% %maxHP%
 echo 3:MAGIC   %tab% %maxEP%
-echo 4:WILLPOWER%tab% %willpower%
+echo 4:MAGIC DMG%tab% %mDmg%
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
 set /a dmg=%dmg%+1
@@ -293,7 +302,7 @@ if /i %input%==3 (
 set /a maxEP=%maxEP%+1
 )
 if /i %input%==4 (
-set /a willpower=%willpower%+1
+set /a mDmg=%mDmg%+1
 )
 cls
 echo You have 1 stat points to divide up throughout your stats. 
@@ -302,7 +311,7 @@ echo.
 echo 1:DAMAGE  %tab% %dmg%
 echo 2:HEALTH  %tab% %maxHP%
 echo 3:MAGIC   %tab% %maxEP%
-echo 4:WILLPOWER%tab% %willpower%
+echo 4:MAGIC DMG%tab% %mDmg%
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
 set /a dmg=%dmg%+1
@@ -314,7 +323,7 @@ if /i %input%==3 (
 set /a maxEP=%maxEP%+1
 )
 if /i %input%==4 (
-set /a willpower=%willpower%+1
+set /a mDmg=%mDmg%+1
 )
 echo Give us a second, %lbnam%, we are going to set up your game for you.
 
@@ -342,7 +351,7 @@ if exist bin/sav (
 (echo %critcnce%) >> bin/sav/%lbnam%.set
 (echo %critMult%) >> bin/sav/%lbnam%.set 
 (echo %evadecnce%) >> bin/sav/%lbnam%.set
-(echo %willpower%) >> bin/sav/%lbnam%.set
+(echo %mDmg%) >> bin/sav/%lbnam%.set
 (echo %eppower%) >> bin/sav/%lbnam%.set
 (echo %adventure%) >> bin/sav/%lbnam%.set
 (echo %versionnum%) >> bin/sav/%lbnam%.set
@@ -401,26 +410,29 @@ cls
 goto MainScreen
 :XP_Menu
 cls
-echo 100 XP added.
-set /a exp=%exp%+100
+echo 50000 XP added.
+set /a exp=%exp%+50000
 pause
 goto MainScreen
 
 :C_Menu
+set /a statThrow=%DMG%+%weapondmg%
 cls
 echo Status: %healthStatus%
 echo HP: %currentHP% / %maxHP%
 echo EP: %currentEP% / %maxEP%
 echo Nodes: %nodes%  XNodes: %Xnodes%
 echo EXP: %exp% / %expToNextLevel%
+echo Weapon: %weaponname%
 echo.
 echo Damage: %DMG%
+echo Total Damage: %statThrow%
 echo Defense: %defense%
-echo Block Chance: %blockcnce%
-echo Crit Chance: %critcnce%
+echo Block Chance: %blockcnce% (Lower is better)
+echo Crit Chance: %critcnce% (Lower is better)
 echo Crit Multiplier: %critMult%
 echo Evade Chance: %evadecnce%
-echo Willpower: %willpower% (can anyone tell me what this does??)
+echo Magic Damage: %mDmg% 
 echo EP Power: %eppower%
 echo.
 pause
@@ -708,7 +720,7 @@ if not exist bin/sav echo FATAL ERROR 4, system cannot save. && echo This means 
 (echo %critcnce%) >> bin/sav/%lbnam%.set
 (echo %critMult%) >> bin/sav/%lbnam%.set 
 (echo %evadecnce%) >> bin/sav/%lbnam%.set
-(echo %willpower%) >> bin/sav/%lbnam%.set
+(echo %mDmg%) >> bin/sav/%lbnam%.set
 (echo %eppower%) >> bin/sav/%lbnam%.set
 (echo %adventure%) >> bin/sav/%lbnam%.set
 (echo %versionnum%) >> bin/sav/%lbnam%.set
@@ -883,6 +895,8 @@ if %input%==2 goto EPATK
 if %input%==3 goto Battle_Inventory
 if %input%==4 goto FleeBattle
 if %input%==debugmode set nulbool=1 && title BioFuse %version% DEBUG && cls && goto Battle
+if %input%==BOLSTER set EmaxHP=9001 && set EcurrentHP=9001 && set EmaxEP=200 && set EcurrentEP=9001 && set EhealthStatus=Sick && cls && goto Battle
+if %input%==CORRUPT set EhealthStatus=Corrupted
 if %input%==nobugmode set nulbool=0 && title BioFuse %version% && cls && goto Battle
 echo I'm sorry, I didn't get that. Could you repeat that please?
 pause
@@ -891,7 +905,7 @@ goto Battle
 
 :CustomDeathMessage
 cls
-set /a CDMRand=%RANDOM% * 20 / 32768 + 1
+set /a CDMRand=%RANDOM% * 22 / 32768 + 1
 if %CDMRand% == 1 echo %enemy%'s corpse slumps over, utterly evicerated. && pause && goto A_Menu
 if %CDMRand% == 2 echo %enemy%'s corpse falls over unceremoniously. As it should. && pause && goto A_Menu
 if %CDMRand% == 3 echo Wow, you obliterated %enemy%. Well done. && pause && goto A_Menu
@@ -914,39 +928,49 @@ if %CDMRand% == 17 echo Secretly, that %enemy% was a mass murderer. && pause && 
 if %CDMRand% == 18 echo Are you surprised that %enemy% died? && pause && echo Me too, the trail of dead in your wake is rooting for you. && pause && goto A_Menu
 if %CDMRand% == 19 echo Secretly, that %enemy% was named Meshel. && pause && echo Meshel will return. && pause && goto A_Menu
 if %CDMRand% == 20 echo Secretly, that %enemy% was named Meshel. && pause && echo Meshel came back. && pause && goto A_Menu
+if %CDMRand% == 21 if %EmaxHP% LSS 30 echo HOW COULD YOU KILL SOMETHING SO CUTE? && pause && echo YOU MONSTER! && pause && goto A_Menu
+if %CDMRand% == 21 if %EmaxHP% GTR 30 echo It had ugly genes anyway. && pause && goto A_Menu
+if %CDMRand% == 22 if %loc% == Outside echo Huh, I think I saw that one on a missing poster. && pause && goto A_Menu
+if %CDMRand% == 22 if %loc% == Flatlands echo Having fun killing the local wildlife? && pause && goto A_Menu
+if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Moose" echo Y'know... you could've just run away from that GODDAMN MOOSE && pause && goto A_Menu
+if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Bear" echo We're pretty sure that bear was on drugs. && pause && echo That was a speedy bear && pause && goto A_Menu
+if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Beaver" echo Ahh, a fine collection for the "BEAVER" dam. && pause && goto A_Menu
+if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Small Beaver" echo These ones fill in the gaps for the "BEAVER" dam && pause && goto A_Menu
+if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Woodpecker" echo How'd you even HIT a Woodpecker? && pause && echo How'd you piss it off?? && pause && goto A_Menu
+if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Hare" echo That was a funny looking rabbit. && echo It was a hairy hare too. && echo Does that make you... && pause && echo Scared? && pause && goto A_Menu
 
 :Battle_Attack
-
-
 call bin/battle/healthCheck.bat
-
 call bin/battle/EhealthCheck.bat
-
 call bin/battle/healthRandom.bat
-
 call bin/battle/getCrit.bat
 if %critSwitch% == 1 goto critsuccess
-
 call bin/battle/getATK.bat
-
+set /a mgkChnc=%RANDOM% %% 4
+if %mgkChnc% == 0 set resetSwitch=3
 call bin/battle/getBlock.bat
-
+:: 0, not blocked.
+:: 1, full block and is handled by getBlock, getEATK.bat ignores.
+:: 2, partial block
 if %resetSwitch% == 0 call bin/battle/getEATK.bat
 if %resetSwitch% == 2 call bin/battle/getEATK.bat
-
+if %resetSwitch% == 3 call bin/battle/getEmgk.bat
 pause
 cls
+:: Clean up the mess and turn off debug mode.
 set resetSwitch=0 
+if %nulbool% == 1 title BioFuse %version%
 set nulbool=0
 goto Battle
 
-:resetSwitch
-if %resetSwitch% == 0 call bin/battle/getEATK.bat
-exit /b
-
 :critsuccess
 call bin/battle/getCritDMG.bat
+:: Crits are broken in a working way <3
 if %critDMG% GTR 450 echo You summon an orbital death laser. BVVVVVTTT!!!
+if %critDMG% GTR 1000 echo That was orbital death laser jr, this is Orbital Death Laser Sr.
+if %critDMG% GTR 5000 echo God forbid something survives after this crit. 
+if %critDMG% GTR 30000 echo Toast. That %enemy% is toast.
+if %critDMG% GTR 1000000 echo You are now outputting enough power to destroy the planet.
 echo You scored a Critial Hit^! 
 echo You did %critDMG% damage to %enemy%^!
 echo. 
@@ -957,7 +981,7 @@ cls
 goto Battle
 
 :FleeBattle
-set /a flee=%RANDOM% * 9 / 32768 + 1
+set /a flee=%RANDOM% * 10 / 32768 + 1
 if %flee% LSS 5 (
 echo You failed to run away...
 set /a Eattack=%RANDOM% * %Edmg% / 32768 + 1
@@ -987,7 +1011,8 @@ echo EP: %currentEP% / %MaxEP%
 echo %enemy% HP: %EcurrentHP%/%EmaxHP% 
 echo. 
 echo 1) Flame Attack^! 
-echo Does between 0-%dmg% damage every round until the
+echo You cast a fireball, does 0-%mDMG% on impact and 
+echo does between 0-%mDmg% damage every round until the
 echo status effect changes or the enemy dies.
 echo Costs: 35 EP
 echo.
@@ -1015,6 +1040,7 @@ call bin/battle/healthRandom.bat
 call :getEP
 call bin/battle/getBlock.bat
 if %resetSwitch% == 0 call bin/battle/getEATK.bat
+if %resetSwitch% == 2 call bin/battle/getEATK.bat
 pause
 cls
 set resetSwitch=0 
@@ -1031,6 +1057,7 @@ call bin/battle/healthRandom.bat
 call :getEP
 call bin/battle/getBlock.bat
 if %resetSwitch% == 0 call bin/battle/getEATK.bat
+if %resetSwitch% == 2 call bin/battle/getEATK.bat
 pause
 cls
 set resetSwitch=0 
@@ -1050,15 +1077,19 @@ exit /b
 cls
 :: Improve pls (circa 2014-2015)
 :: Imrpveo slp (circa 2020)
-
-
+:: THERE I IMPROVED IT.
+echo %lbnam%
+echo HP: %currentHP% / %maxHP%
+echo EP: %currentEP% / %maxEP%
+echo Status: %healthStatus%
+echo.
 echo 1:HP Potions: %hppot%
 echo 2:EP Potions: %eppot%
 echo 3:Back
 set /p input=Choose one::
 if %input%==1 goto hppot
 if %input%==2 goto eppot
-if %input%==3 goto Battle
+if %input%==3 cls && goto Battle
 
 
 :hppot
@@ -1074,14 +1105,16 @@ pause
 cls
 goto Battle_Inventory
 )
-set /a trashVar=%currentHP% + 25
+set /a trashVar=%currentHP% + 40
 if %trashVar% GTR %maxHP% set currentHP=%maxHP% 
 set currentHP=%trashVar% 
 echo You feel refreshed. (Restored some HP)
 pause
 call bin/battle/getBlock.bat
 if %resetSwitch% == 0 call bin/battle/getEATK.bat 
+if %resetSwitch% == 2 call bin/battle/getEATK.bat
 set /a hppot=%hppot%-1
+set resetSwitch=0
 pause
 cls
 goto Battle
@@ -1100,11 +1133,12 @@ pause
 cls
 goto Battle_Inventory
 )
-set /a currentEP=%currentEP% + 30
+set /a currentEP=%currentEP% + 40
 echo You feel rejuvenated^! (EP Restored)
 pause 
 call bin/battle/getBlock.bat
-if %resetSwitch% == 0 call bin/battle/getEATK.bat 
+if %resetSwitch% == 0 call bin/battle/getEATK.bat
+if %resetSwitch% == 2 call bin/battle/getEATK.bat 
 set /a eppot=%eppot%-1
 pause
 cls
@@ -1113,15 +1147,19 @@ goto Battle
 
 :LevelUp
 cls
+set input=DECIDEONYOURLEVELBRUH
 set /a level=%level%+1
-set exp=0
+if %exp% GTR %expToNextLevel% set /a expCarry=%exp%-%expToNextLevel%
+set /a exp=0+%expCarry%
 set /a expLevelRand=%Random% * %level% / 32768 + 1
 set /a expLevelMult=%expLevelRand% * 3
 set /a expToNextLevel=%expToNextLevel%+100+%expLevelMult%
 set /a currentHP=%maxHP%
 set /a currentEP=%maxEP%
 echo Congratulations, %lbnam%, you've reached Level %level%^!
+if %nulbool% == 1 echo input var is %input%
 pause
+:levelUp1
 cls
 echo You have 5 stat points to divide up throughout your stats. 
 echo Choose a stat to add a point to^! 
@@ -1129,28 +1167,43 @@ echo.
 echo 1:DAMAGE  %tab% %dmg%
 echo 2:HEALTH  %tab% %maxHP%
 echo 3:MAGIC   %tab% %maxEP%
-echo 4:WILLPOWER%tab% %willpower%
-echo 5:BLOCK   %tab% %blockcnce%
+echo 4:MAGIC DMG%tab% %mDmg%
+echo 5:BLOCK   %tab% %blockcnce% (Decreases, lower is better)
 echo 6:CRIT MULT%tab% %critMult%
+echo 7:CRIT CHANCE%tab% %critcnce% (Decreases, lower is better)
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
 set /a dmg=%dmg%+1
+goto levelUp2
 )
 if /i %input%==2 (
 set /a maxHP=%maxHP%+5
+goto levelUp2
 )
 if /i %input%==3 (
 set /a maxEP=%maxEP%+5
+goto levelUp2
 )
 if /i %input%==4 (
-set /a willpower=%willpower%+1
+set /a mDmg=%mDmg%+1
+goto levelUp2
 )
 if /i %input%==5 (
-set /a blockcnce=%blockcnce%+1
+if %blockcnce% LEQ 2 echo Cannot decrease this stat anymore! && pause && goto levelUp1
+set /a blockcnce=%blockcnce%-1
+goto levelUp2
 )
 if /i %input%==6 (
 set /a critMult=%critMult%+1
+goto levelUp2
 )
+if /i %input%==7 (
+if %critcnce% LEQ 2 echo Cannot decrease this stat anymore! && pause && goto levelUp1
+set /a critcnce=%critcnce%-1
+goto levelUp2
+)
+goto levelUp1
+:levelUp2
 cls
 echo You have 4 stat points to divide up throughout your stats. 
 echo Choose a stat to add a point to^! 
@@ -1158,28 +1211,44 @@ echo.
 echo 1:DAMAGE  %tab% %dmg%
 echo 2:HEALTH  %tab% %maxHP%
 echo 3:MAGIC   %tab% %maxEP%
-echo 4:WILLPOWER%tab% %willpower%
-echo 5:BLOCK   %tab% %blockcnce%
+echo 4:MAGIC DMG%tab% %mDmg%
+echo 5:BLOCK   %tab% %blockcnce% (Decreases, lower is better)
 echo 6:CRIT MULT%tab% %critMult%
+echo 7:CRIT CHANCE%tab% %critcnce% (Decreases, lower is better)
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
 set /a dmg=%dmg%+1
+goto levelUp3
 )
 if /i %input%==2 (
 set /a maxHP=%maxHP%+5
+goto levelUp3
 )
 if /i %input%==3 (
 set /a maxEP=%maxEP%+5
+goto levelUp3
 )
 if /i %input%==4 (
-set /a willpower=%willpower%+1
+set /a mDmg=%mDmg%+1
+goto levelUp3
 )
 if /i %input%==5 (
-set /a blockcnce=%blockcnce%+1
+if %blockcnce% LEQ 2 echo Cannot decrease this stat anymore! && pause && goto levelUp2
+set /a blockcnce=%blockcnce%-1
+goto levelUp3
 )
 if /i %input%==6 (
 set /a critMult=%critMult%+1
+goto levelUp3
 )
+if /i %input%==7 (
+if %critcnce% LEQ 2 echo Cannot decrease this stat anymore! && pause && goto levelUp2
+set /a critcnce=%critcnce%-1
+goto levelUp3
+)
+goto levelUp2
+
+:levelUp3
 cls
 echo You have 3 stat points to divide up throughout your stats. 
 echo Choose a stat to add a point to^! 
@@ -1187,28 +1256,44 @@ echo.
 echo 1:DAMAGE  %tab% %dmg%
 echo 2:HEALTH  %tab% %maxHP%
 echo 3:MAGIC   %tab% %maxEP%
-echo 4:WILLPOWER%tab% %willpower%
-echo 5:BLOCK   %tab% %blockcnce%
+echo 4:MAGIC DMG%tab% %mDmg%
+echo 5:BLOCK   %tab% %blockcnce% (Decreases, lower is better)
 echo 6:CRIT MULT%tab% %critMult%
+echo 7:CRIT CHANCE%tab% %critcnce% (Decreases, lower is better)
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
 set /a dmg=%dmg%+1
+goto levelUp4
 )
 if /i %input%==2 (
 set /a maxHP=%maxHP%+5
+goto levelUp4
 )
 if /i %input%==3 (
 set /a maxEP=%maxEP%+5
+goto levelUp4
 )
 if /i %input%==4 (
-set /a willpower=%willpower%+1
+set /a mDmg=%mDmg%+1
+goto levelUp4
 )
 if /i %input%==5 (
-set /a blockcnce=%blockcnce%+1
+if %blockcnce% LEQ 2 echo Cannot decrease this stat anymore! && pause && goto levelUp3
+set /a blockcnce=%blockcnce%-1
+goto levelUp4
 )
 if /i %input%==6 (
 set /a critMult=%critMult%+1
+goto levelUp4
 )
+if /i %input%==7 (
+if %critcnce% LEQ 2 echo Cannot decrease this stat anymore! && pause && goto levelUp3
+set /a critcnce=%critcnce%-1
+goto levelUp4
+)
+goto levelUp3
+
+:levelUp4
 cls
 echo You have 2 stat points to divide up throughout your stats. 
 echo Choose a stat to add a point to^! 
@@ -1216,57 +1301,90 @@ echo.
 echo 1:DAMAGE  %tab% %dmg%
 echo 2:HEALTH  %tab% %maxHP%
 echo 3:MAGIC   %tab% %maxEP%
-echo 4:WILLPOWER%tab% %willpower%
-echo 5:BLOCK   %tab% %blockcnce%
+echo 4:MAGIC DMG%tab% %mDmg%
+echo 5:BLOCK   %tab% %blockcnce% (Decreases, lower is better)
 echo 6:CRIT MULT%tab% %critMult%
+echo 7:CRIT CHANCE%tab% %critcnce% (Decreases, lower is better)
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
 set /a dmg=%dmg%+1
+goto levelUp5
 )
 if /i %input%==2 (
 set /a maxHP=%maxHP%+5
+goto levelUp5
 )
 if /i %input%==3 (
 set /a maxEP=%maxEP%+5
+goto levelUp5
 )
 if /i %input%==4 (
-set /a willpower=%willpower%+1
+set /a mDmg=%mDmg%+1
+goto levelUp5
 )
 if /i %input%==5 (
-set /a blockcnce=%blockcnce%+1
+if %blockcnce% LEQ 2 echo Cannot decrease this stat anymore! && pause && goto levelUp4
+set /a blockcnce=%blockcnce%-1
+goto levelUp5
 )
 if /i %input%==6 (
 set /a critMult=%critMult%+1
+goto levelUp5
 )
+if /i %input%==7 (
+if %critcnce% LEQ 2 echo Cannot decrease this stat anymore! && pause && goto levelUp4
+set /a critcnce=%critcnce%-1
+goto levelUp5
+)
+goto levelUp4
+
+:levelUp5
 cls
-echo You have 1 stat points to divide up throughout your stats. 
+echo You have 1 stat point to divide up throughout your stats. 
 echo Choose a stat to add a point to^! 
 echo.
 echo 1:DAMAGE  %tab% %dmg%
 echo 2:HEALTH  %tab% %maxHP%
 echo 3:MAGIC   %tab% %maxEP%
-echo 4:WILLPOWER%tab% %willpower%
-echo 5:BLOCK   %tab% %blockcnce%
+echo 4:MAGIC DMG%tab% %mDmg%
+echo 5:BLOCK   %tab% %blockcnce% (Decreases, lower is better)
 echo 6:CRIT MULT%tab% %critMult%
+echo 7:CRIT CHANCE%tab% %critcnce% (Decreases, lower is better)
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
 set /a dmg=%dmg%+1
+goto doubleCheck
 )
 if /i %input%==2 (
 set /a maxHP=%maxHP%+5
+goto doubleCheck
 )
 if /i %input%==3 (
 set /a maxEP=%maxEP%+5
+goto doubleCheck
 )
 if /i %input%==4 (
-set /a willpower=%willpower%+1
+set /a mDmg=%mDmg%+1
+goto doubleCheck
 )
 if /i %input%==5 (
-set /a blockcnce=%blockcnce%+1
+if %blockcnce% LEQ 2 echo Cannot decrease this stat anymore! && pause && goto levelUp5
+set /a blockcnce=%blockcnce%-1
+goto doubleCheck
 )
 if /i %input%==6 (
 set /a critMult=%critMult%+1
+goto doubleCheck
 )
+if /i %input%==7 (
+if %critcnce% LEQ 2 echo Cannot decrease this stat anymore! && pause && goto levelUp5
+set /a critcnce=%critcnce%-1
+goto doubleCheck
+)
+goto levelUp5
+
+:doubleCheck
+if %exp% GEQ %expToNextLevel% goto levelUp
 goto q_SAV 
 
 :Shop_Menu
@@ -1315,6 +1433,8 @@ cls
 set versionnum=%version%
 echo Oh no^! Your save file is out of date^! We'll take the liberty of 
 echo updating your files for you. Don't want to have a bad save, right? 
+echo There is a chance this will crash the game, don't worry.
+echo Your data is fine. Just relaunch and load the game again.
 pause 
 goto q_SAV
 :MainScreen_Check
@@ -1325,7 +1445,9 @@ if %adventure%==1 goto MainScreen_Adventure
 :Start_Adv
 if %level% LSS 5000 (
 cls
-echo BioFuse Adventure is not available in this version. I'm sorry. 
+echo BioFuse Adventure is not available in this version. 
+echo This dialogue and option in the menu is left as a memento
+echo to a time long since passed. 
 pause
 goto MainScreen
 )

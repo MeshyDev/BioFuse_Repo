@@ -11,7 +11,7 @@ set /a nodes=%nodes% + %nodesGained% + %levelBonus%
 set /a exp=%exp% + %expGained% + %levelBonus%
 echo You gained %expGained% experience and grabbed %nodesGained% nodes from the body!
 echo Your exp is now %exp%/%expToNextLevel% and have %nodes% Nodes.
-echo Level Bonus is %levelBonus%
+echo Bonus XP and Nodes was %levelBonus%
 pause
 cls
 exit /b

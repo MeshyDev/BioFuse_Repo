@@ -1,7 +1,7 @@
-set /a eburnDMG=%RANDOM% * 10 / 32768 + 1
+set /a eburnDMG=%RANDOM% * %mDmg% / 32768 + 1
 set /a esickDMG=%RANDOM% * 10 / 32768 + 1
 set /a ebatteredDMG=%RANDOM% * 4 / 32768 + 1
-
+set /a Crptdmg=%random% * 5 / 32768 + 1
 set /a eTossHP = %EmaxHP% / 2
 
 if %EcurrentHP% LEQ %eTossHP% set EhealthStatus=Battered 
@@ -45,7 +45,6 @@ if %nulbool% == 1 set testvar=1 && echo Made it to test, enemy HP success %testv
 
 if %EhealthStatus% == Corrupted (
 echo %enemy% twitches, making horrible bitcrushed grunts.
-set /a Crptdmg=%random% * 5 / 32768 + 1
 echo %enemy% takes %Crptdmg% HP!
 set /a EcurrentHP=%EcurrentHP% - %Crptdmg%
 )

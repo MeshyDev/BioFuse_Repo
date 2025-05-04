@@ -1,4 +1,6 @@
 :: This should only be called! This is a subroutine, not a fully accessible block. 
+set /a halfHP=%currentHP% / 2
+set /a CrrptDMG=%random% * %halfHP% / 32768 + 1
 set /a burnDMG=%random% * 10 / 32768 + 1
 set /a sickDMG=%random% * 10 / 32768 + 1
 set /a batteredDMG=%random% * 4 / 32768 + 1 
@@ -6,6 +8,7 @@ set /a batteredDMG=%random% * 4 / 32768 + 1
 :: SICK -- Activates when enemy has sickness
 :: BATTERED -- Only activates during low health
 :: DYING -- Only activates during last 10 health 
+:: CORRUPTED -- Activates on EP induced ability. Takes a random amount of HP based on half of your current HP.
 set /a tossHP=%maxHP% / 3 
 if %healthStatus% == Healthy if %currentHP% GEQ %tossHP% set healthStatus=Healthy
 if %healthStatus% == Healthy if %currentHP% GTR %maxHP% set healthStatus=Overhealed
@@ -18,4 +21,5 @@ if %healthStatus% == Battered echo You have sustained injuries, your movements c
 if %healthStatus% == Dying echo Your injuries are fatal, if you don't escape or take && echo an HP potion, you will surely perish!
 if %healthStatus% == God-like echo %lbnam% thought they were clever. && echo Despite that, they are godlike. They recover 10 health. && echo Overflow allowed! && set /a currentHP=%currentHP% + 10
 if %healthStatus% == Overhealed echo You feel much more bolstered than usual.
+if %healthStatus% == Corrupted echo You need to heal ASAP or you'll be Battered before you know it. && echo %CrrptDMG% damage taken. && set /a currentHP=%currentHP% - %CrrptDMG%
 exit /b
