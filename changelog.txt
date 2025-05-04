@@ -1,29 +1,5 @@
-changelog for 1.2.0
+changelog for 1.2.1
 
-- removed update functionality
-- formatted version number appropiately. 
-- Cleared out 'adventure'. I'll have to remake it.
-- Adjusted window size! More streamlined. 
-- Items can now stack (presumably) infinitely
-- Save files are now updated when brought from older versions in a far more effecient manner
-- Save files no longer contain "item-bought" variable. 
-- Echo is OFF should no longer display in save files.
-- Stripped Agility, Parry Chance, Strength, hit chance and vitality. 
-- Choosing stats for leveling up and also game creation don't have Strength, Agility and Vitality anymore. It was replaced with Health, Attack and Magic. 
-- Titlescreen cleaned up. 
-- Bank closed! 
-- New Variable introduced, critMult. 
-- You can now score critical hits!
-- You can now occasionally block enemies! 
-- Leveling up no longer gives you 50 HP or equip
-- New options for stat management during leveling up
-- Offloaded game battle subroutines into separate files.
-- Your health now has meaning! Four new possible states! Burning, sick, battered, and dying. 
-- Save routine now checks if the save folder actually exists before attempting to save. (See Update #26 for why)
-- FIRE POWER AND HEALTH DRAAAIN. Be the siren you wanted to be!
-
-My reasoning for removing the 'bought' variable was because it was redundant. 
-If the user has x amount of that item, allow equip. 
-Note: Stripping these variables do sort of make previous versions defunct. If your previous save 
-worked on 0.2.7 it might work on 1.2.0 but it may mix other variables due to the way Batch handles 
-pulling up saves. Further testing will tell me. 
+- Fixed bug where loading your character after death refused to load character 
+- Sleeping now returns your health to Healthy, even with sickness or being in flames.
+- Escaping with low health but getting injured in the process no longer puts you in the negative. You're dead. 

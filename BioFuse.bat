@@ -1,6 +1,6 @@
 @echo off
 
-set version=1.2.0
+set version=1.2.1
 set vmsg=Back from the Dead
 set vmsg2=I arise!!
 
@@ -136,6 +136,7 @@ pause
 goto start
 
 :loadGame
+if %resetSwitch% == 1 call :redef set resetSwitch=0
 cls
 echo Please enter in your character's name. 
 set /p lbnam=What's your name?::
@@ -531,7 +532,11 @@ goto A_Menu
 set /a currentHP=%maxHP%
 cls
 echo You're taking a nap... HP Restored to Full.
-ping localhost -n 2 >NUL
+if %healthStatus% == Burning echo You douse your smoldering body in water before taking your nap. && set healthStatus=Healthy
+if %healthStatus% == Battered echo Your injuries heal during your nap. && set healthStatus=Healthy 
+if %healthStatus% == Sick echo Despite your sickly nap, you feel well rested after it all. && set healthStatus=Healthy 
+if %healthStatus% == Dying echo You met death during your nap, but pursuaded him out if it. && set healthStatus=Healthy
+pause
 goto A_Menu
 
 :H_EPOT
@@ -911,6 +916,7 @@ echo previous save if you like. I'm going to return you to the load screen now..
 pause
 cls
 color 0F
+set resetSwitch=1
 goto loadGame
 )
 if %EcurrentHP% LSS 1 (
@@ -1011,9 +1017,10 @@ cls
 goto Battle
 )
 if %flee%==5 (
+set /a currentHP=%currentHP%-10
+if %currentHP% LSS 0 echo You attempted to run, but got killed in the process. && set currentHP=0 && pause && goto Battle
 echo You ran away, but were injured in the process...
 pause
-set /a currentHP=%currentHP%-10
 goto A_Menu
 )
 if %flee% GTR 5 (
