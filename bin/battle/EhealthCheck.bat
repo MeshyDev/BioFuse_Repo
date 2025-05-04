@@ -47,8 +47,14 @@ if %EhealthStatus% == Corrupted (
 echo %enemy% twitches, making horrible bitcrushed grunts.
 set /a Crptdmg=%random% * 5 / 32768 + 1
 echo %enemy% takes %Crptdmg% HP!
-set /a EcurentHP=%EcurrentHP% - %Crptdmg%
+set /a EcurrentHP=%EcurrentHP% - %Crptdmg%
 )
 
+if %EhealthStatus% == Infected (
+echo %enemy% seems to have been infected by... something.
+set /a InfDmg=%random% * 15 / 32768 + 1
+echo %enemy% takes %InfDmg% HP!
+set /a EcurrentHP = %EcurrentHP% - %InfDmg%
+)
 
 exit /b

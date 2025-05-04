@@ -55,3 +55,21 @@ improving it over here, but you might find some later games of mine utilizing th
 - After nearly 6 years of contemplation, searching for loot was cut. 
 - My SETLOCAL endeavors were thwarted by exclamation points. 
 
+1.5.0
+
+- Fixed a bug where robots wouldn't take corruption damage properly
+- Added the "infected" health tag, only applies to robots.
+- Added a new weapon, "Death Machine"
+- Removed delayed expansion on checkVar as it was causing issues.
+- Fixed EXP and Nodes not properly adding to the user's stats.
+- Fixed an issue where checkVar would send you back into battle with an enemy in the negative HP... living dead thing.
+- I cannot guarantee that the save will "fix" itself due to the way batch saves things. 
+- Added in a few details relating to the negative HP thing. If an enemies HP EQUALS 0, they get one final shot- and a bonus to the user!
+^ Because it's not a bug, it's a feature muahaha
+- Fixed Flatlands having 1, 2, 4 as the options.
+- Fixed Forest having improperly set command variables
+- Fixed BioFuse in general being formatted as LF instead of CRLF because Windows is speshul.
+- The missing operands came back for me, generally speaking it won't really affect gameplay since it only happens on the first fight or damage or whatever.
+It's super inconsistent and I'm just gonna leave it be unless I feel like trying to make delayedexpansion work again. But it broke other things in a major way
+so like... no. Deal with the missing operands for a turn. 
+- Maybe I'll remove all the little ^'s littered about all the dialogue. Maybe. It'll prolly be something like update 1.5.1 if I ever wanna do some janitor work.

@@ -1,8 +1,8 @@
 @echo off
 
-set version=1.4.0
-set vmsg=Biofuse Engine Release
-set vmsg2=It's a big day. 
+set version=1.5.0
+set vmsg=Biofuse sudden update much?
+set vmsg2=It's just something I felt like doing lol
 
 
 :: As of 5/18/20, I have decided to not consider BioFuse
@@ -45,6 +45,7 @@ set weaponone=0
 set weapontwo=0
 set weaponthree=0
 set weaponfour=0
+set weaponfive=0
 set weaponarray=0
 set weaponname=Fists
 set weapondmg=0
@@ -167,6 +168,7 @@ set /p weaponone=
 set /p weapontwo=
 set /p weaponthree=
 set /p weaponfour=
+set /p weaponfive=
 set /p weaponarray=
 set /p weaponname=
 set /p weapondmg=
@@ -349,6 +351,7 @@ if exist bin/sav (
 (echo %weapontwo%) >> bin/sav/%lbnam%.set
 (echo %weaponthree%) >> bin/sav/%lbnam%.set
 (echo %weaponfour%) >> bin/sav/%lbnam%.set
+(echo %weaponfive%) >> bin/sav/%lbnam%.set
 (echo %weaponarray%) >> bin/sav/%lbnam%.set
 (echo %weaponname%) >> bin/sav/%lbnam%.set
 (echo %weapondmg%) >> bin/sav/%lbnam%.set
@@ -433,7 +436,7 @@ cls
 if %loc% == Home goto Home_Menu
 if %loc% == Outside goto Outside_Menu
 if %loc% == Flatlands goto Flatlands_Menu
-if %loc% == Forest goto Forest_Menu
+if %loc% == Forest goto Forrest_Menu
 if %loc% == JunkYard goto JunkYard_Menu
 if %loc% == Shop goto Shop_Menu
 echo Interesting, you seem to have gotten yourself trapped
@@ -514,6 +517,7 @@ if %weaponone% == 1 echo (Dagger) A fine steel dagger. +3 DMG
 if %weapontwo% == 1 echo (Sword) A large steel sword. +5 DMG
 if %weaponthree% == 1 echo (Flaming Sword) A sword made of flames. +8 DMG
 if %weaponfour% == 1 echo (Rocket Launcher) Who let you buy this? +15 DMG
+if %weaponfive% == 1 echo (Death Machine) Remember me? +50 DMG
 if %weaponzero% == 1 echo (Back) Go back to the last menu
 echo.
 echo (Please note, syntax is important otherwise you may risk a crash)
@@ -524,6 +528,7 @@ if "%equipRm%" == "Dagger" set weaponarray=1 && call bin/item/checkArray.bat && 
 if "%equipRm%" == "Sword" set weaponarray=2 && call bin/item/checkArray.bat && goto H_Equip
 if "%equipRm%" == "Flaming Sword" set weaponarray=3 && call bin/item/checkArray.bat && goto H_Equip
 if "%equipRm%" == "Rocket Launcher" set weaponarray=4 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "Death Machine" set weaponarray=5 && call bin/item/checkArray.bat && goto H_Equip
 if "%equipRm%" == "Back" goto Home_Menu 
 if "%equipRm%" == "back" goto Home_Menu
 goto H_Equip 
@@ -559,7 +564,7 @@ echo Location: %loc%
 echo.
 echo 1: Search for Mob
 echo 2: Change Location
-echo 4: Back
+echo 3: Back
 set /p O_Inp=::
 if %O_Inp% == 1 goto Ene_HUB_Fl
 if %O_Inp% == 2 goto Map
@@ -569,7 +574,7 @@ pause
 cls
 goto Flatlands_Menu
 
-:Forest_Menu
+:Forrest_Menu
 if %exp% GEQ %expToNextLevel% goto levelUp
 cls
 echo HP: %currentHP% / %maxHP%
@@ -580,14 +585,13 @@ echo.
 echo 1: Search for Mob
 echo 2: Change Location
 echo 3: Back
-set /p O_Inp=::
-if %O_Inp% == 1 goto Ene_HUB_Fr
-if %O_Inp% == 3 goto Map
-if %O_Inp% == 3 goto MainScreen
-echo I don't understand that. Could you try again?
+set /p F_Inp=::
+if %F_Inp% == 1 goto Ene_HUB_Fr
+if %F_Inp% == 2 goto Map
+if %F_Inp% == 3 goto MainScreen
+echo Invalid option.
 pause
-cls
-goto Forest_Menu
+goto Forrest_Menu
 
 :JunkYard_Menu
 if %exp% GEQ %expToNextLevel% goto levelUp
@@ -651,6 +655,7 @@ if not exist bin/sav echo FATAL ERROR 4, system cannot save. && echo This means 
 (echo %weapontwo%) >> bin/sav/%lbnam%.set
 (echo %weaponthree%) >> bin/sav/%lbnam%.set
 (echo %weaponfour%) >> bin/sav/%lbnam%.set
+(echo %weaponfive%) >> bin/sav/%lbnam%.set
 (echo %weaponarray%) >> bin/sav/%lbnam%.set
 (echo %weaponname%) >> bin/sav/%lbnam%.set
 (echo %weapondmg%) >> bin/sav/%lbnam%.set
@@ -786,6 +791,8 @@ set resetSwitch=1
 goto loadGame
 )
 if %EcurrentHP% LSS 1 call bin/battle/checkVar.bat && goto A_Menu
+if %EcurrentHP% == 0 echo %enemy% didn't hear no bell. It seems like it wants one last shot at you.
+if %EcurrentHP% LEQ -1 echo %enemy%'s corpse slumps over, utterly evicerated. && pause && goto A_Menu
 if %currentHP% GTR %maxHP% (
 set currentHP=%maxHP%
 )
@@ -1195,8 +1202,9 @@ echo 1) Dagger (+3 DMG, 150 Nodes)
 echo 2) Sword (+5 DMG, 550 Nodes)
 echo 3) Flame Sword (+8 DMG, 1500 Nodes)
 echo 4) Rocket Launcher (+15 DMG, 5000 Nodes)
-echo 5) +1 EP Potion (200 Nodes) 
-echo 6) +1 HP Potion (150 Nodes)
+echo 5) Death Machine (+50 DMG, 10000 Nodes)
+echo 6) +1 EP Potion (200 Nodes) 
+echo 7) +1 HP Potion (150 Nodes)
 echo back) Back to map
 echo.
 set /p shopMenu=:: 
@@ -1204,8 +1212,9 @@ if %shopMenu% == 1 set resetSwitch=1 && call bin/item/shopKeep.bat && goto Shop_
 if %shopMenu% == 2 set resetSwitch=2 && call bin/item/shopKeep.bat && goto Shop_Menu
 if %shopMenu% == 3 set resetSwitch=3 && call bin/item/shopKeep.bat && goto Shop_Menu
 if %shopMenu% == 4 set resetSwitch=4 && call bin/item/shopKeep.bat && goto Shop_Menu
-if %shopMenu% == 5 set resetSwitch=5 && call bin/item/shopKeep.bat && goto Shop_Menu
+if %shopMenu% == 5 set resetSwitch=7 && call bin/item/shopKeep.bat && goto Shop_Menu
 if %shopMenu% == 6 set resetSwitch=6 && call bin/item/shopKeep.bat && goto Shop_Menu
+if %shopMenu% == 7 set resetSwitch=5 && call bin/item/shopKeep.bat && goto Shop_Menu
 if %shopMenu% == back goto Map
 goto A_Menu
 
@@ -1216,7 +1225,7 @@ goto A_Menu
 cls
 echo Unfortunately due to the fact that life has gotten in the way, the 
 echo site I used to provide updates is now not mine. Strangely enough it 
-echo was bought by this japanese company. I guess they wanted my domain 
+echo was bought by this Aisan company. I guess they wanted my domain 
 echo that badly. Regardless, just navigate to GameJolt, or if you have 
 echo      the client it should automatically update itself^! 
 pause 

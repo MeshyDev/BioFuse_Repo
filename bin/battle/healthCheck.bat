@@ -8,6 +8,7 @@ set /a batteredDMG=%random% * 4 / 32768 + 1
 :: DYING -- Only activates during last 10 health 
 set /a tossHP=%maxHP% / 3 
 if %healthStatus% == Healthy if %currentHP% GEQ %tossHP% set healthStatus=Healthy
+if %healthStatus% == Healthy if %currentHP% GTR %maxHP% set healthStatus=Overhealed
 if %currentHP% LEQ %tossHP% set healthStatus=Battered
 if %currentHP% LEQ 10 set healthStatus=Dying
 
@@ -16,4 +17,5 @@ if %healthStatus% == Sick echo Your body feels gross, almost like it's imploding
 if %healthStatus% == Battered echo You have sustained injuries, your movements cause && echo damage to yourself. You take %batteredDMG% damage! && set /a currentHP=%currentHP% - %batteredDMG%
 if %healthStatus% == Dying echo Your injuries are fatal, if you don't escape or take && echo an HP potion, you will surely perish!
 if %healthStatus% == God-like echo %lbnam% thought they were clever. && echo Despite that, they are godlike. They recover 10 health. && echo Overflow allowed! && set /a currentHP=%currentHP% + 10
+if %healthStatus% == Overhealed echo You feel much more bolstered than usual.
 exit /b
