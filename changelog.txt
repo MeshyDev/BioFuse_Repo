@@ -205,6 +205,15 @@ so like... no. Deal with the missing operands for a turn.
 - There are 5 levels of magicka that the enemy can use against you.
 - Some Magicka cast by the enemy may be affected by status effects. 
 - Added hidden commands in the battle menu as non-debug mode specific entries. 
-- Changed default crit chance and block chance to 75
+- Changed default crit chance and block chance to 75 for new players
 - Added Crit chance back into level ups, crit chance and block chance now *DECREASE*. Lower is better.
 - Lowest possible value for crit chance and block chance is 2.
+
+1.7.1
+
+- Fixed a missing operand issue when failing a flee for the first time.
+- Added hidden command in the battle menu as non-debug mode specific entires, even though its totally for debug
+- Tweaked Bot Buster damage from 85 to 100.
+- Altered non-critical game text.
+- Fixed taking a nap not removing the Corrupted status effect
+- Removed "options" menu, replaced it with direct access to save instead of jumping into a deprecated page left over from 1.3.0

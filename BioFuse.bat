@@ -1,7 +1,7 @@
 @echo off
 
-set version=1.7.0
-set vmsg=The enemies... they grow stronger!
+set version=1.7.1
+set vmsg=The enemies... they grow stronger! (Bugfixes applied)
 set vmsg2=And of course, thank you Meshcaid for adopting Nodes as currency
 
 :: This is a game with an engine strapped to it.
@@ -393,14 +393,14 @@ echo Status: %healthStatus%
 echo Location: %loc%
 echo.
 echo 1:Actions
-echo 2:Options
+echo 2:Save Game
 echo 3:Character Stats
 if %nulbool% == 1 echo XP:Add XP
 
 if %level% GEQ 5 echo 4:Start Adventure
 set /p input=Choice?::
 if %input%==1 goto A_Menu
-if %input%==2 goto G_Menu
+if %input%==2 goto q_SAV
 if %input%==3 goto C_Menu
 if %nulbool% == 1 if %input%==XP goto XP_Menu
 if %input%==4 goto Start_adv
@@ -438,20 +438,6 @@ echo.
 pause
 cls
 goto MainScreen
-
-:G_Menu
-cls
-echo As of 1.3.0 this page pretty much is only for saving. 
-echo 1: Save
-echo 2: Options (Disabled)
-echo 3: Back
-set /p input=Choose an option::
-if %input%==1 goto q_SAV
-if %input%==2 goto options
-if %input%==3 goto MainScreen
-echo I'm sorry, I didn't understand that. Could you try that again please?
-pause
-goto G_Menu
 
 :A_Menu 
 cls
@@ -511,6 +497,7 @@ if %healthStatus% == Burning echo You douse your smoldering body in water before
 if %healthStatus% == Battered echo Your injuries heal during your nap. && set healthStatus=Healthy 
 if %healthStatus% == Sick echo Despite your sickly nap, you feel well rested after it all. && set healthStatus=Healthy 
 if %healthStatus% == Dying echo You met death during your nap, but pursuaded him out if it. && set healthStatus=Healthy
+if %healthStatus% == Corrupted echo The twitching darkness visited you in your sleep, but you snap out of it. && set healthStatus=Healthy
 pause
 goto A_Menu
 
@@ -897,6 +884,7 @@ if %input%==4 goto FleeBattle
 if %input%==debugmode set nulbool=1 && title BioFuse %version% DEBUG && cls && goto Battle
 if %input%==BOLSTER set EmaxHP=9001 && set EcurrentHP=9001 && set EmaxEP=200 && set EcurrentEP=9001 && set EhealthStatus=Sick && cls && goto Battle
 if %input%==CORRUPT set EhealthStatus=Corrupted
+if %input%==FAILFLEE set flee=4 && goto DebugFleeBattle
 if %input%==nobugmode set nulbool=0 && title BioFuse %version% && cls && goto Battle
 echo I'm sorry, I didn't get that. Could you repeat that please?
 pause
@@ -982,9 +970,10 @@ goto Battle
 
 :FleeBattle
 set /a flee=%RANDOM% * 10 / 32768 + 1
+:DebugFleeBattle
+set /a Eattack=%RANDOM% * %Edmg% / 32768 + 1
 if %flee% LSS 5 (
 echo You failed to run away...
-set /a Eattack=%RANDOM% * %Edmg% / 32768 + 1
 echo You took %Eattack% damage.
 set /a currentHP=%currentHP%-%Eattack%
 pause
@@ -995,6 +984,7 @@ if %flee%==5 (
 set /a currentHP=%currentHP%-10
 if %currentHP% LSS 0 echo You attempted to run, but got killed in the process. && set currentHP=0 && pause && goto Battle
 echo You ran away, but were injured in the process...
+echo You took 10 damage.
 pause
 goto A_Menu
 )
@@ -1399,7 +1389,7 @@ echo 2) Sword (+5 DMG, 550 Nodes)
 echo 3) Flame Sword (+8 DMG, 1500 Nodes)
 echo 4) Rocket Launcher (+15 DMG, 5000 Nodes)
 echo 5) Death Machine (+50 DMG, 10000 Nodes)
-echo 6) Bot Buster (+85 DMG, 45000 Nodes)
+echo 6) Bot Buster (+100 DMG, 45000 Nodes)
 echo 7) +1 EP Potion (50 Nodes) 
 echo 8) +1 HP Potion (25 Nodes)
 echo back) Back to map
@@ -1423,6 +1413,9 @@ goto A_Menu
 cls
 echo I can actually provide updates remotely via old means if I can
 echo remember where I left all the code lol
+echo.
+echo In the meantime should I ever make this happen again, I'd just rely
+echo on GameJolt to update everything. 
 pause 
 goto start
 ::                                      I MIDDLE
@@ -1431,7 +1424,7 @@ goto start
 :outdated
 cls
 set versionnum=%version%
-echo Oh no^! Your save file is out of date^! We'll take the liberty of 
+echo Oh no! Your save file is out of date! We'll take the liberty of 
 echo updating your files for you. Don't want to have a bad save, right? 
 echo There is a chance this will crash the game, don't worry.
 echo Your data is fine. Just relaunch and load the game again.
