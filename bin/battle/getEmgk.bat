@@ -63,6 +63,7 @@ exit /b
 if %EcurrentEP% LSS 25 echo %enemy% attempted to cast a spell, but didn't have enough EP! && exit /b
 set /a EcurrentEP=%EcurrentEP% - 25
 set /a mgkBurn=%RANDOM% * %EmaxHP% / 32768 + 1
+if %mgkBurn% LSS 0 set /a mgkBurn=-%mgkBurn% && echo WHOA! Who are you fighting with THAT much HP!?
 set /a CorrDMG=%RANDOM% * 50 / 32768 + 1
 if %EhealthStatus% == Corrupted echo %enemy% twitches, reaching out suddenly and piercing your body! && echo You've been corrupted! && set healthStatus=Corrupted && set /a currentHP=%currentHP% - %CorrDMG% && exit /b
 echo %enemy% casts a large mass of superheated air!

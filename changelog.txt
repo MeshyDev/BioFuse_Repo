@@ -284,3 +284,31 @@ Known bugs:
 searching up a tutorial on switching your terminal behavior from "Let windows decide/Windows Terminal" to 
 Windows Console Host. 
 - When music is disabled, the automatic closing functionality of other console processes breaks. 
+
+1.9.0
+
+- Bundled with a Windows 11 launcher file to fix some finicky Windows 11 things.
+- Cleaned up code just a little 
+- Changed text under music toggle to acknowledge the existance of the Windows 11 launcher.
+- Added flavor text for each president upon death by presidential beatdown
+- Fixed some typos
+- Fixed a bug where jukebox was causing CDM to not output its lines
+- Added CDM flavor text for certain "boss" enemies (enemies with music)
+- Fixed a bug where fleeing from an enemy with a HUGE damage output can wind up healing you
+This means a flat damage rate of 50000, I'm sorry, but it's better than the alternative.
+- Fixed a bug where blocking an enemy with a HUGE damage output can wind up healing you
+This also overrides the block entirely, breaking through your defense, dealing 10000 damage.
+- Text added on multiple (Presidential) encounters for fleeing
+- You cannot flee from The President.
+- Fixed a bug where the Bot Buster wouldn't display its flavor text
+- Moved XP debug into debug menu
+- Changed "Forrest" to "Forest" 
+- Added a special case weapon you can buy after level 100
+- You can now imbue your weapons with 4 modifiers in the shop
+- Gave the Shopkeep in the shop some character
+- Changed how enemy statuses affect them numbers wise. Sick DMG is now based off the enemies MAX HP
+- Fixed a Missing Operator bug with Infection damage.
+
+Known bug that turned into a feature: 
+- If you're as roided out as Uncle is, you'll find that if you kill two boss type enemies (with music)
+the CustomDeathMessage script will get all upset and won't display. It works fine, it's just bitchy.

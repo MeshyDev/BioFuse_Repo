@@ -3,6 +3,7 @@ echo HP: %currentHP% / %maxHP%
 echo EP: %currentEP% / %maxEP%
 echo Status: %healthStatus%
 echo Weapon: %weaponname%
+echo Weapon Mod: %weaponmod%
 echo.
 echo %enemy%
 echo HP: %EcurrentHP% / %EmaxHP%
