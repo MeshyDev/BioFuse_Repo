@@ -1,6 +1,6 @@
 @echo off
 
-set version=1.7.1
+set version=1.7.2
 set vmsg=The enemies... they grow stronger! (Bugfixes applied)
 set vmsg2=And of course, thank you Meshcaid for adopting Nodes as currency
 
@@ -114,6 +114,7 @@ cls
 echo                           Information
 echo                  Main Dev:          Exabyte/ExaDev
 echo              Title Screen:          RAPIX Interactive
+echo            Nodes Adoption:          Meshcaid Inc.
 echo.
 echo         Hello^! I appreciate you coming in and looking over just
 echo            what i've been working on these past few years.
@@ -894,6 +895,7 @@ goto Battle
 :CustomDeathMessage
 cls
 set /a CDMRand=%RANDOM% * 22 / 32768 + 1
+if %nulbool% == 1 echo Made it, random CDM is %CDMRand%
 if %CDMRand% == 1 echo %enemy%'s corpse slumps over, utterly evicerated. && pause && goto A_Menu
 if %CDMRand% == 2 echo %enemy%'s corpse falls over unceremoniously. As it should. && pause && goto A_Menu
 if %CDMRand% == 3 echo Wow, you obliterated %enemy%. Well done. && pause && goto A_Menu
@@ -926,6 +928,7 @@ if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Beaver" echo Ahh, a fine 
 if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Small Beaver" echo These ones fill in the gaps for the "BEAVER" dam && pause && goto A_Menu
 if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Woodpecker" echo How'd you even HIT a Woodpecker? && pause && echo How'd you piss it off?? && pause && goto A_Menu
 if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Hare" echo That was a funny looking rabbit. && echo It was a hairy hare too. && echo Does that make you... && pause && echo Scared? && pause && goto A_Menu
+pause
 
 :Battle_Attack
 call bin/battle/healthCheck.bat
@@ -934,7 +937,7 @@ call bin/battle/healthRandom.bat
 call bin/battle/getCrit.bat
 if %critSwitch% == 1 goto critsuccess
 call bin/battle/getATK.bat
-set /a mgkChnc=%RANDOM% %% 4
+set /a mgkChnc=%RANDOM% * 4 / 32768 + 1
 if %mgkChnc% == 0 set resetSwitch=3
 call bin/battle/getBlock.bat
 :: 0, not blocked.

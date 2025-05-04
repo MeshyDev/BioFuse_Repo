@@ -217,3 +217,11 @@ so like... no. Deal with the missing operands for a turn.
 - Altered non-critical game text.
 - Fixed taking a nap not removing the Corrupted status effect
 - Removed "options" menu, replaced it with direct access to save instead of jumping into a deprecated page left over from 1.3.0
+
+1.7.2
+
+- Fixed corrupted enemies casting normal variant spells over the corrupted variant
+- Fixed enemy Sick spell not displaying how much damage player recieves
+- Changed frequency of crit chance (Instead of adding 7, adds 5 for more frequency)
+- Changed RNG equation on enemy magic use chance
+- Fixed partially blocking an attack not doing damage to the player

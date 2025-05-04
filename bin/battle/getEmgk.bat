@@ -52,7 +52,7 @@ if %EcurrentEP% LSS 25 echo %enemy% attempted to cast a spell, but didn't have e
 set /a EcurrentEP=%EcurrentEP% - 25
 set /a mgkBurn=%RANDOM% * %EmaxHP% / 32768 + 1
 set /a CorrDMG=%RANDOM% * 50 / 32768 + 1
-if %EhealthStatus% == Corrupted echo %enemy% twitches, reaching out suddenly and piercing your body! && echo You've been corrupted! && set healthStatus=Corrupted && set currentHP=%currentHP% - %CorrDMG%
+if %EhealthStatus% == Corrupted echo %enemy% twitches, reaching out suddenly and piercing your body! && echo You've been corrupted! && set healthStatus=Corrupted && set currentHP=%currentHP% - %CorrDMG% && exit /b
 echo %enemy% casts a large mass of superheated air!
 echo The heat burns your skin for %mgkBurn% damage.
 set healthStatus=Burning
@@ -65,6 +65,7 @@ set /a sickyDMG=%RANDOM% * %EmaxEP% / 32768 + 1
 set /a testHP=%currentHP% - %sickyDMG%
 set /a EcurrentEP=%EcurrentEP% - 20
 echo %enemy% casts a sick spell!
+echo You take %sickyDMG% damage!
 if %testHP% LEQ 0 echo You vomit your innards, eyes bleary from the pain. && echo You take %sickyDMG% damage... && set currentHP=0 && exit /b
 set /a currentHP=%currentHP% - %sickyDMG%
 set healthStatus=Sick
