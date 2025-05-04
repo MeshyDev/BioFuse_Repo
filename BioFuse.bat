@@ -1,8 +1,8 @@
 @echo off
 
-set version=1.2.1
-set vmsg=Back from the Dead
-set vmsg2=I arise!!
+set version=1.3.0
+set vmsg=Going back to the dead.
+set vmsg2=I am tired!
 
 :: DEFINE VARIABLES 
 
@@ -344,7 +344,7 @@ set /a maxEP=%maxEP%+1
 if /i %input%==4 (
 set /a willpower=%willpower%+1
 )
-echo Give us a second, %lbnam%, we are going to set up your game for you...
+echo Give us a second, %lbnam%, we are going to set up your game for you.
 
 
 if exist bin\sav (
@@ -423,15 +423,15 @@ echo EP: %currentEP% / %maxEP%
 echo Status: %healthStatus%
 echo Location: %loc%
 echo.
-echo 1:Character Menu
-echo 2:Game Menu
-echo 3:Actions
+echo 1:Actions
+echo 2:Options
+echo 3:Character Stats
 
 if %level% GEQ 5 echo 4:Start Adventure
 set /p input=Choice?::
-if %input%==1 goto C_Menu
+if %input%==1 goto A_Menu
 if %input%==2 goto G_Menu
-if %input%==3 goto A_Menu
+if %input%==3 goto C_Menu
 if %input%==4 goto Start_adv
 echo Sorry, I don't understand that. Could you try again?
 pause
@@ -444,7 +444,8 @@ echo HP: %currentHP% / %maxHP%
 echo EP: %currentEP% / %maxEP%
 echo Nodes: %nodes%  XNodes: %Xnodes%
 echo EXP: %exp% / %expToNextLevel%
-echo Note: The stats are defunct, they just look cool for now. :)
+echo Note: All stats displayed here are proper, but some have been 
+echo removed due to thet 1.2.0 update. 
 echo.
 echo STRENGTH%tab% %strength%
 echo %tab%STR ATK%tab% %strengthatk%
@@ -467,17 +468,14 @@ goto MainScreen
 
 :G_Menu
 cls
+echo As of 1.3.0 this page pretty much is only for saving. 
 echo 1: Save
-echo 2: Load
-echo 3: Main Menu
-echo 4: Options
-echo 5: Back
+echo 2: Options (Disabled)
+echo 3: Back
 set /p input=Choose an option::
 if %input%==1 goto q_SAV
-if %input%==2 goto loadGame
-if %input%==3 goto start
-if %input%==4 goto options
-if %input%==5 goto MainScreen
+if %input%==2 goto options
+if %input%==3 goto MainScreen
 echo I'm sorry, I didn't understand that. Could you try that again please?
 pause
 goto G_Menu
@@ -601,46 +599,54 @@ cls
 goto Flatlands_Menu
 
 :Forest_Menu
+if %exp% GEQ %expToNextLevel% goto levelUp
 cls
-echo The Forest is covered by a dark veil. You decide to return home.
+echo HP: %currentHP% / %maxHP%
+echo EP: %currentEP% / %maxEP%
+echo Status: %healthStatus%
+echo Location: %loc%
+echo.
+echo 1: Search for Mob
+echo 2: Search for Loot
+echo 3: Change Location
+echo 4: Back
+set /p O_Inp=::
+if %O_Inp% == 1 goto Ene_HUB_Fr
+if %O_Inp% == 2 goto Loot_HUB
+if %O_Inp% == 3 goto Map
+if %O_Inp% == 4 goto MainScreen
+echo I don't understand that. Could you try again?
 pause
 cls
-set loc=Home
-goto A_Menu
+goto Forest_Menu
+
 :JunkYard_Menu
+if %exp% GEQ %expToNextLevel% goto levelUp
 cls
-echo The JunkYard is covered by a dark veil. You decide to return home.
+echo HP: %currentHP% / %maxHP%
+echo EP: %currentEP% / %maxEP%
+echo Status: %healthStatus%
+echo Location: %loc%
+echo.
+echo 1: Search for Mob
+echo 2: Search for Loot
+echo 3: Change Location
+echo 4: Back
+set /p O_Inp=::
+if %O_Inp% == 1 goto Ene_Hub_Jy
+if %O_Inp% == 2 goto Loot_HUB
+if %O_Inp% == 3 goto Map
+if %O_Inp% == 4 goto MainScreen
+echo I don't understand that. Could you try again?
 pause
 cls
-set loc=Home
-goto A_Menu
+goto Junkyard_Menu
+
 :options
 cls
-echo Current Difficulty: %opt_diff%
-echo The difficulty currently does nothing ATM; It is defunct.
-echo.
-echo 1) Easy
-echo 2) Normal
-echo 3) Hard
-echo 4) Back
-echo.
-set /p opt=Choose your difficulty::
-if %opt% == 1 goto dif_1
-if %opt% == 2 goto dif_2
-if %opt% == 3 goto dif_3
-if %opt% == 4 goto G_Menu
-goto options
-
-
-:dif_1
-set opt_diff=Easy
-goto q_SAV
-:dif_2
-set opt_diff=Normal
-goto q_SAV
-:dif_3
-set opt_diff=Hard
-goto q_SAV
+echo Currently disabled. My apologies. 
+pause 
+goto G_Menu
 
 
 :q_SAV
@@ -748,20 +754,27 @@ cls
 SET /a RANval=%RANDOM% * 10 / 32768 + 1
 
 if %RANval% GTR 5 goto Outside_EnemyFind
-if %RANval% LSS 5 goto Outside_NoBattle
-if %RANval% == 5 goto Outside_RareEnemyFind
+if %RANval% LEQ 5 cls && echo You didn't find an enemy... && pause && goto A_Menu
 
 :Ene_HUB_Fl
 cls
 set /a RANval=%Random% * 10 / 32768 +1
 
 if %RANval% GTR 3 goto Flatlands_EnemyFind
-if %RANval% LSS 3 goto Flatlands_NoBattle
-if %RANval% == 3 goto Outside_RareEnemyFind
+if %RANval% LEQ 3 cls && echo You didn't find an enemy... && pause && goto A_Menu
+:Ene_HUB_Fr
+cls
+set /a RANval=%random% * 15 / 32768 + 1
 
-:: ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::;
+if %RANval% GTR 8 goto Forest_EnemyFind
+if %RANval% LEQ 8 cls && echo You didn't find an enemy... && pause && goto A_Menu
 
-:: Battle Blocks Below
+:Ene_HUB_Jy
+cls
+set /a RANval=%random% * 30 / 32768 + 1
+
+if %RANval% GTR 15 goto Junkyard_EnemyFind
+if %RANval% LEQ 15 cls && echo You didn't find an enemy... && pause && goto A_Menu
 
 :Outside_NoBattle
 cls
@@ -777,135 +790,37 @@ pause
 cls
 goto A_Menu
 
-:Flatlands_EnemyFind
-:: ==========================================IN PROGRESS==========================================
-set /a enemyFind=%Random% * 5 / 32768 + 1
-if %enemyFind%==1 (
-    set enemy=Prarie Dog
-    set EcurrentHP=20
-    set EmaxHP=20
-    set EcurrentEP=10
-    set EmaxEP=10
-    set EhealthStatus=Healthy
-    set Edmg=5
-)
-if %enemyFind%==2 (
-    set enemy=Bird
-    set EcurrentHP=25
-    set EmaxHP=25
-    set EcurrentEP=30
-    set EmaxEP=30
-    set EhealthStatus=Healthy
-    set Edmg=7
-)
-if %enemyFind%==3 (
-   set enemy=Small Ground Hog
-set EcurrentHP=35
-set EmaxHP=35
-set EcurrentEP=20
-set EmaxEP=20
-set EhealthStatus=Healthy
-set Edmg=7
-)
-if %enemyFind%==4 (
-set enemy=Ground Hog
-set EcurrentHP=50
-set EmaxHP=50
-set EcurrentEP=70
-set EmaxEP=70
-set EhealthStatus=Healthy
-set Edmg=11
-)
-if %enemyFind%==5 (
-set enemy=Hyena
-set EcurrentHP=75
-set EmaxHP=75
-set EcurrentEP=100
-set EmaxEP=100
-set EhealthStatus=Healthy
-set Edmg=13
-)
-if %enemyFind%==6 (
-set enemy=Giant ###RARE###
-set EcurrentHP=100
-set EmaxHP=100
-set EcurrentEP=100
-set EmaxEP=100
-set EhealthStatus=Healthy
-set Edmg=14
-)
-set enemyFind=0
-goto Battle
+:Forest_NoBattle
+cls
+echo You didn't find an enemy...
+pause
+cls
+goto A_Menu
 
-:: ==========================================IN PROGRESS==========================================
+:Junkyard_NoBattle
+cls
+echo Despite the clanging of nearby junkbots,
+echo you didn't find an enemy...
+pause
+cls
+goto A_Menu
 
 :Outside_EnemyFind
-set /a enemyFind=%RANDOM% * 5 / 32768 + 1
-if %enemyFind%==1 (
-set enemy=Squirrel
-set EcurrentHP=20
-set EmaxHP=20
-set EcurrentEP=10
-set EmaxEP=10
-set EhealthStatus=Healthy
-set Edmg=5
-)
-if %enemyFind%==2 (
-set enemy=Rabbit
-set EcurrentHP=25
-set EmaxHP=25
-set EcurrentEP=30
-set EmaxEP=30
-set EhealthStatus=Healthy
-set Edmg=7
-)
-if %enemyFind%==3 (
-set enemy=Stray Cat
-set EcurrentHP=40
-set EmaxHP=40
-set EcurrentEP=60
-set EmaxEP=60
-set EhealthStatus=Sick
-set Edmg=9
-)
-if %enemyFind%==4 (
-set enemy=Duck
-set EcurrentHP=50
-set EmaxHP=50
-set EcurrentEP=70
-set EmaxEP=70
-set EhealthStatus=Healthy
-set Edmg=11
-)
-if %enemyFind%==5 (
-set enemy=Stray Dog
-set EcurrentHP=50
-set EmaxHP=50
-set EcurrentEP=40
-set EmaxEP=40
-set EhealthStatus=Sick
-set Edmg=9
-)
-if %enemyFind%==6 (
-set enemy=BlotBlot ###RARE###
-set EcurrentHP=100
-set EmaxHP=100
-set EcurrentEP=100
-set EmaxEP=100
-set EhealthStatus=Healthy
-set Edmg=20
-)
-set enemyFind=0
+call bin/battle/b_var/outside.bat
 goto Battle
-:Outside_RareEnemyFind
-set enemy=BlotBlot ###RARE###
-set EcurrentHP=100
-set EmaxHP=100
-set EcurrentEP=100
-set EmaxEP=100
-set EhealthStatus=Healthy
-set Edmg=20
+
+:Flatlands_EnemyFind
+call bin/battle/b_var/flatlands.bat
 goto Battle
+
+:Forest_EnemyFind
+call bin/battle/b_var/forest.bat
+goto Battle
+
+:Junkyard_EnemyFind
+call bin/battle/b_var/junkyard.bat
+goto Battle
+
 
 :Battle
 if %currentHP% LSS 1 (
@@ -1085,6 +1000,8 @@ set resetSwitch=0
 set nulbool=0
 goto Battle
 
+
+:: FIXME
 :getEP
 :: Subroutine
 if %nulbool% == 2  call bin/battle/getFire.bat

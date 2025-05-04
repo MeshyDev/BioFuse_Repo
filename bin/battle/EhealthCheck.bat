@@ -12,6 +12,9 @@ if %nulbool% == 1 set testvar=1 && echo Made it to test, enemy HP check %testvar
 :: SICK -- Activates when enemy has sickness
 :: BATTERED -- Only activates during low health
 :: DYING -- Only activates during last 10 health 
+:: CORRUPTED -- Only activates randomly in robots
+:: INFECTED -- Only activates randomly in robots
+
 if %nulbool% == 1 set testvar=1 && echo Made it to test, enemy HP check %testvar% && pause &&  set /a testvar=%testvar% + 1 
 
 if %EhealthStatus% == Burning (
@@ -39,5 +42,13 @@ echo %enemy%'s wounds look pretty fatal.
 echo.
 )
 if %nulbool% == 1 set testvar=1 && echo Made it to test, enemy HP success %testvar% && pause &&  set /a testvar=%testvar% + 1 
+
+if %EhealthStatus% == Corrupted (
+echo %enemy% twitches, making horrible bitcrushed grunts.
+set /a Crptdmg=%random% * 5 / 32768 + 1
+echo %enemy% takes %Crptdmg% HP!
+set /a EcurentHP=%EcurrentHP% - %Crptdmg%
+)
+
 
 exit /b

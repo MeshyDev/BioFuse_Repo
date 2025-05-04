@@ -1,5 +1,10 @@
-changelog for 1.2.1
+changelog for 1.3.0
 
-- Fixed bug where loading your character after death refused to load character 
-- Sleeping now returns your health to Healthy, even with sickness or being in flames.
-- Escaping with low health but getting injured in the process no longer puts you in the negative. You're dead. 
+- Moved enemy data to separate locations
+- Random health chances were tweaked a little
+- Enemies can now be discovered with random health modifiers.
+- Cleaned up some menu stuff that's old and gross
+- Forest and Junkyard locations added
+^ I would recommend grinding a lot before going into the Junkyard, I've designed it to be unfair.
+- misc. other minor things
+(don't forget to add xp cap dude)
