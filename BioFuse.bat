@@ -1,171 +1,14 @@
-set version=0.2.0.4.3
-set vmsg=Official release, standard channel
-set vmsg2=New channels n' stuff
-set vmsg3=Quick-Release before I get to work.
-set nulbool=1
-SETLOCAL ENABLEEXTENTIONS
-mode con: lines=78
-
-if not exist bin md bin
-if not exist bin\sav md bin\sav
-
-
 @echo off
-cls
-title BioFuse %version%
-echo. 
-echo.
-::                                      I MIDDLE
-set TAB=	
-echo                          A game developed by Jaeob Games
-echo.
-echo.
-ping localhost -n 5 >nul
-:start
-title BioFuse %version% 
-color 0F
-cls 
-type MENUMOD.MOD
-echo Welcome to BioFuse %version%. 
-echo -%vmsg%-
-echo -%vmsg2%-
-echo.
-echo.
-set /p MainMenuInput=::
-if %MainMenuInput% == 1 goto createGame
-if %MainMenuInput% == 2 goto loadGame
-if %MainMenuInput% == 3 goto infoBlock
-if %MainMenuInput% == 4 goto Checkforupdates
-if %MainMenuInput% == 5 exit
-echo Sorry, but I don't understand that. Could you try that again please?
-pause
-cls
-goto start
 
+set version=1.2.0
+set vmsg=Back from the Dead
+set vmsg2=I arise!!
 
-:infoBlock
-cls
-echo -----CREDITS-----
-echo [ScorpianCode/McPhologer] - Lead Developer
-echo LufiaGuy2000 - Backup Developer
-echo Rapix - LTG - Creator of the main menu screen.
-echo.
-echo Were also putting a ton of time into this.
-echo Its tiring as well as time consuming just
-echo to do all this for you. Anyway, enjoy BioFuse %version%
-echo %vmsg%
-echo %vmsg2%
-pause
-goto start
+:: DEFINE VARIABLES 
 
-:loadGame
-cls
-echo Please enter in your character's name. 
-set /p lbnam=What's your name?::
-if not exist bin/sav/%lbnam%.set (
-echo Sorry, %lbnam%, we don't know you!
-echo You essentially don't exist - no offence.
-echo But, if you do want to exist, go to the 'new game' area!
-pause
-cls
-goto start
-)
+set resetSwitch=0 
 
-(
-set /p lbnam=
-set /p wep=
-set /p dmg=
-set /p item=
-set /p nodes=
-set /p xnodes=
-set /p level=
-set /p exp=
-set /p expToNextLevel=
-set /p currentHP=
-set /p maxHP=
-set /p currentEP=
-set /p maxEP=
-set /p healthStatus=
-set /p opt_diff=
-set /p loc=
-set /p eloc=
-set /p eppot=
-set /p hppot=
-set /p strength=
-set /p strengthatk=
-set /p defense=
-set /p blockcnce=
-set /p agility=
-set /p agilityatk=
-set /p hitcnce=
-set /p critcnce=
-set /p evadecnce=
-set /p parrycnce=
-set /p vitality=
-set /p willpower=
-set /p eppower=
-set /p adventure=
-set /p versionnum=
-set /p leathera=
-set /p leatherabuy=
-set /p scrapa=
-set /p scrapabuy=
-set /p lowquala=
-set /p lowqualabuy=
-set /p ironarmor=
-set /p ironarmorbuy=
-set /p holoarmor=
-set /p holoarmorbuy=
-set /p fists=
-set /p fistsbuy=
-set /p ironsword=
-set /p ironswordbuy=
-set /p irondag=
-set /p irondagbuy=
-set /p spikedmace=
-set /p spikedmacebuy=
-set /p lowvoltblast=
-set /p lowvoltblastbuy=
-set /p mediumvoltage=
-set /p mediumvoltagebuy=
-)<bin/sav/%lbnam%.set
-if not %versionnum% == %version% goto sav_OutDated
-echo Welcome back, %lbnam%! Please wait while we load your data...
-ping localhost -n 2 >nul
-echo Load was successful.
-pause
-::if %adventure%==0 goto MainScreen
-::if %adventure%==1 goto MainScreen_Adventure
-goto MainScreen
-
-:loadGame.notfound
-echo Sorry there, %lbnam%. We don't know you!
-echo You essentially - no offence - don't exist.
-echo But if you do want to exist, go to 'new game' next time.
-pause
-cls
-goto start
-
-
-:createGame
-cls
-echo Welcome to BioFuse. 
-echo Your adventure will start soon!
-echo There's just one simple thing though...
-echo.
-set /p lbnam=What is your name?::
-if /i exist bin/sav/%lbnam%.set goto loadFound
-if /i not exist bin/sav/%lbnam%.set goto gameCreation
-
-:loadFound
-echo.
-echo Hey again %lbnam%, nice seeing you. But maybe you should 
-echo continue on into the 'load game' section. That is, you've been there
-echo and still didn't 'exist'. Oh well, try again!
-pause
-goto start
-
-:gameCreation
+:redef
 set wepnam=Fists
 set dmg=5
 set item=0
@@ -184,150 +27,318 @@ set loc=Home
 set eloc=0
 set eppot=3
 set hppot=3
-set strength=10
-set strengthatk=12
 set defense=12
 set blockcnce=5
-set agility=10
-set agilityatk=12
-set hitcnce=80
 set critcnce=5
+set critMult=2
 set evadecnce=5
-set parrycnce=5
-set vitality=10
 set willpower=10
 set eppower=12
 set adventure=0
 set versionnum=%version%
 :: Armor
 set leathera=false
-set leatherabuy=false
+set leatheranum=0
 set scrapa=false
-set scrapabuy=false
+set scrapanum=0
 set lowquala=false
-set lowqualabuy=false
+set lowqualanum=0
 set ironarmor=false
-set ironarmorbuy=false
+set ironarmornum=0
 set holoarmor=false
-set holoarmorbuy=false
+set holoarmornum=0
 :: Weapon
 set fists=true
-set fistsbuy=true
 ::For stability
 ::The shortened version of the weapon is the equip. 
 set ironsword=false
-set ironswordbuy=false
+set ironswordnum=0
 set makedo=false
-set makedobuy=false
+set makedonum=0
 set irondag=false
-set irondagbuy=false
+set irondagnum=0
 set spikedmace=false
-set spikedmacebuy=false
+set spikedmacenum=0
 set lowvoltblast=false
-set lowvoltblastbuy=false
+set lowvoltblastnum=0
 set mediumvoltage=false
-set mediumvoltagebuy=false
+set mediumvoltagenum=0
+
+if %resetSwitch% == 1 exit /b
+
+set nulbool=0
+SETLOCAL ENABLEEXTENTIONS
+mode con: cols=70 lines=40 
+
+set EmaxHP=10
+
+set /a expGained=%RANDOM% * %EmaxHP% / 32768 + 1
+set /a nodesGained=%RANDOM% * %EmaxHP% * 10 / 32768 + 1
+
+if not exist bin md bin
+if not exist bin\sav md bin\sav
+
+
+
 cls
-echo You have 5 stat points to divide up throughout your stats. Choose a stat to
-echo add a point to.
+title BioFuse %version%
+echo. 
 echo.
-echo 1:STRENGTH%tab% %strength%
-echo 2:AGILITY %tab% %agility%
-echo 3:VITALITY%tab% %vitality%
+
+set TAB=	
+echo                   A game developed by Exabyte/ExaDev
+echo.
+echo.
+ping localhost -n 5 >nul
+:start
+title BioFuse %version% 
+color 0F
+cls 
+type MENUMOD.MOD
+echo.
+echo Welcome to BioFuse %version%. 
+echo -%vmsg%-
+echo -%vmsg2%-
+if %nulbool% == 1 echo %expGained% %nodesGained%
+if %nulbool% == 1 title BioFuse %version% DEBUG
+echo.
+echo.
+set /p MainMenuInput=::
+if %MainMenuInput% == 1 set resetSwitch=1 && goto createGame
+if %MainMenuInput% == 2 goto loadGame
+if %MainMenuInput% == 3 goto infoBlock
+if %MainMenuInput% == 4 goto Checkforupdates
+if %MainMenuInput% == 5 exit
+echo Sorry, but I don't understand that. Could you try that again please?
+pause
+cls
+goto start
+
+
+:infoBlock
+cls
+::                                  I MIDDLE
+echo                           Information
+echo                  Main Dev:          Exabyte/ExaDev
+echo              Title Screen:          RAPIX Interactive
+echo.
+echo         Hello! I appreciate you coming in and looking over just
+echo            what i've been working on these past few years.
+echo.
+echo Honestly, it took me some time to realize that I just needed to work
+echo with what I've got. I felt like I was pushing myself to strive for 
+echo something that I couldn't do at this time or in the past. So here we go!
+echo.
+echo I hope you guys can appreciate what %version% can offer. Because it 
+echo               sure as hell took me long enough, right? 
+echo. 
+pause
+goto start
+
+:loadGame
+cls
+echo Please enter in your character's name. 
+set /p lbnam=What's your name?::
+if not exist "bin/sav/%lbnam%.set" (
+echo Sorry, %lbnam%, we don't know you!
+echo You essentially don't exist - no offense!
+echo But, if you do want to exist, go to the 'new game' area!
+pause
+cls
+goto start
+)
+echo Welcome back, %lbnam%! Please wait while we load your data...
+(
+set /p lbnam=
+set /p wepnam=
+set /p dmg=
+set /p item=
+set /p nodes=
+set /p xnodes=
+set /p level=
+set /p exp=
+set /p expToNextLevel=
+set /p currentHP=
+set /p maxHP=
+set /p currentEP=
+set /p maxEP=
+set /p healthStatus=
+set /p opt_diff=
+set /p loc=
+set /p eloc=
+set /p eppot=
+set /p hppot=
+set /p defense=
+set /p blockcnce=
+set /p critcnce=
+set /p critMult=
+set /p evadecnce=
+set /p willpower=
+set /p eppower=
+set /p adventure=
+set /p versionnum=
+set /p leathera=
+set /p leathernum=
+set /p scrapa=
+set /p scrapanum=
+set /p lowquala=
+set /p lowqualanum=
+set /p ironarmor=
+set /p ironarmornum=
+set /p holoarmor=
+set /p holoarmornum=
+set /p fists=
+set /p ironsword=
+set /p ironswordnum= 
+set /p irondag=
+set /p irondagnum=
+set /p spikedmace=
+set /p spikedmacenum=
+set /p lowvoltblast=
+set /p lowvoltblastnum=
+set /p mediumvoltage=
+set /p mediumvoltagenum=
+)<bin/sav/%lbnam%.set
+ping localhost -n 2 >nul
+if not %versionnum% == %version% goto outdated 
+echo Load was successful.
+pause
+::if %adventure%==0 goto MainScreen
+::if %adventure%==1 goto MainScreen_Adventure
+goto MainScreen
+
+:loadGame.notfound
+echo Sorry there, %lbnam%. We don't know you!
+echo You essentially - no offence - don't exist.
+echo But if you do want to exist, go to 'new game' next time.
+pause
+cls
+goto start
+
+
+:createGame
+call :redef
+set resetSwitch=0
+cls
+echo Welcome to BioFuse. 
+echo Your adventure will start soon!
+echo There's just one simple thing though...
+echo.
+set /p lbnam=What is your name?::
+if /i exist bin/sav/%lbnam%.set goto loadFound
+if /i not exist bin/sav/%lbnam%.set goto gameCreation
+
+:loadFound
+echo.
+echo Hey again %lbnam%, nice seeing you. But maybe you should 
+echo continue on into the 'load game' section. That is, you've been there
+echo and still didn't 'exist'. Oh well, try again!
+pause
+goto start
+
+:gameCreation
+::                                                                        i < line limit 
+cls
+echo You have 5 stat points to divide up throughout your stats. 
+echo Choose a stat to add a point to! 
+echo.
+echo 1:DAMAGE  %tab% %dmg%
+echo 2:HEALTH  %tab% %maxHP%
+echo 3:MAGIC   %tab% %maxEP%
 echo 4:WILLPOWER%tab% %willpower%
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
-set /a strength=%strength%+1
+set /a dmg=%dmg%+1
 )
 if /i %input%==2 (
-set /a agility=%agility%+1
+set /a maxHP=%maxHP%+5
 )
 if /i %input%==3 (
-set /a vitality=%vitality%+1
+set /a maxEP=%maxEP%+1
 )
 if /i %input%==4 (
 set /a willpower=%willpower%+1
 )
 cls
-echo You have 4 stat points to divide up throughout your stats. Choose a stat to
-echo add a point to.
+echo You have 4 stat points to divide up throughout your stats. 
+echo Choose a stat to add a point to! 
 echo.
-echo 1:STRENGTH%tab% %strength%
-echo 2:AGILITY %tab% %agility%
-echo 3:VITALITY%tab% %vitality%
+echo 1:DAMAGE  %tab% %dmg%
+echo 2:HEALTH  %tab% %maxHP%
+echo 3:MAGIC   %tab% %maxEP%
 echo 4:WILLPOWER%tab% %willpower%
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
-set /a strength=%strength%+1
+set /a dmg=%dmg%+1
 )
 if /i %input%==2 (
-set /a agility=%agility%+1
+set /a maxHP=%maxHP%+5
 )
 if /i %input%==3 (
-set /a vitality=%vitality%+1
+set /a maxEP=%maxEP%+1
 )
 if /i %input%==4 (
 set /a willpower=%willpower%+1
 )
 cls
-echo You have 3 stat points to divide up throughout your stats. Choose a stat to
-echo add a point to.
+echo You have 3 stat points to divide up throughout your stats. 
+echo Choose a stat to add a point to! 
 echo.
-echo 1:STRENGTH%tab% %strength%
-echo 2:AGILITY %tab% %agility%
-echo 3:VITALITY%tab% %vitality%
+echo 1:DAMAGE  %tab% %dmg%
+echo 2:HEALTH  %tab% %maxHP%
+echo 3:MAGIC   %tab% %maxEP%
 echo 4:WILLPOWER%tab% %willpower%
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
-set /a strength=%strength%+1
+set /a dmg=%dmg%+1
 )
 if /i %input%==2 (
-set /a agility=%agility%+1
+set /a maxHP=%maxHP%+5
 )
 if /i %input%==3 (
-set /a vitality=%vitality%+1
+set /a maxEP=%maxEP%+1
 )
 if /i %input%==4 (
 set /a willpower=%willpower%+1
 )
 cls
-echo You have 2 stat points to divide up throughout your stats. Choose a stat to
-echo add a point to.
+echo You have 2 stat points to divide up throughout your stats. 
+echo Choose a stat to add a point to! 
 echo.
-echo 1:STRENGTH%tab% %strength%
-echo 2:AGILITY %tab% %agility%
-echo 3:VITALITY%tab% %vitality%
+echo 1:DAMAGE  %tab% %dmg%
+echo 2:HEALTH  %tab% %maxHP%
+echo 3:MAGIC   %tab% %maxEP%
 echo 4:WILLPOWER%tab% %willpower%
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
-set /a strength=%strength%+1
+set /a dmg=%dmg%+1
 )
 if /i %input%==2 (
-set /a agility=%agility%+1
+set /a maxHP=%maxHP%+5
 )
 if /i %input%==3 (
-set /a vitality=%vitality%+1
+set /a maxEP=%maxEP%+1
 )
 if /i %input%==4 (
 set /a willpower=%willpower%+1
 )
 cls
-echo You have 1 stat point to divide up throughout your stats. Choose a stat to
-echo add a point to.
+echo You have 1 stat points to divide up throughout your stats. 
+echo Choose a stat to add a point to! 
 echo.
-echo 1:STRENGTH%tab% %strength%
-echo 2:AGILITY %tab% %agility%
-echo 3:VITALITY%tab% %vitality%
+echo 1:DAMAGE  %tab% %dmg%
+echo 2:HEALTH  %tab% %maxHP%
+echo 3:MAGIC   %tab% %maxEP%
 echo 4:WILLPOWER%tab% %willpower%
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
-set /a strength=%strength%+1
+set /a dmg=%dmg%+1
 )
 if /i %input%==2 (
-set /a agility=%agility%+1
+set /a maxHP=%maxHP%+5
 )
 if /i %input%==3 (
-set /a vitality=%vitality%+1
+set /a maxEP=%maxEP%+1
 )
 if /i %input%==4 (
 set /a willpower=%willpower%+1
@@ -337,7 +348,7 @@ echo Give us a second, %lbnam%, we are going to set up your game for you...
 
 if exist bin\sav (
 (echo %lbnam%) > bin/sav/%lbnam%.set
-(echo %wep%) >> bin/sav/%lbnam%.set
+(echo %wepnam%) >> bin/sav/%lbnam%.set
 (echo %dmg%) >> bin/sav/%lbnam%.set
 (echo %item%) >> bin/sav/%lbnam%.set
 (echo %nodes%) >> bin/sav/%lbnam%.set
@@ -355,44 +366,38 @@ if exist bin\sav (
 (echo %eloc%) >>bin/sav/%lbnam%.set
 (echo %eppot%) >> bin/sav/%lbnam%.set
 (echo %hppot%) >> bin/sav/%lbnam%.set
-(echo %strength%) >> bin/sav/%lbnam%.set
-(echo %strengthatk%) >> bin/sav/%lbnam%.set
 (echo %defense%) >> bin/sav/%lbnam%.set
 (echo %blockcnce%) >> bin/sav/%lbnam%.set
-(echo %agility%) >> bin/sav/%lbnam%.set
-(echo %agilityatk%) >> bin/sav/%lbnam%.set
-(echo %hitcnce%) >> bin/sav/%lbnam%.set
 (echo %critcnce%) >> bin/sav/%lbnam%.set
+(echo %critMult%) >> bin/sav/%lbnam%.set 
 (echo %evadecnce%) >> bin/sav/%lbnam%.set
-(echo %parrycnce%) >> bin/sav/%lbnam%.set
-(echo %vitality%) >> bin/sav/%lbnam%.set
 (echo %willpower%) >> bin/sav/%lbnam%.set
 (echo %eppower%) >> bin/sav/%lbnam%.set
 (echo %adventure%) >> bin/sav/%lbnam%.set
 (echo %versionnum%) >> bin/sav/%lbnam%.set
 (echo %leathera%) >> bin/sav/%lbnam%.set
-(echo %leatherabuy%) >> bin/sav/%lbnam%.set
+(echo %leatheranum%) >> bin/sav/%lbnam%.set
 (echo %scrapa%) >> bin/sav/%lbnam%.set
-(echo %scrapabuy%) >> bin/sav/%lbnam%.set
+(echo %scrapanum%) >> bin/sav/%lbnam%.set 
 (echo %lowquala%) >> bin/sav/%lbnam%.set
-(echo %lowqualabuy%) >> bin/sav/%lbnam%.set
+(echo %lowqualanum%) >> bin/sav/%lbnam%.set 
 (echo %ironarmor%) >> bin/sav/%lbnam%.set
-(echo %ironarmorbuy%) >> bin/sav/%lbnam%.set
+(echo %ironarmornum%) >> bin/sav/%lbnam%.set 
 (echo %holoarmor%) >> bin/sav/%lbnam%.set
+(echo %holoarmornum%) >> bin/sav/%lbnam%.set
 (echo %fists%) >> bin/sav/%lbnam%.set
-(echo %fistsbuy%) >> bin/sav/%lbnam%.set
 (echo %ironsword%) >> bin/sav/%lbnam%.set
-(echo %ironswordbuy%) >> bin/sav/%lbnam%.set
+(echo %ironswordnum%) >> bin/sav/%lbnam%.set 
 (echo %makedo%) >> bin/sav/%lbnam%.set
-(echo %makedobuy%) >> bin/sav/%lbnam%.set
+(echo %makedonum%) >> bin/sav/%lbnam%.set
 (echo %irondag%) >> bin/sav/%lbnam%.set
-(echo %irondagbuy%) >> bin/sav/%lbnam%.set
+(echo %irondagnum%) >> bin/sav/%lbnam%.set
 (echo %spikedmace%) >> bin/sav/%lbnam%.set
-(echo %spikedmacebuy%) >> bin/sav/%lbnam%.set
+(echo %spikedmacenum%) >> bin/sav/%lbnam%.set 
 (echo %lowvoltblast%) >> bin/sav/%lbnam%.set
-(echo %lowvoltblastbuy%) >> bin/sav/%lbnam%.set
+(echo %lowvoltblastnum%) >> bin/sav/%lbnam%.set 
 (echo %mediumvoltage%) >> bin/sav/%lbnam%.set
-(echo %mediumvoltagebuy%) >> bin/sav/%lbnam%.set
+(echo %mediumvoltagenum%) >> bin/sav/%lbnam%.set
 ping localhost -n 2 >nul 
 echo Game successfully made and saved.
 )
@@ -400,17 +405,6 @@ echo Game successfully made and saved.
 
 :MainScreen
 cls
-set /a strengthatk=5+(strength/2)+(level*2)
-set /a defense=5+(strength/2)+(level*2)
-set /a blockcnce=5+(strength/100)
-set /a agilityatk=5+(agilty/2)+(level*2)
-set /a hitcnce=80+(agility/100)
-set /a critcnce=5+(agility/100)
-set /a evadecnce=5+(agility/100)
-set /a parrycnce=5+(agility/100)
-set /a maxhp=100+(level*10)+(vitality/2)
-set /a maxep=100+(level*10)+(willpower/2)
-set /a eppower=5+(willpower/2)+(level*2)
 if %currentHP% LSS 1 ( 
 echo %lbnam%, I hate to be the bearer of bad news, but you seem to be dead. It
 echo looks like your save might have gotten corrupted somehow, or you manually
@@ -431,6 +425,7 @@ echo.
 echo 1:Character Menu
 echo 2:Game Menu
 echo 3:Actions
+
 if %level% GEQ 5 echo 4:Start Adventure
 set /p input=Choice?::
 if %input%==1 goto C_Menu
@@ -518,13 +513,15 @@ echo.
 echo 1: Take a nap (Restores HP)
 echo 2: Take EP Potion (%eppot%'s left) (Restores EP)
 echo 3: Change Location
-echo 4: Back
+echo 4: Restock Potions
+echo 5: Back
 echo.
 set /p H_Inp=::
 if %H_Inp% == 1 goto H_Nap
 if %H_Inp% == 2 goto H_EPOT
 if %H_Inp% == 3 goto Map
-if %H_Inp% == 4 goto MainScreen
+if %H_Inp% == 4 set eppot=3 && set hppot=3 && goto Home_Menu
+if %H_Inp% == 5 goto MainScreen
 :H_Nap
 if %currentHP% GEQ %maxHP% (
 echo You're not tired. Actually, you feel great!
@@ -640,9 +637,12 @@ goto q_SAV
 set opt_diff=Hard
 goto q_SAV
 
+
 :q_SAV
+cls
+if not exist bin/sav echo FATAL ERROR 4, system cannot save. && echo This means your SAV folder has gone missing! && ping localhost -n 3 >nul && echo Deploying auto-fix. && if not exist bin\sav md bin\sav
 (echo %lbnam%) > bin/sav/%lbnam%.set
-(echo %wep%) >> bin/sav/%lbnam%.set
+(echo %wepnam%) >> bin/sav/%lbnam%.set
 (echo %dmg%) >> bin/sav/%lbnam%.set
 (echo %item%) >> bin/sav/%lbnam%.set
 (echo %nodes%) >> bin/sav/%lbnam%.set
@@ -660,44 +660,38 @@ goto q_SAV
 (echo %eloc%) >>bin/sav/%lbnam%.set
 (echo %eppot%) >> bin/sav/%lbnam%.set
 (echo %hppot%) >> bin/sav/%lbnam%.set
-(echo %strength%) >> bin/sav/%lbnam%.set
-(echo %strengthatk%) >> bin/sav/%lbnam%.set
 (echo %defense%) >> bin/sav/%lbnam%.set
 (echo %blockcnce%) >> bin/sav/%lbnam%.set
-(echo %agility%) >> bin/sav/%lbnam%.set
-(echo %agilityatk%) >> bin/sav/%lbnam%.set
-(echo %hitcnce%) >> bin/sav/%lbnam%.set
 (echo %critcnce%) >> bin/sav/%lbnam%.set
+(echo %critMult%) >> bin/sav/%lbnam%.set 
 (echo %evadecnce%) >> bin/sav/%lbnam%.set
-(echo %parrycnce%) >> bin/sav/%lbnam%.set
-(echo %vitality%) >> bin/sav/%lbnam%.set
 (echo %willpower%) >> bin/sav/%lbnam%.set
 (echo %eppower%) >> bin/sav/%lbnam%.set
 (echo %adventure%) >> bin/sav/%lbnam%.set
 (echo %versionnum%) >> bin/sav/%lbnam%.set
 (echo %leathera%) >> bin/sav/%lbnam%.set
-(echo %leatherabuy%) >> bin/sav/%lbnam%.set
+(echo %leatheranum%) >> bin/sav/%lbnam%.set
 (echo %scrapa%) >> bin/sav/%lbnam%.set
-(echo %scrapabuy%) >> bin/sav/%lbnam%.set
+(echo %scrapanum%) >> bin/sav/%lbnam%.set 
 (echo %lowquala%) >> bin/sav/%lbnam%.set
-(echo %lowqualabuy%) >> bin/sav/%lbnam%.set
+(echo %lowqualanum%) >> bin/sav/%lbnam%.set 
 (echo %ironarmor%) >> bin/sav/%lbnam%.set
-(echo %ironarmorbuy%) >> bin/sav/%lbnam%.set
+(echo %ironarmornum%) >> bin/sav/%lbnam%.set 
 (echo %holoarmor%) >> bin/sav/%lbnam%.set
+(echo %holoarmornum%) >> bin/sav/%lbnam%.set
 (echo %fists%) >> bin/sav/%lbnam%.set
-(echo %fistsbuy%) >> bin/sav/%lbnam%.set
 (echo %ironsword%) >> bin/sav/%lbnam%.set
-(echo %ironswordbuy%) >> bin/sav/%lbnam%.set
+(echo %ironswordnum%) >> bin/sav/%lbnam%.set 
 (echo %makedo%) >> bin/sav/%lbnam%.set
-(echo %makedobuy%) >> bin/sav/%lbnam%.set
+(echo %makedonum%) >> bin/sav/%lbnam%.set
 (echo %irondag%) >> bin/sav/%lbnam%.set
-(echo %irondagbuy%) >> bin/sav/%lbnam%.set
+(echo %irondagnum%) >> bin/sav/%lbnam%.set
 (echo %spikedmace%) >> bin/sav/%lbnam%.set
-(echo %spikedmacebuy%) >> bin/sav/%lbnam%.set
+(echo %spikedmacenum%) >> bin/sav/%lbnam%.set 
 (echo %lowvoltblast%) >> bin/sav/%lbnam%.set
-(echo %lowvoltblastbuy%) >> bin/sav/%lbnam%.set
+(echo %lowvoltblastnum%) >> bin/sav/%lbnam%.set 
 (echo %mediumvoltage%) >> bin/sav/%lbnam%.set
-(echo %mediumvoltagebuy%) >> bin/sav/%lbnam%.set
+(echo %mediumvoltagenum%) >> bin/sav/%lbnam%.set
 :: Saving armor statistics.
 echo Saving your game... don't close!
 ping localhost -n 2 >nul
@@ -866,7 +860,7 @@ set EcurrentHP=40
 set EmaxHP=40
 set EcurrentEP=60
 set EmaxEP=60
-set EhealthStatus=Healthy
+set EhealthStatus=Sick
 set Edmg=9
 )
 if %enemyFind%==4 (
@@ -884,7 +878,7 @@ set EcurrentHP=50
 set EmaxHP=50
 set EcurrentEP=40
 set EmaxEP=40
-set EhealthStatus=Healthy
+set EhealthStatus=Sick
 set Edmg=9
 )
 if %enemyFind%==6 (
@@ -911,8 +905,8 @@ goto Battle
 :Battle
 if %currentHP% LSS 1 (
 color 4F
-echo Ouch, %lbnam%, it looks like that %enemy% bested you. Luckily for you...
-echo I can allow you to load from another save. You can even load your...
+echo Ouch, %lbnam%, it looks like that %enemy% bested you. Luckily for you,
+echo I can allow you to load from another save. You can even load your
 echo previous save if you like. I'm going to return you to the load screen now...
 pause
 cls
@@ -920,12 +914,20 @@ color 0F
 goto loadGame
 )
 if %EcurrentHP% LSS 1 (
+
+SETLOCAL ENABLEDELAYEDEXPANSION
+
+set nodesGained=0
+set expGained=0
+
 echo You claimed victory over %enemy%!
 set /a expGained=%RANDOM% * %EmaxHP% / 32768 + 1
 set /a nodesGained=%RANDOM% * %EmaxHP% * 10 / 32768 + 1
-echo You gained %expGained% experience and %nodesGained% nodes.
+
 set /a nodes=%nodes%+%nodesGained%
 set /a exp=%exp%+%expGained%
+echo You gained %expGained% experience and grabbed %nodesGained% nodes from the body!
+SETLOCAL DISABLEDELAYEDEXPANSION
 pause
 cls
 goto A_Menu
@@ -949,23 +951,54 @@ echo 3. Item
 echo 4. Run
 set /p input=Choice?::
 if %input%==1 goto Battle_Attack
-if %input%==2 goto EP_Power_List
+if %input%==2 goto EPATK
 if %input%==3 goto Battle_Inventory
 if %input%==4 goto FleeBattle
+if %input%==debugmode set nulbool=1 && title BioFuse %version% DEBUG && cls && goto Battle
+if %input%==nobugmode set nulbool=0 && title BioFuse %version% && cls && goto Battle
 echo I'm sorry, I didn't get that. Could you repeat that please?
 pause
 cls
 goto Battle
+
 :Battle_Attack
-set /a attack=%RANDOM% * %dmg% / 32768 + 1
-set /a Eattack=%RANDOM% * %Edmg% / 32768 + 1
-echo You did %attack% damage to %enemy%!
-set /a EcurrentHP=%EcurrentHP%-%attack%
-echo %enemy% did %Eattack% damage to you!
-set /a currentHP=%currentHP%-%Eattack%
+
+call bin/battle/healthCheck.bat
+
+call bin/battle/EhealthCheck.bat
+
+call bin/battle/healthRandom.bat
+
+call bin/battle/getCrit.bat
+if %critSwitch% == 1 goto critsuccess
+
+call bin/battle/getATK.bat
+
+call bin/battle/getBlock.bat
+
+if %resetSwitch% == 0 call bin/battle/getEATK.bat
+
+pause
+cls
+set resetSwitch=0 
+set nulbool=0
+goto Battle
+
+:resetSwitch
+if %resetSwitch% == 0 call bin/battle/getEATK.bat
+exit /b
+
+:critsuccess
+call bin/battle/getCritDMG.bat
+echo You scored a Critial Hit! 
+echo You did %critDMG% damage to %enemy%!
+echo. 
+call bin/battle/getBlock.bat
+call bin/battle/getEATK.bat
 pause
 cls
 goto Battle
+
 :FleeBattle
 set /a flee=%RANDOM% * 9 / 32768 + 1
 if %flee% LSS 5 (
@@ -989,8 +1022,74 @@ pause
 cls
 goto A_Menu
 )
+
+:EPATK
+cls 
+echo EP: %currentEP% / %MaxEP% 
+echo %enemy% HP: %EcurrentHP%/%EmaxHP% 
+echo. 
+echo 1) Flame Attack! 
+echo Does between 0-10 damage every round until the end. 
+echo Costs: 35 EP
+echo.
+echo 2) Life Drain! 
+echo Drains between 0-30 HP and adds it to your own. 
+echo Costs: 50 EP 
+echo. 
+echo back) Return to previous screen
+set /p input=Choice?:: 
+if %input% == 1 goto mgcFinFire
+if %input% == 2 goto mgcFinDrain
+if %input% == back cls && goto Battle 
+echo That was not a valid option!  
+pause 
+goto EPATK 
+
+
+:mgcFinFire
+cls
+set nulbool=2
+call bin/battle/drawBattle.bat
+call bin/battle/healthCheck.bat 
+call bin/battle/EhealthCheck.bat
+call bin/battle/healthRandom.bat
+call :getEP
+call bin/battle/getBlock.bat
+if %resetSwitch% == 0 call bin/battle/getEATK.bat
+pause
+cls
+set resetSwitch=0 
+set nulbool=0
+goto Battle
+
+:mgcFinDrain
+cls
+set nulbool=3
+call bin/battle/drawBattle.bat
+call bin/battle/healthCheck.bat
+call bin/battle/EhealthCheck.bat
+call bin/battle/healthRandom.bat
+call :getEP
+call bin/battle/getBlock.bat
+if %resetSwitch% == 0 call bin/battle/getEATK.bat
+pause
+cls
+set resetSwitch=0 
+set nulbool=0
+goto Battle
+
+:getEP
+:: Subroutine
+if %nulbool% == 2  call bin/battle/getFire.bat
+if %nulbool% == 3 call bin/battle/getHPdrain.bat 
+exit /b
+
+
 :Battle_Inventory
 cls
+:: Improve pls
+
+
 echo 1:HP Potions: %hppot%
 echo 2:EP Potions: %eppot%
 echo 3:Back
@@ -998,6 +1097,8 @@ set /p input=Choose one::
 if %input%==1 goto hppot
 if %input%==2 goto eppot
 if %input%==3 goto Battle
+
+
 :hppot
 if %hppot% LEQ 0 (
 echo You are out of HP potions.
@@ -1011,17 +1112,19 @@ pause
 cls
 goto Battle_Inventory
 )
-set /a hpRest=%RANDOM% * %currentHP% / 32768 + 1
-set /a currentHP=%currentHP%+%hpRest%
+set /a trashVar=%currentHP% + 50
+if %trashVar% GTR %maxHP% set currentHP=%maxHP% 
+set currentHP=%trashVar% 
 echo You feel refreshed. (Restored some HP)
 pause
-set /a %Eattack%=%RANDOM% * %Edmg% / 32768 + 1
-echo %enemy% did %Eattack% damage to you.
-set /a currentHP=%currentHP%-%Eattack%
+call bin/battle/getBlock.bat
+if %resetSwitch% == 0 call bin/battle/getEATK.bat 
 set /a hppot=%hppot%-1
 pause
 cls
 goto Battle
+
+
 :eppot
 if %eppot% LEQ 0 (
 echo You are out of EP potions.
@@ -1037,16 +1140,18 @@ goto Battle_Inventory
 )
 set currentEP=%maxEP%
 echo You feel rejuvenated! (EP Restored)
-set /a %Eattack%=%RANDOM% * %Edmg% / 32768 + 1
-echo %enemy% did %Eattack% damage to you.
-set /a currentHP=%currentHP%-%Eattack%
+pause 
+call bin/battle/getBlock.bat
+if %resetSwitch% == 0 call bin/battle/getEATK.bat 
 set /a eppot=%eppot%-1
 pause
 cls
 goto Battle
+
+
 :Loot_HUB
 cls
-echo This area is currently under maintenance. Sorry!
+echo This will come out next update! 
 pause
 cls
 goto A_Menu
@@ -1056,775 +1161,218 @@ cls
 set /a level=%level%+1
 set exp=0
 set /a expToNextLevel=%expToNextLevel%+100
-set /a maxHP=%maxHP%+50
 set /a currentHP=%maxHP%
-set /a maxEP=%maxEP%+50
 set /a currentEP=%maxEP%
 echo Congratulations, %lbnam%, you've reached Level %level%!
 pause
-echo You have 5 stat points to divide up throughout your stats. Choose a stat to
-echo add a point to.
+cls
+echo You have 5 stat points to divide up throughout your stats. 
+echo Choose a stat to add a point to! 
 echo.
-echo 1:STRENGTH%tab% %strength%
-echo 2:AGILITY %tab% %agility%
-echo 3:VITALITY%tab% %vitality%
+echo 1:DAMAGE  %tab% %dmg%
+echo 2:HEALTH  %tab% %maxHP%
+echo 3:MAGIC   %tab% %maxEP%
 echo 4:WILLPOWER%tab% %willpower%
+echo 5:BLOCK   %tab% %blockcnce%
+echo 6:CRITS   %tab% %critcnce% 
+echo 7:CRIT MULT%tab% %critMult%
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
-set /a strength=%strength%+1
+set /a dmg=%dmg%+1
 )
 if /i %input%==2 (
-set /a agility=%agility%+1
+set /a maxHP=%maxHP%+5
 )
 if /i %input%==3 (
-set /a vitality=%vitality%+1
+set /a maxEP=%maxEP%+1
 )
 if /i %input%==4 (
 set /a willpower=%willpower%+1
+)
+if /i %input%==5 (
+set /a blockcnce=%blockcnce%+1
+)
+if /i %input%==6 (
+set /a critcnce=%critcnce%+1
+)
+if /i %input%==7 (
+set /a critMult=%critMult%+1
 )
 cls
-echo You have 4 stat points to divide up throughout your stats. Choose a stat to
-echo add a point to.
+echo You have 4 stat points to divide up throughout your stats. 
+echo Choose a stat to add a point to! 
 echo.
-echo 1:STRENGTH%tab% %strength%
-echo 2:AGILITY %tab% %agility%
-echo 3:VITALITY%tab% %vitality%
+echo 1:DAMAGE  %tab% %dmg%
+echo 2:HEALTH  %tab% %maxHP%
+echo 3:MAGIC   %tab% %maxEP%
 echo 4:WILLPOWER%tab% %willpower%
+echo 5:BLOCK   %tab% %blockcnce%
+echo 6:CRITS   %tab% %critcnce% 
+echo 7:CRIT MULT%tab% %critMult%
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
-set /a strength=%strength%+1
+set /a dmg=%dmg%+1
 )
 if /i %input%==2 (
-set /a agility=%agility%+1
+set /a maxHP=%maxHP%+5
 )
 if /i %input%==3 (
-set /a vitality=%vitality%+1
+set /a maxEP=%maxEP%+1
 )
 if /i %input%==4 (
 set /a willpower=%willpower%+1
+)
+if /i %input%==5 (
+set /a blockcnce=%blockcnce%+1
+)
+if /i %input%==6 (
+set /a critcnce=%critcnce%+1
+)
+if /i %input%==7 (
+set /a critMult=%critMult%+1
 )
 cls
-echo You have 3 stat points to divide up throughout your stats. Choose a stat to
-echo add a point to.
+echo You have 3 stat points to divide up throughout your stats. 
+echo Choose a stat to add a point to! 
 echo.
-echo 1:STRENGTH%tab% %strength%
-echo 2:AGILITY %tab% %agility%
-echo 3:VITALITY%tab% %vitality%
+echo 1:DAMAGE  %tab% %dmg%
+echo 2:HEALTH  %tab% %maxHP%
+echo 3:MAGIC   %tab% %maxEP%
 echo 4:WILLPOWER%tab% %willpower%
+echo 5:BLOCK   %tab% %blockcnce%
+echo 6:CRITS   %tab% %critcnce% 
+echo 7:CRIT MULT%tab% %critMult%
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
-set /a strength=%strength%+1
+set /a dmg=%dmg%+1
 )
 if /i %input%==2 (
-set /a agility=%agility%+1
+set /a maxHP=%maxHP%+5
 )
 if /i %input%==3 (
-set /a vitality=%vitality%+1
+set /a maxEP=%maxEP%+1
 )
 if /i %input%==4 (
 set /a willpower=%willpower%+1
+)
+if /i %input%==5 (
+set /a blockcnce=%blockcnce%+1
+)
+if /i %input%==6 (
+set /a critcnce=%critcnce%+1
+)
+if /i %input%==7 (
+set /a critMult=%critMult%+1
 )
 cls
-echo You have 2 stat points to divide up throughout your stats. Choose a stat to
-echo add a point to.
+echo You have 2 stat points to divide up throughout your stats. 
+echo Choose a stat to add a point to! 
 echo.
-echo 1:STRENGTH%tab% %strength%
-echo 2:AGILITY %tab% %agility%
-echo 3:VITALITY%tab% %vitality%
+echo 1:DAMAGE  %tab% %dmg%
+echo 2:HEALTH  %tab% %maxHP%
+echo 3:MAGIC   %tab% %maxEP%
 echo 4:WILLPOWER%tab% %willpower%
+echo 5:BLOCK   %tab% %blockcnce%
+echo 6:CRITS   %tab% %critcnce% 
+echo 7:CRIT MULT%tab% %critMult%
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
-set /a strength=%strength%+1
+set /a dmg=%dmg%+1
 )
 if /i %input%==2 (
-set /a agility=%agility%+1
+set /a maxHP=%maxHP%+5
 )
 if /i %input%==3 (
-set /a vitality=%vitality%+1
+set /a maxEP=%maxEP%+1
 )
 if /i %input%==4 (
 set /a willpower=%willpower%+1
+)
+if /i %input%==5 (
+set /a blockcnce=%blockcnce%+1
+)
+if /i %input%==6 (
+set /a critcnce=%critcnce%+1
+)
+if /i %input%==7 (
+set /a critMult=%critMult%+1
 )
 cls
-echo You have 1 stat point to divide up throughout your stats. Choose a stat to
-echo add a point to.
+echo You have 1 stat points to divide up throughout your stats. 
+echo Choose a stat to add a point to! 
 echo.
-echo 1:STRENGTH%tab% %strength%
-echo 2:AGILITY %tab% %agility%
-echo 3:VITALITY%tab% %vitality%
+echo 1:DAMAGE  %tab% %dmg%
+echo 2:HEALTH  %tab% %maxHP%
+echo 3:MAGIC   %tab% %maxEP%
 echo 4:WILLPOWER%tab% %willpower%
+echo 5:BLOCK   %tab% %blockcnce%
+echo 6:CRITS   %tab% %critcnce% 
+echo 7:CRIT MULT%tab% %critMult%
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
-set /a strength=%strength%+1
+set /a dmg=%dmg%+1
 )
 if /i %input%==2 (
-set /a agility=%agility%+1
+set /a maxHP=%maxHP%+5
 )
 if /i %input%==3 (
-set /a vitality=%vitality%+1
+set /a maxEP=%maxEP%+1
 )
 if /i %input%==4 (
 set /a willpower=%willpower%+1
 )
+if /i %input%==5 (
+set /a blockcnce=%blockcnce%+1
+)
+if /i %input%==6 (
+set /a critcnce=%critcnce%+1
+)
+if /i %input%==7 (
+set /a critMult=%critMult%+1
+)
+goto q_SAV 
 
 :Bank_Menu
 cls
-echo Welcome to the bank! 
-echo We can exchange nodes, for XNodes!
-echo (You can use these in shops, you know...)
+echo Thank you for visiting your local bank! Unfortunately, we are
+echo      currently completely closed due to staffing issues!
 echo.
-echo 1 XNode is 15000 Nodes. 
-echo You have %nodes% node(s), and %Xnodes% XNode(s)
+echo          We appreciate your enthusiasm for banking! 
 echo.
-echo Would you like to exchange?
-echo 1) Yes
-echo 2) No
-set /p bank=:: 
-if %bank% == 1 goto Bank_Exchange
-if %bank% == 2 (
-cls
-echo See you soon!
-ping localhost -n 3 >nul
-cls
-goto Map
-)
-
-:Bank_Exchange
-set fakeNode=%nodes%
-set fakexNode=%Xnodes%
-set fakexNodein=0
-set fakeNode = %nodes% - 15000
-if %fakeNode% LSS 0 goto Bank_Exchange_Fail
-echo How many XNodes would you like?
-set /p fakexNodein=:: 
-set math1= 15000 * fakexNodein
-echo %math1%
-pause
-if math1 LSS 0 goto Bank_Exchange_Fail
-
-
-
-cls
-echo 
-
-:Bank_Exchange_Fail
-cls
-echo You cannot exchange nodes without dipping into debt!
-pause
-goto Bank_Menu
-
+pause 
+set loc=Home
+goto A_Menu
 :Checkforupdates
-set oldVersion=%version%
-::Thanks to Kolto101 for providing the update code.
-::It helps a ton!
-if /i not exist "wget.exe" (
+::                                                                        i < line limit 
+
 cls
-echo.
-echo The 'wget.exe' tool was not found.
-echo Could not retrieve update file.
-echo.
-pause
+echo Unfortunately due to the fact that life has gotten in the way, the 
+echo site I used to provide updates is now not mine. Strangely enough it 
+echo was bought by this japanese company. I guess they wanted my domain 
+echo that badly. Regardless, just navigate to GameJolt, or if you have 
+echo      the client it should automatically update itself! 
+pause 
 goto start
-)
-echo Checking for updates...
-if exist "bfpatcher.bat" del "bfpatcher.bat"
-
-wget "www.jaeobgames.com/BioFuse_update/bfpatcher.bat"
-
-
-if /i not exist "bfpatcher.bat" (
-if exist "index.html" del "index.html"
-title BioFuse - Update - Error
-cls
 ::                                      I MIDDLE
-echo ERR. Download Failed
-echo.
-echo.
-echo. 
-echo This may have been caused by:
-echo * Site is under "DDoS" mode. This prevents the file being downloaded.
-echo * No Internet
-echo * Site is essentially down.
-echo.
-echo Try again later...
-pause
-goto start
-)
-if exist "bfpatcher.bat" call "bfpatcher.bat"
-if exist "bfpatcher.bat" del "bfpatcher.bat"
-
-(
-del uBioFuse.bat
-start BioFuse.bat
-exit /b
-)>uBioFuse.bat
-
-call uBioFuse.bat
-exit
 
 
-
-::                                      I MIDDLE
-:sav_OutDated
+:outdated
 cls
-echo                 Your save file could be missing
-echo      some important variables, and could cause
-echo            the game to crash, or anything else. 
-echo       Would you like to fix/update your save file?
-echo          WARNING: THIS COULD RESET DATA! 
-echo                    USE WITH CAUTION
-echo.
-set /p updatesav=(Y/N)::
-if /i %updatesav% == Y goto antiCorruption
-if /i %updatesav% == N goto MainScreen_Check
-:antiCorruption
-if %wepnam% == nul set wepnam=Fists
-if %dmg% == nul set dmg=5
-if %item% == nul set item=0
-if %nodes% == nul set nodes=0
-if %xnodes% == nul set xnodes=0
-if %level% == nul set level=1
-if %exp% == nul set exp=0
-if %expToNextLevel% == nul set expToNextLevel=100
-if %currentHP% == nul set currentHP=100
-if %maxHP% == nul set maxHP=100
-if %currentEP% = nul set currentEP=100
-if %maxEP% = nul set maxEP=100
-if %healthStatus% == nul set healthStatus=Healthy
-if %opt_diff% == nul set opt_diff=Normal
-if %loc% == nul set loc=Home
-if %eloc% == nul set eloc=0
-if %eppot% == nul set eppot=3
-if %hppot% == nul set hppot=3
-if %strength% == nul set strength=10
-if %strengthatk% == nul set strengthatk=12
-if %defense% == nul set defense=12
-if %blockcnce% == nul set blockcnce=5
-if %agility% == nul set agility=10
-if %agilityatk% == nul set agilityatk=12
-if %hitcnce% == nul set hitcnce=80
-if %critcnce% == nul set critcnce=5
-if %evadecnce% == nul set evadecnce=5
-if %parrycnce% == nul set parrycnce=5
-if %vitality% == nul set vitality=10
-if %willpower% == nul set willpower=10
-if %eppower% == nul set eppower=12
-if %adventure% == nul set adventure=0
-if %versionnum% == nul set versionnum=%version%
-:: Armor
-if %leathera% == nul set leathera=false
-if %leatherabuy% == nul set leatherabuy=false
-if %scrapa% == nul set scrapa=false
-if %scrapabuy% == nul set scrapabuy=false
-if %lowquala% == nul set lowquala=false
-if %lowqualabuy% == nul set lowqualabuy=false
-if %ironarmor% == nul set ironarmor=false
-if %ironarmorbuy% == nul set ironarmorbuy=false
-if %holoarmor% == nul set holoarmor=false
-if %holoarmorbuy% == nul set holoarmorbuy=false
-:: Weapon
-if %fists% == nul set fists=true
-if %fistsbuy% == nul set fistsbuy=true
-::For stability
-::The shortened version of the weapon is the equip. 
-if %ironsword% == nul  set ironsword=false
-if %ironswordbuy% == nul set ironswordbuy=false
-if %makedo% == nul set makedo=false
-if %makedobuy% == nul set makedobuy=false
-if %irondag% == nul  irondag=false
-if %irondagbuy% == nul set irondagbuy=false
-if %spikedmace% == nul set spikedmace=false
-if %spikedmacebuy% == nul set spikedmacebuy=false
-if %lowvoltblast% == nul set lowvoltblast=false
-if %lowvoltblasybuy% == nul set lowvoltblastbuy=false
-if %mediumvoltage% == nul set mediumvoltage=false
-if %mediumvoltagebuy% == nul set mediumvoltagebuy=false
+set versionnum=%version%
+echo Oh no! Your save file is out of date! We'll take the liberty of 
+echo updating your files for you. Don't want to have a bad save, right? 
+pause 
 goto q_SAV
-
 :MainScreen_Check
 if %adventure%==0 goto MainScreen
 if %adventure%==1 goto MainScreen_Adventure
 
-::##################################################################################
-::##################################################################################
-::BIOFUSE ADVENTURE CODE STARTS HERE.
-::##################################################################################
-::##################################################################################
 
 :Start_Adv
-if %level% LSS 5 (
+if %level% LSS 5000 (
 cls
-echo You're not of level to start this adventure! 
-echo Keep leveling up to continue from here.
-pause
+echo BioFuse Adventure is not available in this version. I'm sorry. 
 pause
 goto MainScreen
 )
-cls
-echo.
-echo Welcome to the BioFuse Adventure...
-echo Here is the more exciting portion of this game (to be honest)
-echo.
-echo Did you know, when you start the game, the grind zone will be 
-echo available again when you're level 20.
-echo.
-set /p rdy=Are you ready? [Y/N]::
-if /i %rdy% == y goto a_LetsAGo
-if /i %rdy% == n goto MainScreen
-
-:a_LetsAGo
-cls
-set adventure=1
-echo Prepare for a bit of a story right here... this might take a while.
-pause
-echo %tab%You come back from slaughtering that %enemy% you found,
-echo and you decide to go to sleep in your bed. That night, you have a nightmare;
-echo you're being hunted down in a forest by a black figure. You try every
-echo escape you know of: ducking corners, taking shortcuts, but nothing will deter
-echo this figure from it's goal of tracking you down. It finally catches you, and
-echo the next thing you feel is extreme heat. Your vision blacks out, and you wake
-echo up. You look at the clock on the wall, but one thing sticks out in your head.
-echo THERE IS NO WALL.
-pause
-cls
-echo %tab%You look around and see that the walls of your house have
-echo burnt down. Everything inside your house is gone, except for your equipment
-echo and your nodes. You see large dragon tracks heading towards a nearby cave.
-echo The town of Eytanas sits to the East... maybe you should get some gear and
-echo investigate the cave.
-pause
-cls
-set loc=Home
-goto MainScreen_Adventure
-
-:Adventure_Character_Menu
-cls
-echo Status: %healthStatus%
-echo HP: %currentHP% / %maxHP%
-echo EP: %currentEP% / %maxEP%
-echo Nodes: %nodes%  XNodes: %Xnodes%
-echo EXP: %exp% / %expToNextLevel%
-echo Note: The stats are defunct, they just look cool for now. :)
-echo.
-echo [E]quipment Panel
-echo STRENGTH%tab% %strength%
-echo %tab%STR ATK%tab% %strengthatk%
-echo %tab%DEFENSE%tab% %defense%
-echo %tab%BLOCK %%%tab% %blockcnce%
-echo AGILITY %tab% %agility%
-echo %tab%AGI ATK%tab% %agilityatk%
-echo %tab%CRIT %%%tab% %critcnce%
-echo %tab%EVADE %%%tab% %evadecnce%
-echo %tab%HIT %%%tab% %hitcnce%
-echo %tab%PARRY %%%tab% %parrycnce%
-echo VITALITY%tab% %vitality%
-echo %tab%Max HP%tab% %maxHP%
-echo WILLPOWER%tab% %willpower%
-echo %tab%Max EP%tab% %maxEP%
-echo %tab%EP ATK%tab% %eppower%
-set /p input=Equipment Panel?
-
-:Adventure_Map
-cls
-echo [H]ome
-echo [O]utside
-echo [F]latlands
-echo [E]ytanas
-set /p input="Where would you like to go?>>"
-if /i %input%==H goto Adventure_Home_Menu
-if /i %input%==O goto Adventure_Outside_Menu
-if /i %input%==F goto Adventure_Flatlands_Menu
-if /i %input%==E goto Adventure_Eytanas
-echo I don't understand that. Could you repeat that please?
-pause
-cls
-goto Adventure_Map
-
-
-:MainScreen_Adventure
-cls
-set /a strengthatk=5+(strength/2)+(level*2)
-set /a defense=5+(strength/2)+(level*2)
-set /a blockcnce=5+(strength/100)
-set /a agilityatk=5+(agilty/2)+(level*2)
-set /a hitcnce=80+(agility/100)
-set /a critcnce=5+(agility/100)
-set /a evadecnce=5+(agility/100)
-set /a parrycnce=5+(agility/100)
-set /a maxhp=100+(level*10)+(vitality/2)
-set /a maxep=100+(level*10)+(willpower/2)
-set /a eppower=5+(willpower/2)+(level*2)
-if %currentHP% LSS 1 ( 
-echo %lbnam%, I hate to be the bearer of bad news, but you seem to be dead. It
-echo looks like your save might have gotten corrupted somehow, or you manually
-echo edited it so that your currentHP is 0. You might want to manually edit your
-echo save file so that you are alive again. That's what you usually do, right?
-pause
-cls
-goto start
-)
-if %exp% GEQ %expToNextLevel% goto levelUp
-echo %lbnam%, Lv %level%
-echo HP: %currentHP% / %maxHP%   
-echo EP: %currentEP% / %maxEP%   
-echo Status: %healthstatus%
-echo Location: %loc%
-echo #---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#
-echo [A]ction Menu
-echo [C]haracter Menu
-echo [E]quip Weapons
-echo [O]ptions
-set /i /p input=Choice?
-if /i %input%==A goto Adventure_ActionMenu
-if /i %input%==C goto Adventure_CharacterMenu
-if /i %input%==E goto Adventure_EquipWep
-
-
-if /i %input%==O goto Adventure_Options
-echo I don't understand that. Come again?
-pause
-cls
-goto MainScreen_Adventure
-
-:Adventure_ActionMenu
-cls
-if %loc%==Home goto Adventure_Home_Menu
-if %loc%==Outside goto Adventure_Outside_Menu
-if %loc%==Flatlands goto Adventure_Flatlands_Menu
-if %loc%==Forest goto Adventure_Forest_Menu
-if %loc%==Junkyard goto Adventure_Junkyard_Menu
-if %loc%==Eytanas goto Adventure_Eytanas_Menu
-echo Interesting... you seem to have gotten yourself trapped between dimensions.
-echo What we're going to do is send you home with a nice cup of hot cocoa. Ok, I
-echo forgot we don't HAVE any hot cocoa, so we're just going to send you home
-echo empty handed.
-pause
-set loc=Home
-goto Adventure_ActionMenu
-
-:Adventure_EquipWep
-cls
-echo EquipWep 1.0
-echo.
-echo %lbnam%, Lv %level%
-echo Current Weapon: 
-
-:Adventure_Home_Menu
-echo %lbnam%, Lv %level%
-echo HP: %currentHP% / %maxHP%
-echo EP: %currentEP% / %currentEP%
-echo Status: %healthstatus%
-echo Location: %loc%
-echo #---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#
-echo There isn't much to do here, since your house is destroyed...
-echo The dragon tracks lay there in the ground, as if they are taunting you to
-echo find their owner.
-echo [C]haracter Menu
-echo [M]ap
-echo [O]ptions
-set /p input=Choice? 
-if /i %input%==C goto Adventure_Character_Menu
-if /i %input%==L goto Adventure_Map
-if /i %input%==O goto Adventure_Options
-echo I'm sorry, I didn't get that. Come again?
-pause
-cls
-goto Adventure_Home_Menu
-
-:Adventure_Outside_Menu
-cls
-echo %lbnam%, Lv %level%
-echo HP: %currentHP% / %maxHP%
-echo EP: %currentEP% / %currentEP%
-echo Status: %healthstatus%
-echo Location: %loc%
-echo #---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#
-echo Search for Mo[B]s
-echo Search for [L]oot
-echo [O]ptions
-echo [C]haracter Menu
-echo [M]ap
-set /p input=Choice? 
-if /i %input%==B goto Adventure_Ene_Hub_O
-if /i %input%==L goto Adventure_Outside_Loot_Search
-if /i %input%==O goto Adventure_Options
-if /i %input%==C goto Adventure_Character_Menu
-if /i %input%==M goto Adventure_Map
-echo Sorry, I didn't get that. Come again?
-pause
-cls
-goto Adventure_Outside_Menu
-
-:Adventure_Flatlands_Menu
-cls
-echo %lbnam%, Lv %level%
-echo HP: %currentHP% / %maxHP%
-echo EP: %currentEP% / %maxEP%
-echo Status: %healthStatus%
-echo Location: %loc%
-echo #---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#
-echo Search for Mo[B]s
-echo Search for [L]oot
-echo [O]ptions
-echo [C]haracter Menu
-echo [M]ap
-set /p input=Choice?
-if /i %input%==B goto Adventure_Ene_Hub_Fl
-if /i %input%==L goto Adventure_Flatlands_Loot_Search
-if /i %input%==O goto Adventure_Options
-if /i %input%==C goto Adventure_Character_Menu
-if /i %input%==M goto Adventure_Map
-echo Sorry, I didn't get that. Come again?
-pause
-cls
-goto Adventure_Flatlands_Menu
-
-:Adventure_Eytanas
-cls
-echo %lbnam%, Lv %level%
-echo HP: %currentHP% / %maxHP%
-echo EP: %currentEP% / %currentEP%
-echo Status: %healthStatus%
-echo Location: %loc%
-echo #---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#
-echo [W]eapons Shop
-echo [A]rmor Shop
-echo [I]tem Shop
-echo [Q]uest Hub
-set /p input=Choice?
-if /i %input%==W goto Adventure_Eytanas_Weapon_Shop
-if /i %input%==A goto Adventure_Eytanas_Armor_Shop
-if /i %input%==I goto Adventure_Eytanas_Item_Shop
-if /i %input%==Q goto Adventure_Eytanas_Quest_Hub
-echo If you want that, you might want to go somewhere else. How about something
-echo else?
-pause
-cls
-goto Adventure_Eytanas
-
-:Adventure_Eytanas_Weapon_Shop
-cls
-echo Welcome, %lbnam%. See anything you like? Just lemme know.
-echo #---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#
-echo [1]Iron Sword
-echo [2]Make-do Wand
-echo [3]Iron Dagger
-echo [4]Spiked Mace
-echo [5]Low-Voltage Blaster
-echo [6]Medium-Voltage Blaster
-echo [B]ack
-set /p input=Choice? 
-if %input%==1 (
-	echo Iron Sword
-	echo Cost: 1000 Nodes
-	echo You have: %nodes% Nodes
-	echo Description: A simple Iron Sword. Nothing else to say about it.
-	echo Type: Sword (50%% Strength, 50 %% Agility)
-	echo Would you like to buy Iron Sword? [Y/N]
-	set /p input=::
-	if /i %input%==Y (
-		if %nodes% LSS 1000 (
-			echo Sorry, but you don't have enough nodes.
-		)
-		echo You have bought Iron Sword for 1000 Nodes.
-		set /a nodes=%nodes%-1000
-		set ironswordbuy=true
-		pause
-		cls
-		goto Adventure_Eytanas_Weapon_Shop
-	)
-	if /i %input%==N (
-		goto Adventure_Eytanas_Weapon_Shop
-	)
-)
-if %input%==2 (
-	echo Make-do Wand
-	echo Cost: 1500 Nodes
-	echo You have: %nodes% Nodes
-	echo Description: A quickly made wand. You can easily see the arcane imperfections.
-	echo Type: Wand (Willpower)
-	echo Would you like to buy Make-do Wand? [Y/N]
-	set /p input=::
-	if /i %input%==Y (
-		if %nodes% LSS 1500 (
-			echo Sorry, but you don't have enough nodes.
-		)
-		echo You have bought Make-do Wand for 1500 Nodes.
-		set /a nodes=%nodes%-1500
-		set makedo=true
-		pause
-		cls
-		goto Adventure_Eytanas_Weapon_Shop
-	)
-	if /i %input%==N (
-		goto Adventure_Eytanas_Weapon_Shop
-	)
-)
-if %input%==3 (
-	echo Iron Dagger
-	echo Cost: 1500 Nodes
-	echo You have: %nodes% Nodes
-	echo Description: A small dagger. The blade is barely twice the size of the hilt.
-	echo Type: Dagger (Agility)
-	echo Would you like to buy Iron Dagger? [Y/N]
-	set /p input=::
-	if /i %input%==Y (
-		if %nodes% LSS 1500 (
-			echo Sorry, but you don't have enough nodes.
-		)
-		echo You have bought Iron Dagger for 1500 Nodes.
-		set /a nodes=%nodes%-1500
-		set irondag=true
-		pause
-		cls
-		goto Adventure_Eytanas_Weapon_Shop
-	)
-	if /i %input%==N (
-		goto Adventure_Eytanas_Weapon_Shop
-	)
-)
-if %input%==4 (
-	echo Spiked Mace
-	echo Cost: 1750 Nodes
-	echo You have: %nodes% Nodes
-	echo Description: A medieval mace with sinsiter-looking spikes. 'Nuff said.
-	echo Type: Hammer (Strength)
-	echo Would you like to buy Spiked Mace? [Y/N]
-	set /p input=::
-	if /i %input%==Y (
-		if %nodes% LSS 1750 (
-			echo Sorry, but you don't have enough nodes.
-		)
-		echo You have bought Spiked Mace for 1750 Nodes.
-		set /a nodes=%nodes%-1750
-		set spikedmace=true
-		pause
-		cls
-		goto Adventure_Eytanas_Weapon_Shop
-	)
-	if /i %input%==N (
-		goto Adventure_Eytanas_Weapon_Shop
-	)
-)
-if %input%==5 (
-	echo Low-Voltage Blaster
-	echo Cost: 2000 Nodes
-	echo You have: %nodes% Nodes
-	echo Description: A used blaster. The last person to use this... oh look, a pie!
-	echo Type: Ranged (Agility)
-	echo Would you like to buy Low-Voltage Blaster? [Y/N]
-	set /p input=::
-	if /i %input%==Y (
-		if %nodes% LSS 3500 (
-			echo Sorry, but you don't have enough nodes.
-		)
-		echo You have bought Low-Voltage Blaster for 3500 Nodes.
-		set /a nodes=%nodes%-3500
-		set lowvoltblast=true
-		pause
-		cls
-		goto Adventure_Eytanas_Weapon_Shop
-	)
-	if /i %input%==N (
-		goto Adventure_Eytanas_Weapon_Shop
-	)
-)
-if %input%==6 (
-	echo Medium-Voltage Blaster
-	echo Cost: 10000 Nodes
-	echo You have: %nodes% Nodes
-	echo Description: A slightly used blaster. The last person to use this... Oh look, a cake.
-	echo Type: Ranged (Agility)
-	echo Would you like to buy Medium-Voltage Blaster? [Y/N]
-	set /p input=::
-	if /i %input%==Y(
-		if /i %nodes% LSS 2000 (
-			echo Sorry, but you don't have enough nodes.
-		)
-		echo You have bought the Medium-Voltage Blaster for 10000 Nodes.
-		set /a nodes=%nodes%-10000
-		set mediumvoltage=true
-		pause
-		cls
-		goto Adventure_Eytanas_Weapon_Shop
-		)
-	if /i %input%==N (
-		goto Adventure_Eytanas_Weapon_Shop
-	)
-)
-if /i %input%==B goto Adventure_Eytanas
-
-
-:Adventure_Eytanas_Armor_Shop
-cls
-echo Welcome, %lbnam%. See anything you like? Just lemme know.
-echo #---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#
-echo [1] Leather Armor
-echo [2] Scrap Metal Armor
-echo [3] Low Quality Iron Armor
-echo [4] Iron Armor
-echo [5] Holo Armor
-echo [B]ack
-set /p input=Choice? 
-
-if %input% == 1 (
-	echo Leather Armor
-	echo Cost: 1000
-	echo You have: %nodes% Nodes
-	echo Description: Some really nice leather CLOTHING. I'm surprised we even
-	echo accept this as a armor piece.
-	echo Type: Defense (Weak)
-	echo Would you like to buy Leather Armor? [Y/N]
-	set /p input=::
-	if /i %input%==Y(
-		if /i %nodes% LSS 1000 (
-			echo Sorry, but you don't have enough nodes.
-		)
-		echo You have bought the Leather Armor for 1000 Nodes.
-		set /a nodes=%nodes%-1000
-		set leathera=true
-		pause
-		cls
-		goto Adventure_Eytanas_Armor_Shop
-		)
-	if /i %input%==N (
-		goto Adventure_Eytanas_Armor_Shop
-	)
-)
-if %input% == 2 (
-	echo Scrap Metal Armor
-	echo Cost: 5000
-	echo You have: %nodes% Nodes
-	echo Description: Came from the dump... We saw Wall-e there... (It's decent)
-	echo Type: Defense (Decent)
-	echo Would you like to buy Scrap Metal Armor? [Y/N]
-	set /p input=::
-	if /i %input%==Y (
-		if /i %nodes% LSS 5000 (
-			echo Sorry, but you don't have enough nodes.
-		)
-	echo You have bough the Scrap Metal Armor for 5000 Nodes.
-	set /a nodes=%nodes%-50000
-	set scrapa=true
-	pause
-	cls
-	goto Adventure_Eytanas_Armor_Shop
-	)
-	if /i %input%==N (
-		goto Adventure_Eytanas_Armor_Shop
-	)
-)
-
-if %input% == 3 (
-	echo Low Quality Iron Armor
-	echo Cost: 150000
-	echo You have: %nodes% Nodes.
-	echo Description: This is some heavily used armor. It's really cool though.
-	echo Type: Defense (Decent)
-	echo Would you like to buy Low Quality Armor? [Y/N]
-	set /p input=::
-	if /i %input%==Y (
-		if %nodes% LSS 150000 (
-			echo Sorry, but you don't have enough nodes.
-			)
-if /i %input% == B goto Adventure_Eytanas
+goto MainScreen
