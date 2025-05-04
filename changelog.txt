@@ -73,3 +73,24 @@ improving it over here, but you might find some later games of mine utilizing th
 It's super inconsistent and I'm just gonna leave it be unless I feel like trying to make delayedexpansion work again. But it broke other things in a major way
 so like... no. Deal with the missing operands for a turn. 
 - Maybe I'll remove all the little ^'s littered about all the dialogue. Maybe. It'll prolly be something like update 1.5.1 if I ever wanna do some janitor work.
+
+1.6.0
+
+- I'm not removing all the little ^'s this update.
+- Added a fun message when crits are insane
+- Added a new zone, Railyard. Incredibly unfair.
+- Added a new zone, Deep Forest.
+- Adjusted XP gain, MaxXP gain, and Nodes gained. 
+- Told the shop keep that his inflated rates are BS. He only agreed on the potions....
+- Fixed every zone not using last enemy
+- Fleeing a battle may or may not kill you. Praise the sungods if you leave with 1HP. 
+- Fixed custom no enemy finds, pruned some code
+- If you know what Wendigo's are resistant to, then you'll find some nice bonuses
+- Flame attack's magic damage is now based on your regular damage.
+- Life steal now does 0 - your max HP worth of life steal. 
+- Several new x corpse dies messages
+- You will no longer be able to add to CRIT, as the upgrade technically was a downgrade after a certain amount of time. 
+- New Weapon. Still can't guarantee this won't break your save. I really gotta fix the save updooter
+- Fixed a bug where health drain would overheal on zone menus. 
+- Max EP on levelling up now goes up by 5 rather than 1.
+- Many other tweaks I forgot to write down

@@ -1,13 +1,11 @@
 @echo off
 
-set version=1.5.0
-set vmsg=Biofuse sudden update much?
-set vmsg2=It's just something I felt like doing lol
+set version=1.6.0
+set vmsg=Oooh, a new zones and stuff.
+set vmsg2=It's fun to update this.
 
-
-:: As of 5/18/20, I have decided to not consider BioFuse
-:: as inherently a "game". I am moving forward with the decision
-:: that 1.4.0 will be classified as the engine update. 
+:: This is a game with an engine strapped to it.
+:: How am I gonna make this an engine for other people to use lmao
 
 :: DEFINE VARIABLES 
 
@@ -46,6 +44,7 @@ set weapontwo=0
 set weaponthree=0
 set weaponfour=0
 set weaponfive=0
+set weaponsix=0
 set weaponarray=0
 set weaponname=Fists
 set weapondmg=0
@@ -169,6 +168,7 @@ set /p weapontwo=
 set /p weaponthree=
 set /p weaponfour=
 set /p weaponfive=
+set /p weaponsix=
 set /p weaponarray=
 set /p weaponname=
 set /p weapondmg=
@@ -182,7 +182,7 @@ goto MainScreen
 
 :loadGame.notfound
 echo Sorry there, %lbnam%. We don't know you^!
-echo You essentially - no offence - don't exist.
+echo You essentially - no offense - don't exist.
 echo But if you do want to exist, go to 'new game' next time.
 pause
 cls
@@ -352,6 +352,7 @@ if exist bin/sav (
 (echo %weaponthree%) >> bin/sav/%lbnam%.set
 (echo %weaponfour%) >> bin/sav/%lbnam%.set
 (echo %weaponfive%) >> bin/sav/%lbnam%.set
+(echo %weaponsix%) >> bin/sav/%lbnam%.set
 (echo %weaponarray%) >> bin/sav/%lbnam%.set
 (echo %weaponname%) >> bin/sav/%lbnam%.set
 (echo %weapondmg%) >> bin/sav/%lbnam%.set
@@ -385,17 +386,26 @@ echo.
 echo 1:Actions
 echo 2:Options
 echo 3:Character Stats
+if %nulbool% == 1 echo XP:Add XP
 
 if %level% GEQ 5 echo 4:Start Adventure
 set /p input=Choice?::
 if %input%==1 goto A_Menu
 if %input%==2 goto G_Menu
 if %input%==3 goto C_Menu
+if %nulbool% == 1 if %input%==XP goto XP_Menu
 if %input%==4 goto Start_adv
 echo Sorry, I don't understand that. Could you try again?
 pause
 cls
 goto MainScreen
+:XP_Menu
+cls
+echo 100 XP added.
+set /a exp=%exp%+100
+pause
+goto MainScreen
+
 :C_Menu
 cls
 echo Status: %healthStatus%
@@ -433,11 +443,14 @@ goto G_Menu
 
 :A_Menu 
 cls
+if %currentHP% LEQ 0 set currentHP=1 
 if %loc% == Home goto Home_Menu
 if %loc% == Outside goto Outside_Menu
 if %loc% == Flatlands goto Flatlands_Menu
 if %loc% == Forest goto Forrest_Menu
 if %loc% == JunkYard goto JunkYard_Menu
+if %loc% == TrainYard goto Trainyard_Menu
+if %loc% == DeepForest goto DeepForest_Menu
 if %loc% == Shop goto Shop_Menu
 echo Interesting, you seem to have gotten yourself trapped
 echo between dimentions^! An error may have occured in your
@@ -456,6 +469,7 @@ goto A_Menu
 :Home_Menu
 cls
 echo HP: %currentHP% / %maxHP%
+if %currentHP% GTR %maxHP% set currentHP=%maxHP%
 echo EP: %currentEP% / %maxEP%
 echo Status: %healthStatus%
 echo Location: %loc%
@@ -518,6 +532,7 @@ if %weapontwo% == 1 echo (Sword) A large steel sword. +5 DMG
 if %weaponthree% == 1 echo (Flaming Sword) A sword made of flames. +8 DMG
 if %weaponfour% == 1 echo (Rocket Launcher) Who let you buy this? +15 DMG
 if %weaponfive% == 1 echo (Death Machine) Remember me? +50 DMG
+if %weaponsix% == 1 echo (Bot Buster) It's a cannon! +85 DMG
 if %weaponzero% == 1 echo (Back) Go back to the last menu
 echo.
 echo (Please note, syntax is important otherwise you may risk a crash)
@@ -529,6 +544,7 @@ if "%equipRm%" == "Sword" set weaponarray=2 && call bin/item/checkArray.bat && g
 if "%equipRm%" == "Flaming Sword" set weaponarray=3 && call bin/item/checkArray.bat && goto H_Equip
 if "%equipRm%" == "Rocket Launcher" set weaponarray=4 && call bin/item/checkArray.bat && goto H_Equip
 if "%equipRm%" == "Death Machine" set weaponarray=5 && call bin/item/checkArray.bat && goto H_Equip
+if "%equipRm%" == "Bot Buster" set weaponarray=6 && call bin/item/checkArray.bat && goto H_Equip
 if "%equipRm%" == "Back" goto Home_Menu 
 if "%equipRm%" == "back" goto Home_Menu
 goto H_Equip 
@@ -537,6 +553,7 @@ goto H_Equip
 if %exp% GEQ %expToNextLevel% goto levelUp
 cls
 echo HP: %currentHP% / %maxHP%
+if %currentHP% GTR %maxHP% set currentHP=%maxHP%
 echo EP: %currentEP% / %maxEP%
 echo Weapon: %weaponname%
 echo Status: %healthStatus%
@@ -558,6 +575,7 @@ goto Outside_Menu
 if %exp% GEQ %expToNextLevel% goto levelUp
 cls
 echo HP: %currentHP% / %maxHP%
+if %currentHP% GTR %maxHP% set currentHP=%maxHP%
 echo EP: %currentEP% / %maxEP%
 echo Status: %healthStatus%
 echo Location: %loc%
@@ -578,6 +596,7 @@ goto Flatlands_Menu
 if %exp% GEQ %expToNextLevel% goto levelUp
 cls
 echo HP: %currentHP% / %maxHP%
+if %currentHP% GTR %maxHP% set currentHP=%maxHP%
 echo EP: %currentEP% / %maxEP%
 echo Status: %healthStatus%
 echo Location: %loc%
@@ -597,6 +616,7 @@ goto Forrest_Menu
 if %exp% GEQ %expToNextLevel% goto levelUp
 cls
 echo HP: %currentHP% / %maxHP%
+if %currentHP% GTR %maxHP% set currentHP=%maxHP%
 echo EP: %currentEP% / %maxEP%
 echo Status: %healthStatus%
 echo Location: %loc%
@@ -612,6 +632,48 @@ echo I don't understand that. Could you try again?
 pause
 cls
 goto Junkyard_Menu
+
+:Trainyard_Menu
+if %exp% GEQ %expToNextLevel% goto levelUp
+cls
+echo HP: %currentHP% / %maxHP%
+if %currentHP% GTR %maxHP% set currentHP=%maxHP%
+echo EP: %currentEP% / %maxEP%
+echo Status: %healthStatus%
+echo Location: %loc%
+echo.
+echo 1: Search for Mob
+echo 2: Change Location
+echo 3: Back
+set /p O_Inp=::
+if %O_Inp% == 1 goto Ene_HUB_Ty
+if %O_Inp% == 2 goto Map
+if %O_Inp% == 3 goto MainScreen
+echo I don't understand that. Could you try again?
+pause
+cls
+goto Trainyard_Menu
+
+:DeepForest_Menu
+if %exp% GEQ %expToNextLevel% goto levelUp
+cls
+echo HP: %currentHP% / %maxHP%
+if %currentHP% GTR %maxHP% set currentHP=%maxHP%
+echo EP: %currentEP% / %maxEP%
+echo Status: %healthStatus%
+echo Location: %loc%
+echo.
+echo 1: Search for Mob
+echo 2: Change Location
+echo 3: Back
+set /p O_Inp=::
+if %O_Inp% == 1 goto Ene_HUB_Df
+if %O_Inp% == 2 goto Map
+if %O_Inp% == 3 goto MainScreen
+echo I don't understand that. Could you try again?
+pause
+cls
+goto DeepForest_Menu
 
 :options
 cls
@@ -656,6 +718,7 @@ if not exist bin/sav echo FATAL ERROR 4, system cannot save. && echo This means 
 (echo %weaponthree%) >> bin/sav/%lbnam%.set
 (echo %weaponfour%) >> bin/sav/%lbnam%.set
 (echo %weaponfive%) >> bin/sav/%lbnam%.set
+(echo %weaponsix%) >> bin/sav/%lbnam%.set
 (echo %weaponarray%) >> bin/sav/%lbnam%.set
 (echo %weaponname%) >> bin/sav/%lbnam%.set
 (echo %weapondmg%) >> bin/sav/%lbnam%.set
@@ -674,8 +737,10 @@ echo 1. Home
 echo 2. Outside
 echo 3. Flatlands
 echo 4. Forest
-echo 5. Junkyard
-echo 6. Shop
+echo 5. Deep Forest
+echo 6. Junkyard
+echo 7. Trainyard
+echo 8. Shop
 set /p M_Inp=::
 if %M_Inp% == 1 (
 set loc=Home
@@ -694,10 +759,18 @@ set loc=Forest
 goto A_Menu
 )
 if %M_Inp% == 5 (
-set loc=JunkYard
+set loc=DeepForest
 goto A_Menu
 )
 if %M_Inp% == 6 (
+set loc=JunkYard
+goto A_Menu
+)
+if %M_Inp% == 7 (
+set loc=TrainYard
+goto A_Menu
+)
+if %M_Inp% == 8 (
 set loc=Shop
 goto A_Menu
 )
@@ -730,36 +803,22 @@ cls
 set /a RANval=%random% * 30 / 32768 + 1
 
 if %RANval% GTR 15 goto Junkyard_EnemyFind
-if %RANval% LEQ 15 cls && echo You didn't find an enemy... && pause && goto A_Menu
+if %RANval% LEQ 15 cls && echo Despite the clanging of nearby junkbots, && echo you didn't find an enemy... && pause && goto A_Menu
 
-:Outside_NoBattle
+:Ene_HUB_Ty
 cls
-echo You didn't find an enemy...
-pause
-cls
-goto A_Menu
+set /a RANval=%random% * 30 / 32768 + 1
 
-:Flatlands_NoBattle
-cls
-echo You didn't find an enemy...
-pause
-cls
-goto A_Menu
+if %RANval% GTR 15 goto Trainyard_EnemyFind
+if %RANval% LEQ 15 cls && echo This place feels incredibly unsafe. && echo You didn't find anything in this part of the Railyard. && pause && goto A_Menu
 
-:Forest_NoBattle
+:Ene_HUB_Df
 cls
-echo You didn't find an enemy...
-pause
 cls
-goto A_Menu
+set /a RANval=%random% * 30 / 32768 + 1
 
-:Junkyard_NoBattle
-cls
-echo Despite the clanging of nearby junkbots,
-echo you didn't find an enemy...
-pause
-cls
-goto A_Menu
+if %RANval% GTR 24 goto DeepForest_EnemyFind
+if %RANval% LEQ 24 cls && echo You can hear distant birds && echo You didn't find an enemy... && pause && goto A_Menu
 
 :Outside_EnemyFind
 call bin/battle/b_var/outside.bat
@@ -777,6 +836,14 @@ goto Battle
 call bin/battle/b_var/junkyard.bat
 goto Battle
 
+:Trainyard_EnemyFind
+call bin/battle/b_var/trainyard.bat
+goto Battle
+
+:DeepForest_EnemyFind
+call bin/battle/b_var/deepforest.bat
+goto Battle
+
 
 :Battle
 if %currentHP% LSS 1 (
@@ -792,7 +859,7 @@ goto loadGame
 )
 if %EcurrentHP% LSS 1 call bin/battle/checkVar.bat && goto A_Menu
 if %EcurrentHP% == 0 echo %enemy% didn't hear no bell. It seems like it wants one last shot at you.
-if %EcurrentHP% LEQ -1 echo %enemy%'s corpse slumps over, utterly evicerated. && pause && goto A_Menu
+if %EcurrentHP% LEQ -1 goto CustomDeathMessage
 if %currentHP% GTR %maxHP% (
 set currentHP=%maxHP%
 )
@@ -822,6 +889,32 @@ pause
 cls
 goto Battle
 
+:CustomDeathMessage
+cls
+set /a CDMRand=%RANDOM% * 20 / 32768 + 1
+if %CDMRand% == 1 echo %enemy%'s corpse slumps over, utterly evicerated. && pause && goto A_Menu
+if %CDMRand% == 2 echo %enemy%'s corpse falls over unceremoniously. As it should. && pause && goto A_Menu
+if %CDMRand% == 3 echo Wow, you obliterated %enemy%. Well done. && pause && goto A_Menu
+if %CDMRand% == 4 echo It is dead, not big surprise. && pause && goto A_Menu
+if %CDMRand% == 5 echo I hope its family didn't see that. && pause && goto A_Menu
+if %CDMRand% == 6 echo You monster, it was its birthday today. && pause && goto A_Menu
+if %CDMRand% == 7 echo Oh my god was that Hollywood Superstar Steve Buscemi? && echo Nope, just the annihilated remains of %enemy%. && pause && goto A_Menu
+if %CDMRand% == 8 echo Okay, now %enemy% had it coming. It owed me $25 bucks. && pause && goto A_Menu
+if %CDMRand% == 9 echo Okay, now %enemy% had it coming. It looked at you funny. && pause && goto A_Menu
+if %CDMRand% == 10 echo Okay, now %enemy% had it coming. Almost spilled yo mama's curry. && pause && goto A_Menu
+if %CDMRand% == 11 echo Aww, and it was having such a good day too. && pause && goto A_Menu
+if %CDMRand% == 12 echo Secretly, that %enemy% was named Joe. && pause && echo Rest in pieces, Joe. && pause && goto A_Menu
+if %CDMRand% == 13 if %EmaxHP% LSS 30 echo ...cmon, was it really a threat? && pause && goto A_Menu
+if %CDMRand% == 13 if %EmaxHP% GTR 30 echo ...I SUPPOSE its okay now. && pause && goto A_Menu
+if %CDMRand% == 14 if %EmaxHP% GEQ 100 echo Now that's a fight! %enemy% falls to pieces. && pause && goto A_Menu
+if %CDMRand% == 14 echo %enemy% looks like mashed grapes. && pause && goto A_Menu
+if %CDMRand% == 15 echo Secretly, that %enemy% was named Mitchel. && pause && echo Ripperoni in pepperoni, Mitchel. && pause && goto A_Menu
+if %CDMRand% == 16 echo Secretly, that %enemy% was named Mitchell. && pause && echo Buh bye, Mitchell. && pause && goto A_Menu
+if %CDMRand% == 17 echo Secretly, that %enemy% was a mass murderer. && pause && echo Well, Karma was out for it, I guess. && pause && goto A_Menu
+if %CDMRand% == 18 echo Are you surprised that %enemy% died? && pause && echo Me too, the trail of dead in your wake is rooting for you. && pause && goto A_Menu
+if %CDMRand% == 19 echo Secretly, that %enemy% was named Meshel. && pause && echo Meshel will return. && pause && goto A_Menu
+if %CDMRand% == 20 echo Secretly, that %enemy% was named Meshel. && pause && echo Meshel came back. && pause && goto A_Menu
+
 :Battle_Attack
 
 
@@ -839,6 +932,7 @@ call bin/battle/getATK.bat
 call bin/battle/getBlock.bat
 
 if %resetSwitch% == 0 call bin/battle/getEATK.bat
+if %resetSwitch% == 2 call bin/battle/getEATK.bat
 
 pause
 cls
@@ -852,6 +946,7 @@ exit /b
 
 :critsuccess
 call bin/battle/getCritDMG.bat
+if %critDMG% GTR 450 echo You summon an orbital death laser. BVVVVVTTT!!!
 echo You scored a Critial Hit^! 
 echo You did %critDMG% damage to %enemy%^!
 echo. 
@@ -892,11 +987,12 @@ echo EP: %currentEP% / %MaxEP%
 echo %enemy% HP: %EcurrentHP%/%EmaxHP% 
 echo. 
 echo 1) Flame Attack^! 
-echo Does between 0-10 damage every round until the end. 
+echo Does between 0-%dmg% damage every round until the
+echo status effect changes or the enemy dies.
 echo Costs: 35 EP
 echo.
 echo 2) Life Drain^! 
-echo Drains between 0-30 HP and adds it to your own. 
+echo Drains between 0-%maxHP% HP and adds it to your own. 
 echo Costs: 50 EP 
 echo. 
 echo back) Return to previous screen
@@ -1019,7 +1115,9 @@ goto Battle
 cls
 set /a level=%level%+1
 set exp=0
-set /a expToNextLevel=%expToNextLevel%+100
+set /a expLevelRand=%Random% * %level% / 32768 + 1
+set /a expLevelMult=%expLevelRand% * 3
+set /a expToNextLevel=%expToNextLevel%+100+%expLevelMult%
 set /a currentHP=%maxHP%
 set /a currentEP=%maxEP%
 echo Congratulations, %lbnam%, you've reached Level %level%^!
@@ -1033,8 +1131,7 @@ echo 2:HEALTH  %tab% %maxHP%
 echo 3:MAGIC   %tab% %maxEP%
 echo 4:WILLPOWER%tab% %willpower%
 echo 5:BLOCK   %tab% %blockcnce%
-echo 6:CRITS   %tab% %critcnce% 
-echo 7:CRIT MULT%tab% %critMult%
+echo 6:CRIT MULT%tab% %critMult%
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
 set /a dmg=%dmg%+1
@@ -1043,7 +1140,7 @@ if /i %input%==2 (
 set /a maxHP=%maxHP%+5
 )
 if /i %input%==3 (
-set /a maxEP=%maxEP%+1
+set /a maxEP=%maxEP%+5
 )
 if /i %input%==4 (
 set /a willpower=%willpower%+1
@@ -1052,9 +1149,6 @@ if /i %input%==5 (
 set /a blockcnce=%blockcnce%+1
 )
 if /i %input%==6 (
-set /a critcnce=%critcnce%+1
-)
-if /i %input%==7 (
 set /a critMult=%critMult%+1
 )
 cls
@@ -1066,8 +1160,7 @@ echo 2:HEALTH  %tab% %maxHP%
 echo 3:MAGIC   %tab% %maxEP%
 echo 4:WILLPOWER%tab% %willpower%
 echo 5:BLOCK   %tab% %blockcnce%
-echo 6:CRITS   %tab% %critcnce% 
-echo 7:CRIT MULT%tab% %critMult%
+echo 6:CRIT MULT%tab% %critMult%
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
 set /a dmg=%dmg%+1
@@ -1076,7 +1169,7 @@ if /i %input%==2 (
 set /a maxHP=%maxHP%+5
 )
 if /i %input%==3 (
-set /a maxEP=%maxEP%+1
+set /a maxEP=%maxEP%+5
 )
 if /i %input%==4 (
 set /a willpower=%willpower%+1
@@ -1085,9 +1178,6 @@ if /i %input%==5 (
 set /a blockcnce=%blockcnce%+1
 )
 if /i %input%==6 (
-set /a critcnce=%critcnce%+1
-)
-if /i %input%==7 (
 set /a critMult=%critMult%+1
 )
 cls
@@ -1099,8 +1189,7 @@ echo 2:HEALTH  %tab% %maxHP%
 echo 3:MAGIC   %tab% %maxEP%
 echo 4:WILLPOWER%tab% %willpower%
 echo 5:BLOCK   %tab% %blockcnce%
-echo 6:CRITS   %tab% %critcnce% 
-echo 7:CRIT MULT%tab% %critMult%
+echo 6:CRIT MULT%tab% %critMult%
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
 set /a dmg=%dmg%+1
@@ -1109,7 +1198,7 @@ if /i %input%==2 (
 set /a maxHP=%maxHP%+5
 )
 if /i %input%==3 (
-set /a maxEP=%maxEP%+1
+set /a maxEP=%maxEP%+5
 )
 if /i %input%==4 (
 set /a willpower=%willpower%+1
@@ -1118,9 +1207,6 @@ if /i %input%==5 (
 set /a blockcnce=%blockcnce%+1
 )
 if /i %input%==6 (
-set /a critcnce=%critcnce%+1
-)
-if /i %input%==7 (
 set /a critMult=%critMult%+1
 )
 cls
@@ -1132,8 +1218,7 @@ echo 2:HEALTH  %tab% %maxHP%
 echo 3:MAGIC   %tab% %maxEP%
 echo 4:WILLPOWER%tab% %willpower%
 echo 5:BLOCK   %tab% %blockcnce%
-echo 6:CRITS   %tab% %critcnce% 
-echo 7:CRIT MULT%tab% %critMult%
+echo 6:CRIT MULT%tab% %critMult%
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
 set /a dmg=%dmg%+1
@@ -1142,7 +1227,7 @@ if /i %input%==2 (
 set /a maxHP=%maxHP%+5
 )
 if /i %input%==3 (
-set /a maxEP=%maxEP%+1
+set /a maxEP=%maxEP%+5
 )
 if /i %input%==4 (
 set /a willpower=%willpower%+1
@@ -1151,9 +1236,6 @@ if /i %input%==5 (
 set /a blockcnce=%blockcnce%+1
 )
 if /i %input%==6 (
-set /a critcnce=%critcnce%+1
-)
-if /i %input%==7 (
 set /a critMult=%critMult%+1
 )
 cls
@@ -1165,8 +1247,7 @@ echo 2:HEALTH  %tab% %maxHP%
 echo 3:MAGIC   %tab% %maxEP%
 echo 4:WILLPOWER%tab% %willpower%
 echo 5:BLOCK   %tab% %blockcnce%
-echo 6:CRITS   %tab% %critcnce% 
-echo 7:CRIT MULT%tab% %critMult%
+echo 6:CRIT MULT%tab% %critMult%
 set /p input=Select a stat to increase by one point:: 
 if /i %input%==1 (
 set /a dmg=%dmg%+1
@@ -1175,7 +1256,7 @@ if /i %input%==2 (
 set /a maxHP=%maxHP%+5
 )
 if /i %input%==3 (
-set /a maxEP=%maxEP%+1
+set /a maxEP=%maxEP%+5
 )
 if /i %input%==4 (
 set /a willpower=%willpower%+1
@@ -1184,9 +1265,6 @@ if /i %input%==5 (
 set /a blockcnce=%blockcnce%+1
 )
 if /i %input%==6 (
-set /a critcnce=%critcnce%+1
-)
-if /i %input%==7 (
 set /a critMult=%critMult%+1
 )
 goto q_SAV 
@@ -1203,8 +1281,9 @@ echo 2) Sword (+5 DMG, 550 Nodes)
 echo 3) Flame Sword (+8 DMG, 1500 Nodes)
 echo 4) Rocket Launcher (+15 DMG, 5000 Nodes)
 echo 5) Death Machine (+50 DMG, 10000 Nodes)
-echo 6) +1 EP Potion (200 Nodes) 
-echo 7) +1 HP Potion (150 Nodes)
+echo 6) Bot Buster (+85 DMG, 45000 Nodes)
+echo 7) +1 EP Potion (50 Nodes) 
+echo 8) +1 HP Potion (25 Nodes)
 echo back) Back to map
 echo.
 set /p shopMenu=:: 
@@ -1213,8 +1292,9 @@ if %shopMenu% == 2 set resetSwitch=2 && call bin/item/shopKeep.bat && goto Shop_
 if %shopMenu% == 3 set resetSwitch=3 && call bin/item/shopKeep.bat && goto Shop_Menu
 if %shopMenu% == 4 set resetSwitch=4 && call bin/item/shopKeep.bat && goto Shop_Menu
 if %shopMenu% == 5 set resetSwitch=7 && call bin/item/shopKeep.bat && goto Shop_Menu
-if %shopMenu% == 6 set resetSwitch=6 && call bin/item/shopKeep.bat && goto Shop_Menu
-if %shopMenu% == 7 set resetSwitch=5 && call bin/item/shopKeep.bat && goto Shop_Menu
+if %shopMenu% == 6 set resetSwitch=8 && call bin/item/shopKeep.bat && goto Shop_Menu
+if %shopMenu% == 7 set resetSwitch=6 && call bin/item/shopKeep.bat && goto Shop_Menu
+if %shopMenu% == 8 set resetSwitch=5 && call bin/item/shopKeep.bat && goto Shop_Menu
 if %shopMenu% == back goto Map
 goto A_Menu
 
@@ -1223,11 +1303,8 @@ goto A_Menu
 ::                                                                        i < line limit 
 
 cls
-echo Unfortunately due to the fact that life has gotten in the way, the 
-echo site I used to provide updates is now not mine. Strangely enough it 
-echo was bought by this Aisan company. I guess they wanted my domain 
-echo that badly. Regardless, just navigate to GameJolt, or if you have 
-echo      the client it should automatically update itself^! 
+echo I can actually provide updates remotely via old means if I can
+echo remember where I left all the code lol
 pause 
 goto start
 ::                                      I MIDDLE

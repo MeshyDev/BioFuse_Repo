@@ -1,4 +1,4 @@
-set /a enemyFind=%Random% * 5 / 32768 + 1
+set /a enemyFind=%Random% * 6 / 32768 + 1
 set /a enemyHS=%RANDOM% * 100 / 32768 + 1
 
 if %enemyHS% LEQ 65 set EhealthStatus=Healthy
@@ -35,15 +35,15 @@ set EcurrentHP=200
 set EmaxHP=200
 set EcurrentEP=160
 set EmaxEP=160
-set Edmg=70
+set Edmg=55
 )
 if %enemyFind%==5 (
 set enemy=Scrapped Government Android
-set EcurrentHP=300
-set EmaxHP=300
+set EcurrentHP=250
+set EmaxHP=250
 set EcurrentEP=400
 set EmaxEP=400
-set Edmg=125
+set Edmg=75
 )
 if %enemyFind%==6 (
 set enemy=Goverment Patrol Assembly

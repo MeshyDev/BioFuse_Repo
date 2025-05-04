@@ -17,15 +17,19 @@ if %resetSwitch% == 4 (
 )
 
 if %resetSwitch% == 5 (
-    if %Nodes% LSS 150 (echo You cannot afford that item! && set resetSwitch=0 && pause && exit /b) else (set /a Nodes=%Nodes% - 150 && set /a hppot=%hppot% + 1 && echo Purchase successful. && set resetSwitch=0 && pause && exit /b)
+    if %Nodes% LSS 25 (echo You cannot afford that item! && set resetSwitch=0 && pause && exit /b) else (set /a Nodes=%Nodes% - 25 && set /a hppot=%hppot% + 1 && echo Purchase successful. && set resetSwitch=0 && pause && exit /b)
 )
 
 if %resetSwitch% == 6 (
-    if %Nodes% LSS 200 (echo You cannot afford that item! && set resetSwitch=0 && pause && exit /b) else (set /a Nodes=%Nodes% - 200 && set /a eppot=%eppot% + 1 && echo Purchase successful. && set resetSwitch=0 && pause && exit /b)
+    if %Nodes% LSS 50 (echo You cannot afford that item! && set resetSwitch=0 && pause && exit /b) else (set /a Nodes=%Nodes% - 50 && set /a eppot=%eppot% + 1 && echo Purchase successful. && set resetSwitch=0 && pause && exit /b)
 )
 
 if %resetSwitch% == 7 (
     if %weaponfive% == 1 (echo Sorry, you already have that item! && pause && set resetSwitch=0 && exit /b) else (if %Nodes% LSS 10000 (echo You cannot afford that item! && pause && set resetSwitch=0 && exit /b) else (set /a Nodes=%Nodes% - 10000 && set weaponfive=1 && echo Purchase successful. && pause && set resetSwitch=0 && exit /b))
+)
+
+if %resetSwitch% == 8 (
+    if %weaponsix% == 1 (echo Sorry, you already have that item! && pause && set resetSwitch=0 && exit /b) else (if %Nodes% LSS 45000 (echo You cannot afford that item! && pause && set resetSwitch=0 && exit /b) else (set /a Nodes=%Nodes% - 45000 && set weaponsix=1 && echo Purchase successful. && pause && set resetSwitch=0 && exit /b))
 )
 
 exit /b

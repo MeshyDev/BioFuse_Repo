@@ -1,4 +1,4 @@
-set /a enemyFind=%Random% * 5 / 32768 + 1
+set /a enemyFind=%Random% * 6 / 32768 + 1
 set /a enemyHS=%RANDOM% * 100 / 32768 + 1
 
 if %enemyHS% LEQ 65 set EhealthStatus=Healthy

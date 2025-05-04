@@ -1,4 +1,4 @@
-set /a enemyFind=%RANDOM% * 5 / 32768 + 1
+set /a enemyFind=%RANDOM% * 6 / 32768 + 1
 set /a enemyHS=%RANDOM% * 100 / 32768 + 1
 
 if %enemyHS% LEQ 65 set EhealthStatus=Healthy
@@ -46,7 +46,7 @@ set EmaxEP=40
 set Edmg=9
 )
 if %enemyFind%==6 (
-set enemy=BlotBlot ###RARE###
+set enemy=BlotBlot
 set EcurrentHP=100
 set EmaxHP=100
 set EcurrentEP=100

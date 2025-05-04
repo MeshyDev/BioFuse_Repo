@@ -2,13 +2,16 @@ set nodesGained=0
 set expGained=0
 
 echo You claimed victory over %enemy%!
+set /a levelBonusRAND=%RANDOM% * %level% / 32768 + 1
+set /a levelBonus=%levelBonusRAND% * 2
 set /a expGained=%RANDOM% * %EmaxHP% / 32768 + 1
 set /a nodesGained=%RANDOM% * %EmaxHP% / 32768 + 1
 
-set /a nodes=%nodes% + %nodesGained%
-set /a exp=%exp% + %expGained%
+set /a nodes=%nodes% + %nodesGained% + %levelBonus%
+set /a exp=%exp% + %expGained% + %levelBonus%
 echo You gained %expGained% experience and grabbed %nodesGained% nodes from the body!
-echo You now have %exp% and %nodes%
+echo Your exp is now %exp%/%expToNextLevel% and have %nodes% Nodes.
+echo Level Bonus is %levelBonus%
 pause
 cls
 exit /b
