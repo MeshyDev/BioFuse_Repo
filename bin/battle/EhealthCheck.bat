@@ -26,6 +26,12 @@ echo You take %esickDMG% damage.
 if %EcurrentEP% LSS %EmaxEP% set /a EcurrentEP=%EcurrentEP% + 20 && echo The President regenerates some EP.
 )
 
+if %EhealthStatus% == Presidential-Corruption (
+echo The %enemy% twiches violently, eyes flickering in a miasma of dark purple.
+echo Despite the mad twitching, %enemy% takes no damage from this. It's unnatural.
+if %esickDMG% GEQ 6 echo The %enemy%'s chest glows dimly before a shard of corruption pierces your body. && set healthStatus=Presidential-Corruption && echo You take %CrrptDMG% damage. && set /a currentHP=%currentHP% - %CrrptDMG%
+)
+
 if %EhealthStatus% == Burning (
 echo The enemy burns! It takes %eburnDMG% damage! 
 set /a EcurrentHP=%EcurrentHP% - %eburnDMG%

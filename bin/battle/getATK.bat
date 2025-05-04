@@ -14,7 +14,14 @@ if %weaponmodCnc% == 8 echo Your weapon gleams in a fiery orange hue! You set %e
 )
 
 if %nulbool% == 1 set testvar=1 && echo Made it to test attack %testvar% && pause &&  set /a testvar=%testvar% + 1 
-echo You attack^! You did %attack% damage to %enemy%^! 
+if "%weaponname%" == "Fists " echo You attack^! You did %attack% damage to %enemy%^! 
+if "%weaponname%" == "Dagger " echo You stab your dagger forth, doing %attack% damage to %enemy%!
+if "%weaponname%" == "Sword " echo You swing your sword, slashing %enemy% for %attack% damage!
+if "%weaponname%" == "Flame Sword " echo Light wisps of flame dances from each slash. You do %attack% damage to %enemy%
+if "%weaponname%" == "Rocket Launcher " echo The Rocket Propelled Grenade flies at %enemy%, exploding on contact and doing %attack% damage.
+if "%weaponname%" == "Death Machine " echo You become ninja, slicing and dicing %enemy% for %attack% damage!
+if "%weaponname%" == "Bot Boster " echo The cannon hums as it charges its beam, jumping out in an arc at %enemy% and dealing %attack% damage!
+if "%weaponname%" == "Portable Death Laser " echo The PDL whistles and vibrates, purplish white energy arcing from the stored energy- && echo -before it releases! %enemy% is roasted for %attack% damage!
 if %nulbool% == 1 set testvar=1 && echo Made it to test attack  %testvar% && pause &&  set /a testvar=%testvar% + 1 
 set /a EcurrentHP=%EcurrentHP% - %attack% 
 if %nulbool% == 1 set testvar=1 && echo Made it to test attack %testvar% && pause &&  set /a testvar=%testvar% + 1 

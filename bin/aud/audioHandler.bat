@@ -1,7 +1,8 @@
 :: This creates a lightweight VBS script to handle audio. It will pose no harm to your computer.
 @echo off
 @mode con: cols=70 lines=30
-
+:mainLoop
+cls
 echo PLEASE DONT CLOSE THIS BEFORE THE CLIENT!! Also read below. 
 echo (These windows automatically close when the client is closed or crashes)
 echo.
@@ -17,6 +18,7 @@ echo get it to work without using that old OLD method with like that
 echo audio thing that was from XP and prior. I'm kinda impressed it did 
 echo work though. 
 echo.
+if %win11bypass% == 0 goto killaud
 echo Playing: %clientSound%
 set "file=bin/aud/%clientSound%"
 ( echo Set Sound = CreateObject("WMPlayer.OCX.7"^)
@@ -29,8 +31,20 @@ set "file=bin/aud/%clientSound%"
   echo wscript.sleep (int(Sound.currentmedia.duration^)+1^)*1000) >audioHandlerChild.vbs
 move audioHandlerChild.vbs "bin\aud" >nul
 :loop
+(
+set /p win11bypass=
+set /p musicToggle=
+set /p voiceToggle=
+)<bin/config.mini
+:: Forcibly load data from config to populate variables that don't want to change
+if %win11bypass% == 0 goto killaud
 if exist bin/aud/loop.guru start "" /wait /min bin/aud/audioHandlerChild.vbs
 if not exist bin/aud/loop.guru exit
 :: I put this ping here because Lua taught me that you always need a small break somewhere.
-timeout /t 1 /nobreak
+timeout /t 1 /nobreak >nul
 goto:loop
+
+:killaud
+echo Kill request recieved! Killing this instance shortly.
+ping localhost -n 10 >nul 
+exit

@@ -4,6 +4,7 @@ set /a CrrptDMG=%random% * %halfHP% / 32768 + 1
 set /a burnDMG=%random% * 10 / 32768 + 1
 set /a sickDMG=%random% * 10 / 32768 + 1
 set /a batteredDMG=%random% * 4 / 32768 + 1 
+set /a presidentialDMG=%CrrptDMG% + %burnDMG% + %sickDMG% + %batteredDMG%
 :: BURNING -- EP induced long-period damage 
 :: SICK -- Activates when enemy has sickness
 :: BATTERED -- Only activates during low health
@@ -22,4 +23,5 @@ if %healthStatus% == Dying echo Your injuries are fatal, if you don't escape or 
 if %healthStatus% == God-like echo %lbnam% thought they were clever. && echo Despite that, they are godlike. They recover 10 health. && echo Overflow allowed! && set /a currentHP=%currentHP% + 10
 if %healthStatus% == Overhealed echo You feel much more bolstered than usual.
 if %healthStatus% == Corrupted echo You need to heal ASAP or you'll be Battered before you know it. && echo %CrrptDMG% damage taken. && set /a currentHP=%currentHP% - %CrrptDMG%
+if %healthStatus% == Presidential-Corruption echo There's something utterly horrifying about this corruption. Seek medical attention immediately. && echo You take %presidentialDMG% damage. && set /a currentHP=%currentHP% - %presidentialDMG%
 exit /b

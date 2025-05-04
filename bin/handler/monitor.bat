@@ -1,8 +1,16 @@
 :: Right, this will loop every 2 seconds.
 @echo off
 @mode con: cols=70 lines=30
+:mainLoop
 
+(
+set /p win11bypass=
+set /p musicToggle=
+set /p voiceToggle=
+)<bin/config.mini
+:: Forcibly load data from config to populate variables that don't want to change
 
+cls
 echo PLEASE DONT CLOSE THIS BEFORE THE CLIENT!! Also read below. 
 echo (These windows automatically close when the client is closed or crashes)
 echo (which coincidentally is what this "process" does)
@@ -18,9 +26,25 @@ echo contents of my files, they are readable from notepad.
 echo.
 echo ...totally could've not had them minimize on launch, but that's ugly.
 
+if %win11bypass% == 0 goto stopSound
 
 :el_loopay
+
+(
+set /p win11bypass=
+set /p musicToggle=
+set /p voiceToggle=
+)<bin/config.mini
+:: Forcibly load data from config to populate variables that don't want to change
+
+if %win11bypass% == 0 goto stopSound
 tasklist /fi "WINDOWTITLE eq BioFuse"  | find /i "cmd.exe" >nul
 if %errorlevel% == 1 del bin\aud\loop.guru && taskkill /f /im wscript.exe && taskkill /f /im cmd.exe >nul
 ping localhost -n 2 >nul
 goto el_loopay
+
+:stopSound
+echo User has stopped music! Checking every 10 seconds until 
+echo choice has changed.
+ping localhost -n 10 >nul
+goto mainLoop

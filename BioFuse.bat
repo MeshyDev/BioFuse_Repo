@@ -1,7 +1,7 @@
 @echo off
 
-set version=1.8.1
-set vmsg=The sickly are growing increasingly pissed off (Bugfixes applied)
+set version=1.8.2
+set vmsg=The sickly are growing increasingly pissed off (Bugfixes + Win11 support)
 set vmsg2=And of course, thank you Meshcaid for adopting Nodes as currency
 
 :: This is a game with an engine strapped to it.
@@ -51,6 +51,9 @@ set weaponname=Fists
 set weapondmg=0
 set weaponmod=Nothing
 
+set canCastLvl=0
+set enemySpell=nul
+
 if %resetSwitch% == 1 exit /b
 
 setlocal
@@ -63,13 +66,22 @@ if "%version%" == "6.0" mode con: cols=70 lines=60
 endlocal
 
 :: Music prerequsites
+
+:: The important variable of the 3 is win11bypass.
+:: Functionally, it's the only one doing anything. I'm too afraid to actually
+:: strip them out of the game since it's working on Win10
+
+@set win11bypass=0
 @set musicToggle=Musicing
 @set voiceToggle=nul
-if not exist "bin/config.mini" (echo Musicing) >> bin/config.mini && (echo Blabbing) >> bin/config.mini
+if not exist "bin/config.mini" (echo 0) > bin/config.mini && (echo Musicing) >> bin/config.mini && (echo Blabbing) >> bin/config.mini
+
 (
+set /p win11bypass=
 set /p musicToggle=
 set /p voiceToggle=
 )<bin/config.mini
+
 
 @start /min "biofuse_client_monitor" bin\handler\monitor.bat
 REM I NEED TO STRESS THAT MONITOR.bat IS LITERALLY JUST TO KILL THE AUDIO WHEN
@@ -117,13 +129,34 @@ set /p MainMenuInput=::
 if %MainMenuInput% == 1 set resetSwitch=1 && goto createGame
 if %MainMenuInput% == 2 goto loadGame
 if %MainMenuInput% == 3 goto infoBlock
-if %MainMenuInput% == 4 goto Checkforupdates
+if %MainMenuInput% == 4 goto musicToggle
 if %MainMenuInput% == 5 exit
 echo Sorry, but I don't understand that. Could you try that again please?
 pause
 cls
 goto start
 
+:musicToggle
+cls
+echo                           Music Toggle
+echo.
+echo Want music? Toggle it here to enable it! Just a heads up though, Win 11
+echo has something called Windows Terminal and it IS NOT compatible with it.
+echo.
+echo I recommend looking up a tutorial to change your Terminal behavior to
+echo Windows Console Host. Once that's done everything should work normally.
+echo.
+if %win11bypass% == 0 echo Music is off.
+if %win11bypass% == 1 echo Music is on.
+echo.
+echo 1) Turn music ON
+echo 2) Turn music OFF
+echo 3) Return to Title Screen
+set /p toggleMusic=:: 
+if %toggleMusic% == 1 (if %win11bypass% == 1 (echo Music is already on. && pause && goto musicToggle) else (set win11bypass=1 && (echo 1) > bin/config.mini && (echo Musicing) >> bin/config.mini && (echo Blabbing) >> bin/config.mini && goto musicToggle))
+if %toggleMusic% == 2 (if %win11bypass% == 0 (echo Music is already off. && pause && goto musicToggle) else (set win11bypass=0 && (echo 0) > bin/config.mini && (echo Musicing) >> bin/config.mini && (echo Blabbing) >> bin/config.mini && goto musicToggle))
+if %toggleMusic% == 3 goto start
+goto musicToggle
 
 :infoBlock
 cls
@@ -415,15 +448,14 @@ echo.
 echo 1:Actions
 echo 2:Save Game
 echo 3:Character Stats
+echo 4:Toggle Music
 if %nulbool% == 1 echo XP:Add XP
-
-if %level% GEQ 5 echo 4:Start Adventure
 set /p input=Choice?::
 if %input%==1 goto A_Menu
 if %input%==2 goto q_SAV
 if %input%==3 goto C_Menu
 if %input%==XP goto XP_Menu
-if %input%==4 goto Start_adv
+if %input%==4 goto musicToggleGame
 echo Sorry, I don't understand that. Could you try again?
 pause
 cls
@@ -434,6 +466,28 @@ echo 50000 XP added.
 set /a exp=%exp%+50000
 pause
 goto MainScreen
+
+:musicToggleGame
+cls
+echo                           Music Toggle
+echo.
+echo Want music? Toggle it here to enable it! Just a heads up though, Win 11
+echo has something called Windows Terminal and it IS NOT compatible with it.
+echo.
+echo I recommend looking up a tutorial to change your Terminal behavior to
+echo Windows Console Host. Once that's done everything should work normally.
+echo.
+if %win11bypass% == 0 echo Music is off.
+if %win11bypass% == 1 echo Music is on.
+echo.
+echo 1) Turn music ON
+echo 2) Turn music OFF
+echo 3) Return to Home
+set /p toggleMusic=:: 
+if %toggleMusic% == 1 (if %win11bypass% == 1 (echo Music is already on. && pause && goto musicToggleGame) else (set win11bypass=1 && (echo 1) > bin/config.mini && (echo Musicing) >> bin/config.mini && (echo Blabbing) >> bin/config.mini && goto musicToggleGame))
+if %toggleMusic% == 2 (if %win11bypass% == 0 (echo Music is already off. && pause && goto musicToggleGame) else (set win11bypass=0 && (echo 0) > bin/config.mini && (echo Musicing) >> bin/config.mini && (echo Blabbing) >> bin/config.mini && goto musicToggleGame))
+if %toggleMusic% == 3 goto MainScreen
+goto musicToggleGame
 
 :C_Menu
 set /a statThrow=%DMG%+%weapondmg%
@@ -464,6 +518,8 @@ goto MainScreen
 if "%enemy%" == "Mr. President" set clientSound=nullPresident.mp3 && set enemy=nul
 if "%enemy%" == "The President" set clientSound=nullPresident.mp3 && set enemy=nul
 if %clientSound% == nullPresident.mp3 call bin\handler\jukebox.bat && set clientSound=null.mp3
+::Backup check to see if music is still playing, and to kill it
+if not %clientSound% == null.mp3 set clientSound=null.mp3 && call bin\handler\jukebox.bat
 cls
 if %currentHP% LEQ 0 set currentHP=1 
 if %loc% == Home goto Home_Menu
@@ -476,7 +532,7 @@ if %loc% == DeepForest goto DeepForest_Menu
 if %loc% == President goto President_Menu
 if %loc% == Shop goto Shop_Menu
 echo Interesting, you seem to have gotten yourself trapped
-echo between dimentions^! An error may have occured in your
+echo between dimensions^! An error may have occured in your
 echo save file. 
 echo.
 echo It also could've happened with saving, or you
@@ -518,6 +574,7 @@ if %healthStatus% == Battered echo You apply guaze to your wounds and rest for a
 if %healthStatus% == Sick echo You take some antibiotics, it helps your sickness after a while. && set healthStatus=Healthy 
 if %healthStatus% == Dying echo Death himself knocked at your door, but you refused to answer. && set healthStatus=Healthy
 if %healthStatus% == Corrupted echo The mirror reached out toward you, but the arm shattered before it could reach. && set healthStatus=Healthy
+if %healthStatus% == Presidential-Corruption echo The walls felt like they were caving in toward you, dark hands reaching for your soul. && set healthStatus=Healthy
 )
 pause
 goto A_Menu
@@ -530,6 +587,7 @@ if %healthStatus% == Battered echo Your injuries heal during your nap. && set he
 if %healthStatus% == Sick echo Despite your sickly nap, you feel well rested after it all. && set healthStatus=Healthy 
 if %healthStatus% == Dying echo You met death during your nap, but pursuaded him out if it. && set healthStatus=Healthy
 if %healthStatus% == Corrupted echo The twitching darkness visited you in your sleep, but you snap out of it. && set healthStatus=Healthy
+if %healthStatus% == Presidential-Corruption echo Dark, twitching faces with their faces distorted in a horrible scream left your ears in pain. It was hard to sleep through this one. && set healthStatus=Healthy
 pause
 goto A_Menu
 
@@ -552,10 +610,12 @@ goto A_Menu
 )
 :H_Equip
 cls
-call bin/item/checkArray.bat 
 echo %lbnam%'s Equipment Room
+echo #---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#
 call bin/item/equipMsg.bat
-echo.
+echo Equipment Description:&& call bin/item/checkArray.bat 
+echo Current weapon modifier is: %weaponmod%
+echo #---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#
 echo You can currently equip the following: 
 if %weaponzero% == 1 echo (Fists) Nothing, just your fists. 
 if %weaponone% == 1 echo (Dagger) A fine steel dagger. +5 DMG
@@ -756,6 +816,7 @@ goto President_Menu
 cls
 if not exist bin/sav echo FATAL ERROR 4, system cannot save. && echo This means your SAV folder has gone missing^! && ping localhost -n 3 >nul && echo Deploying auto-fix. && if not exist bin\sav md bin\sav
 (echo %lbnam%) > bin/sav/%lbnam%.set
+:legacyReset
 (echo %dmg%) >> bin/sav/%lbnam%.set
 (echo %item%) >> bin/sav/%lbnam%.set
 (echo %nodes%) >> bin/sav/%lbnam%.set
@@ -938,6 +999,21 @@ goto Battle
 
 
 :Battle
+if %castLvl% == 0 (
+    set enemySpell=Nothing
+) else if %castLvl% == 1 (
+    set enemySpell=Heal spell
+) else if %castLvl% == 2 (
+    set enemySpell=Sick spell
+) else if %castLvl% == 3 (
+    set enemySpell=Superheated Air
+) else if %castLvl% == 4 (
+    set enemySpell=Lifedrain Fireballs
+) else if %castLvl% == 5 (
+    set enemySpell=Orbital Death Laser
+) else if %castLvl% == 6 (
+    set enemySpell=Meteor
+)
 if %currentHP% LSS 1 (
 if "%enemy%" == "Mr. President" set clientSound=nullPresident.mp3
 if "%enemy%" == "The President" set clientSound=nullPresident.mp3
@@ -965,11 +1041,13 @@ echo %lbnam%
 echo HP: %currentHP% / %maxHP%
 echo EP: %currentEP% / %maxEP%
 echo Status: %healthStatus%
+echo Weapon: %weaponname%
 echo.
 echo %enemy%
 echo HP: %EcurrentHP% / %EmaxHP%
 echo EP: %EcurrentEP% / %EmaxEP%
 echo Status: %EhealthStatus%
+echo Spell: %enemySpell%
 echo.
 echo 1. Attack
 echo 2. EP Powers
@@ -981,7 +1059,7 @@ if %input%==2 goto EPATK
 if %input%==3 goto Battle_Inventory
 if %input%==4 goto FleeBattle
 if %input%==debugmode set nulbool=1 && cls && goto Battle
-if %input%==BOLSTER set EmaxHP=9001 && set EcurrentHP=9001 && set EmaxEP=200 && set EcurrentEP=9001 && set EhealthStatus=Sick && cls && goto Battle
+if %input%==BOLSTER set EmaxHP=100001 && set EcurrentHP=100001 && set EmaxEP=200 && set EcurrentEP=9001 && set EhealthStatus=Sick && cls && goto Battle
 if %input%==SICK set EmaxHP=9001 && set EcurrentHP=9001 && set EmaxEP=15 && set EcurrentEP=15 && set EhealthStatus=Sick && cls && goto Battle
 if %input%==CORRUPT set EhealthStatus=Corrupted
 if %input%==FAILFLEE set flee=4 && goto DebugFleeBattle
@@ -1033,9 +1111,12 @@ if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Beaver" echo Ahh, a fine 
 if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Small Beaver" echo These ones fill in the gaps for the "BEAVER" dam && pause && goto A_Menu
 if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Woodpecker" echo How'd you even HIT a Woodpecker? && pause && echo How'd you piss it off?? && pause && goto A_Menu
 if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Hare" echo That was a funny looking rabbit. && echo It was a hairy hare too. && echo Does that make you... && pause && echo Scared? && pause && goto A_Menu
+echo err. CDM didn't process correctly!
 pause
+goto CustomDeathMessage
 
 :Battle_Attack
+set /a canCastLvl=%RANDOM% * 5 / 32768
 call bin/battle/healthCheck.bat
 call bin/battle/EhealthCheck.bat
 call bin/battle/healthRandom.bat
@@ -1051,6 +1132,8 @@ call bin/battle/getBlock.bat
 if %resetSwitch% == 0 call bin/battle/getEATK.bat
 if %resetSwitch% == 2 call bin/battle/getEATK.bat
 if %resetSwitch% == 3 call bin/battle/getEmgk.bat
+if %resetSwitch% == 3 if "%enemy%" == "Deprecated President" set castLvl=%canCastLvl%
+if %resetSwitch% == 3 if "%enemy%" == "Mr. President" set castLvl=%canCastLvl%
 pause
 cls
 :: Clean up the mess and turn off debug mode.
@@ -1538,16 +1621,12 @@ goto start
 :outdated
 set specialmsg=0
 cls
-if %versionnum% == 1.7.2 set weaponseven=0
-if %versionnum% == 1.7.1 set weaponseven=0
-if %versionnum% == 1.7.0 set weaponseven=0
-if %versionnum% == 1.6.0 set weaponseven=0
-if %versionnum% == 1.5.0 set weaponseven=0
+if %versionnum% == 1.7.2 set weaponseven=0 && set weaponarray=0 && set weaponname=Fists && set weapondmg=0 && set weaponmod=Nothing
+if %versionnum% == 1.7.1 set weaponseven=0 && set weaponarray=0 && set weaponname=Fists && set weapondmg=0 && set weaponmod=Nothing
+if %versionnum% == 1.7.0 set weaponseven=0 && set weaponarray=0 && set weaponname=Fists && set weapondmg=0 && set weaponmod=Nothing
+if %versionnum% == 1.6.0 set weaponsix=0 && set weaponseven=0 && set weaponarray=0 && set weaponname=Fists && set weapondmg=0 && set weaponmod=Nothing
+if %versionnum% == 1.5.0 set weaponsix=0 && set weaponseven=0 && set weaponarray=0 && set weaponname=Fists && set weapondmg=0 && set weaponmod=Nothing
 :: Force reset weaponry as 1.8.1 had a damage rebalance of every weapon.
-set weaponarray=0
-set weaponname=Fists
-set weapondmg=0
-set weaponmod=Nothing
 if %versionnum% == 1.7.2 set specialmsg=1
 if %versionnum% == 1.7.1 set specialmsg=1
 if %versionnum% == 1.7.0 set specialmsg=1
@@ -1558,19 +1637,23 @@ if %versionnum% == 1.3.0 set specialmsg=2
 if %versionnum% == 1.2.1 set specialmsg=3
 if %versionnum% == 1.2.0 set specialmsg=3
 if %versionnum% == 1.8.0 set specialmsg=4
+if %versionnum% == 1.8.1 set specialmsg=5
 set versionnum=%version%
 echo Oh no! Your save file is out of date! We'll take the liberty of 
 echo updating your files for you. Don't want to have a bad save, right? 
 echo There is a chance this will crash the game, don't worry.
 echo Your data is fine. Just relaunch and load the game again.
 echo.
-echo This will make you unequip your weaponry. You still have it!
-echo Just re-equip!
+if not %specialmsg% == 5 echo This will make you unequip your weaponry. You still have it!
+if not %specialmsg% == 5 echo Just re-equip!
 if %specialmsg% == 1 echo (1.6.0, 1.7.x)Due to the addition of a weapon in 1.8.0 you may have to re-equip your last weapon. && echo This was done to prevent too much data loss upon upgrading.
 if %specialmsg% == 2 echo (1.3.0 - 1.5.0)I won't lie, I have no idea how this will go. Data loss may be inevitable due to the drastic changes between versions. && echo Good luck!
 if %specialmsg% == 3 echo (1.2.0 - 1.2.1)This can go either way. I won't support anything on the ye olde biofuse saves.
 if %specialmsg% == 4 echo (1.8.0)Due to an oversight on my part, saves coming from 1.7.2 may suffer slight corruption. The 1.8.1 patch fixes that.
+if %specialmsg% == 5 echo (1.8.x+)Everything should be A-OK! Upgrade as you please
+if %specialmsg% == 0 echo (?.?.?)BioFuse couldn't identify what version this save is. Is it from 0.2.7? This fixer WILL erase everything and start the file anew.
 pause 
+if %specialmsg% == 0 set resetSwitch=1 && echo (Unknown save fallback, reseting variables.) && call :redef && ping localhost -n 2 >nul && echo Redef verified... saving... && set resetSwitch=0 && ping localhost -n 2 >nul
 goto q_SAV
 :MainScreen_Check
 if %adventure%==0 goto MainScreen

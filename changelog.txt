@@ -261,5 +261,26 @@ so like... no. Deal with the missing operands for a turn.
 - Fixed a bug where running from a battle while audio is playing not stopping correctly
 - Fixed debug mode causing crashes
 
-Known bugs: Sometimes the check to see whether or not an enemy is at exactly 0 HP bugs out and doesn't
-show any menu. As far as I can tell, the menu works just fine. Somethings gotten screwy somewhere.
+1.8.2
+
+- Fixed instances where music would not stop after a special enemy
+- New health state added: Presidential Corruption.
+- Deprecated President and Mr. President will now cycle through spells
+- No more guesswork! Enemies now display which spell they have equipped
+- Player weapon is now displayed on battle screen
+- Ancient typo from 0.2.7 corrected
+- Equipment room got a slight facelift
+- Music toggle added on title screen, MENUMOD had an update after all this time
+- Music is by default toggled off
+- Music toggle variable is saved in config.mini, separate from your save
+- Fixed several problems with audioHandler, Jukebox and Monitor
+- audioHandler, jukebox and monitor now check config.mini to see if audio is on or off
+- Adventure memento is no longer accessible by normal means
+- Adventure memento replaced by music toggle in home menu
+- Fixed CDM issue where CDM would send user back to battle
+
+Known bugs: 
+- Music is unavailable on Windows 11 due to Windows Terminal. Should you want music to work, I recommend
+searching up a tutorial on switching your terminal behavior from "Let windows decide/Windows Terminal" to 
+Windows Console Host. 
+- When music is disabled, the automatic closing functionality of other console processes breaks. 
