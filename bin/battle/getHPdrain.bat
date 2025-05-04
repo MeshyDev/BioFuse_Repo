@@ -1,5 +1,5 @@
 
-if %currentEP% LSS 50 echo Your energy supply is exhausted. && echo Cannot perform EP ability! && goto Battle 
+if %currentEP% LSS 50 echo Your energy supply is exhausted. && echo Cannot perform EP ability! && exit /b
 set /a MGCdrain=%RANDOM% * 30 / 32768 + 1 
 set /a EcurrentHP=%EcurrentHP% - %MGCdrain%
 set /a currentHP=%currentHP% + %MGCdrain%  
