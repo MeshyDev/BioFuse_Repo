@@ -7,7 +7,7 @@ if %enemyHS% == 66 set EhealthStatus=Burning
 
 if %enemyFind%==1 (
 set enemy=Squirrel
-set canCast=0
+set canCast=1
 set castLvl=0
 set EcurrentHP=20
 set EmaxHP=20
@@ -17,7 +17,7 @@ set Edmg=5
 )
 if %enemyFind%==2 (
 set enemy=Rabbit
-set canCast=0
+set canCast=1
 set castLvl=0
 set EcurrentHP=25
 set EmaxHP=25
@@ -27,7 +27,7 @@ set Edmg=7
 )
 if %enemyFind%==3 (
 set enemy=Stray Cat
-set canCast=0
+set canCast=1
 set castLvl=0
 set EcurrentHP=40
 set EmaxHP=40
@@ -37,7 +37,7 @@ set Edmg=9
 )
 if %enemyFind%==4 (
 set enemy=Duck
-set canCast=0
+set canCast=1
 set castLvl=0
 set EcurrentHP=50
 set EmaxHP=50
@@ -47,7 +47,7 @@ set Edmg=11
 )
 if %enemyFind%==5 (
 set enemy=Stray Dog
-set canCast=0
+set canCast=1
 set castLvl=0
 set EcurrentHP=50
 set EmaxHP=50

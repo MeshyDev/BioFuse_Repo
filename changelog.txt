@@ -242,3 +242,24 @@ so like... no. Deal with the missing operands for a turn.
 - Added some special messages for the old saves out there in the wild
 - New, most expensive weapon - Portable Death Laser
 - Added new syntaxes for weaponry on equip screen. Capitalization not necessary anymore!
+
+1.8.1
+
+- Fixed levelling up not resetting health status to normal
+- You no longer need to have reduced health to use the nap function. Napping at full health will set your status back to healthy whether you're maxHP or not.
+- Added new text for changing health states when using the nap function at full hp. 
+- Removed old options menu from code left over from 1.3.0
+- Fixed a bug that causes potential crashing and corruption to the save file when updating it from 1.7.2 - 1.8.0. 
+- When updating save file to latest version, it will forcibly unequip your weapon. Just re-equip after updating save file.
+- Rebalanced weapon damage so early weaponry doesn't feel so puny
+- Portable Death Laser now has burning weaponmod
+- Enemies in deep forest now cast spells
+- Tweaked what spell the junkyard government android uses
+- Several new musics for certain enemies you encounter.
+- Fixed a typo for the Government Patrol Assembly
+- AudioHandler now shows current MP3 playing
+- Fixed a bug where running from a battle while audio is playing not stopping correctly
+- Fixed debug mode causing crashes
+
+Known bugs: Sometimes the check to see whether or not an enemy is at exactly 0 HP bugs out and doesn't
+show any menu. As far as I can tell, the menu works just fine. Somethings gotten screwy somewhere.

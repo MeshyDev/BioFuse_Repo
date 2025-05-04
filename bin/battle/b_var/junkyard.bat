@@ -48,7 +48,7 @@ set Edmg=55
 if %enemyFind%==5 (
 set enemy=Scrapped Government Android
 set canCast=1
-set castLvl=3
+set castLvl=4
 set EcurrentHP=250
 set EmaxHP=250
 set EcurrentEP=400
@@ -56,7 +56,7 @@ set EmaxEP=400
 set Edmg=75
 )
 if %enemyFind%==6 (
-set enemy=Goverment Patrol Assembly
+set enemy=Government Patrol Assembly
 set canCast=1
 set castLvl=4
 set EcurrentHP=500

@@ -16,7 +16,8 @@ echo audio is needed. Seriously, read my code it was annoying to even
 echo get it to work without using that old OLD method with like that 
 echo audio thing that was from XP and prior. I'm kinda impressed it did 
 echo work though. 
-
+echo.
+echo Playing: %clientSound%
 set "file=bin/aud/%clientSound%"
 ( echo Set Sound = CreateObject("WMPlayer.OCX.7"^)
   echo Sound.URL = "%file%"

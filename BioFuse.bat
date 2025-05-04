@@ -1,7 +1,7 @@
 @echo off
 
-set version=1.8.0
-set vmsg=The sickly are growing increasingly pissed off
+set version=1.8.1
+set vmsg=The sickly are growing increasingly pissed off (Bugfixes applied)
 set vmsg2=And of course, thank you Meshcaid for adopting Nodes as currency
 
 :: This is a game with an engine strapped to it.
@@ -111,7 +111,6 @@ echo Welcome to BioFuse %version%.
 echo -%vmsg%-
 echo -%vmsg2%-
 if %nulbool% == 1 echo %expGained% %nodesGained%
-if %nulbool% == 1 title BioFuse %version% DEBUG
 echo.
 echo.
 set /p MainMenuInput=::
@@ -445,6 +444,7 @@ echo EP: %currentEP% / %maxEP%
 echo Nodes: %nodes%  XNodes: %Xnodes%
 echo EXP: %exp% / %expToNextLevel%
 echo Weapon: %weaponname%
+echo Weapon Mod: %weaponmod%
 echo.
 echo Damage: %DMG%
 echo Total Damage: %statThrow%
@@ -512,6 +512,13 @@ if %H_Inp% == 5 goto MainScreen
 :H_Nap
 if %currentHP% GEQ %maxHP% (
 echo You're not tired. Actually, you feel great^!
+if not %healthStatus% == Healthy (
+if %healthStatus% == Burning echo You douse your smoldering body in water. && set healthStatus=Healthy
+if %healthStatus% == Battered echo You apply guaze to your wounds and rest for a bit. && set healthStatus=Healthy 
+if %healthStatus% == Sick echo You take some antibiotics, it helps your sickness after a while. && set healthStatus=Healthy 
+if %healthStatus% == Dying echo Death himself knocked at your door, but you refused to answer. && set healthStatus=Healthy
+if %healthStatus% == Corrupted echo The mirror reached out toward you, but the arm shattered before it could reach. && set healthStatus=Healthy
+)
 pause
 goto A_Menu
 )
@@ -551,12 +558,12 @@ call bin/item/equipMsg.bat
 echo.
 echo You can currently equip the following: 
 if %weaponzero% == 1 echo (Fists) Nothing, just your fists. 
-if %weaponone% == 1 echo (Dagger) A fine steel dagger. +3 DMG
-if %weapontwo% == 1 echo (Sword) A large steel sword. +5 DMG
-if %weaponthree% == 1 echo (Flaming Sword) A sword made of flames. +8 DMG
-if %weaponfour% == 1 echo (Rocket Launcher) Who let you buy this? +15 DMG
-if %weaponfive% == 1 echo (Death Machine) Remember me? +50 DMG
-if %weaponsix% == 1 echo (Bot Buster) It's a cannon! +85 DMG
+if %weaponone% == 1 echo (Dagger) A fine steel dagger. +5 DMG
+if %weapontwo% == 1 echo (Sword) A large steel sword. +10 DMG
+if %weaponthree% == 1 echo (Flaming Sword) A sword made of flames. +15 DMG
+if %weaponfour% == 1 echo (Rocket Launcher) Who let you buy this? +35 DMG
+if %weaponfive% == 1 echo (Death Machine) Remember me? +65 DMG
+if %weaponsix% == 1 echo (Bot Buster) It's a cannon! +115 DMG
 if %weaponseven% == 1 echo (Portable Death Laser) Whoa... +750 DMG
 if %weaponzero% == 1 echo (Back) Go back to the last menu
 echo.
@@ -744,12 +751,6 @@ pause
 cls
 goto President_Menu
 
-:options
-cls
-echo Currently disabled. My apologies. 
-pause 
-goto G_Menu
-
 
 :q_SAV
 cls
@@ -901,6 +902,7 @@ goto President_EnemyFind
 
 :Outside_EnemyFind
 call bin/battle/b_var/outside.bat
+if "%enemy%" == "BlotBlot" set clientSound=ExaDevLowFid.mp3 && call bin\handler\jukebox.bat
 goto Battle
 
 :Flatlands_EnemyFind
@@ -913,14 +915,17 @@ goto Battle
 
 :Junkyard_EnemyFind
 call bin/battle/b_var/junkyard.bat
+if "%enemy%" == "Government Patrol Assembly" set clientSound=ExaDevBeats.mp3 && call bin\handler\jukebox.bat
 goto Battle
 
 :Trainyard_EnemyFind
 call bin/battle/b_var/trainyard.bat
+if "%enemy%" == "Military Government Patrol Assembly" set clientSound=ExaDevByte0.mp3 && call bin\handler\jukebox.bat
 goto Battle
 
 :DeepForest_EnemyFind
 call bin/battle/b_var/deepforest.bat
+if "%enemy%" == "Wendigo" set clientSound=ExaDevLowFid4.mp3 && call bin\handler\jukebox.bat
 goto Battle
 
 :President_EnemyFind
@@ -975,12 +980,12 @@ if %input%==1 goto Battle_Attack
 if %input%==2 goto EPATK
 if %input%==3 goto Battle_Inventory
 if %input%==4 goto FleeBattle
-if %input%==debugmode set nulbool=1 && title BioFuse %version% DEBUG && cls && goto Battle
+if %input%==debugmode set nulbool=1 && cls && goto Battle
 if %input%==BOLSTER set EmaxHP=9001 && set EcurrentHP=9001 && set EmaxEP=200 && set EcurrentEP=9001 && set EhealthStatus=Sick && cls && goto Battle
 if %input%==SICK set EmaxHP=9001 && set EcurrentHP=9001 && set EmaxEP=15 && set EcurrentEP=15 && set EhealthStatus=Sick && cls && goto Battle
 if %input%==CORRUPT set EhealthStatus=Corrupted
 if %input%==FAILFLEE set flee=4 && goto DebugFleeBattle
-if %input%==nobugmode set nulbool=0 && title BioFuse %version% && cls && goto Battle
+if %input%==nobugmode set nulbool=0 && cls && goto Battle
 echo I'm sorry, I didn't get that. Could you repeat that please?
 pause
 cls
@@ -992,6 +997,8 @@ if "%enemy%" == "Deprecated President" set clientSound=null.mp3 && call bin\hand
 if "%enemy%" == "Mr. President" set clientSound=null.mp3 && call bin\handler\jukebox.bat
 if "%enemy%" == "Mr. President" echo The President's clone was defeated... the real fight is yet to begin. && pause && goto A_Menu
 if "%enemy%" == "The President" echo You did it. && ping localhost -n 5 >nul && echo You defeated The President. && ping localhost -n 5 >nul && echo Enjoy the rewards you reap. && ping localhost -n 3 >nul && pause && goto A_Menu
+if not %clientSound% == null.mp3 set clientSound=null.mp3 && call bin\handler\jukebox.bat
+:: Gotta make sure any music from special mobs is killed here.
 set /a CDMRand=%RANDOM% * 22 / 32768 + 1
 if %nulbool% == 1 echo Made it, random CDM is %CDMRand%
 if %CDMRand% == 1 echo %enemy%'s corpse slumps over, utterly evicerated. && pause && goto A_Menu
@@ -1048,7 +1055,6 @@ pause
 cls
 :: Clean up the mess and turn off debug mode.
 set resetSwitch=0 
-if %nulbool% == 1 title BioFuse %version%
 set nulbool=0
 goto Battle
 
@@ -1087,11 +1093,15 @@ if %currentHP% LSS 0 echo You attempted to run, but got killed in the process. &
 echo You ran away, but were injured in the process...
 echo You took 10 damage.
 pause
+if not %clientSound% == null.mp3 set clientSound=null.mp3 && call bin\handler\jukebox.bat
+:: Kills sound even if clientsound is set to presidentnull.mp3
 goto A_Menu
 )
 if %flee% GTR 5 (
 echo You ran away successfully.
 pause
+if not %clientSound% == null.mp3 set clientSound=null.mp3 && call bin\handler\jukebox.bat
+:: Kills sound even if clientsound is set to presidentnull.mp3
 cls
 goto A_Menu
 )
@@ -1247,6 +1257,7 @@ set /a expLevelMult=%expLevelRand% * 3
 set /a expToNextLevel=%expToNextLevel%+100+%expLevelMult%
 set /a currentHP=%maxHP%
 set /a currentEP=%maxEP%
+set healthStatus=Healthy
 echo Congratulations, %lbnam%, you've reached Level %level%^!
 if %nulbool% == 1 echo input var is %input%
 pause
@@ -1485,12 +1496,12 @@ echo %lbnam% has %Nodes% nodes available.
 echo You have %eppot% EP potions and %hppot% potions.
 echo.
 echo What can we get for you?
-echo 1) Dagger (+3 DMG, 150 Nodes)
-echo 2) Sword (+5 DMG, 550 Nodes)
-echo 3) Flame Sword (+8 DMG, 1500 Nodes)
-echo 4) Rocket Launcher (+15 DMG, 5000 Nodes)
-echo 5) Death Machine (+50 DMG, 10000 Nodes)
-echo 6) Bot Buster (+100 DMG, 45000 Nodes)
+echo 1) Dagger (+5 DMG, 150 Nodes)
+echo 2) Sword (+10 DMG, 550 Nodes)
+echo 3) Flame Sword (+15 DMG, 1500 Nodes)
+echo 4) Rocket Launcher (+35 DMG, 5000 Nodes)
+echo 5) Death Machine (+65 DMG, 10000 Nodes)
+echo 6) Bot Buster (+115 DMG, 45000 Nodes)
 echo 7) Portable Death Laser (+750 DMG, 750000 Nodes)
 echo 8) +1 EP Potion (50 Nodes) 
 echo 9) +1 HP Potion (25 Nodes)
@@ -1527,6 +1538,12 @@ goto start
 :outdated
 set specialmsg=0
 cls
+if %versionnum% == 1.7.2 set weaponseven=0
+if %versionnum% == 1.7.1 set weaponseven=0
+if %versionnum% == 1.7.0 set weaponseven=0
+if %versionnum% == 1.6.0 set weaponseven=0
+if %versionnum% == 1.5.0 set weaponseven=0
+:: Force reset weaponry as 1.8.1 had a damage rebalance of every weapon.
 set weaponarray=0
 set weaponname=Fists
 set weapondmg=0
@@ -1540,15 +1557,19 @@ if %versionnum% == 1.4.0 set specialmsg=2
 if %versionnum% == 1.3.0 set specialmsg=2
 if %versionnum% == 1.2.1 set specialmsg=3
 if %versionnum% == 1.2.0 set specialmsg=3
+if %versionnum% == 1.8.0 set specialmsg=4
 set versionnum=%version%
 echo Oh no! Your save file is out of date! We'll take the liberty of 
 echo updating your files for you. Don't want to have a bad save, right? 
 echo There is a chance this will crash the game, don't worry.
 echo Your data is fine. Just relaunch and load the game again.
 echo.
+echo This will make you unequip your weaponry. You still have it!
+echo Just re-equip!
 if %specialmsg% == 1 echo (1.6.0, 1.7.x)Due to the addition of a weapon in 1.8.0 you may have to re-equip your last weapon. && echo This was done to prevent too much data loss upon upgrading.
 if %specialmsg% == 2 echo (1.3.0 - 1.5.0)I won't lie, I have no idea how this will go. Data loss may be inevitable due to the drastic changes between versions. && echo Good luck!
 if %specialmsg% == 3 echo (1.2.0 - 1.2.1)This can go either way. I won't support anything on the ye olde biofuse saves.
+if %specialmsg% == 4 echo (1.8.0)Due to an oversight on my part, saves coming from 1.7.2 may suffer slight corruption. The 1.8.1 patch fixes that.
 pause 
 goto q_SAV
 :MainScreen_Check
