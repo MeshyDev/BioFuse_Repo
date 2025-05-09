@@ -1,10 +1,17 @@
+:: This should only be called! This is a subroutine, not a fully accessible block. 
+:: eTossHP is Enemy Max HP divided by 2
+:: eTossHP2 is Enemy CURRENT HP times 2
+:: eTossHP3 is Enemy CURRENT HP divided by 2
+
+
 set /a eTossHP=%EmaxHP% / 2
 set /a eTossHP2=%EcurrentHP% * 2
+set /a eTossHP3=%EcurrentHP% / 2
 set /a eburnDMG=%RANDOM% * %mDmg% / 32768 + 1
 set /a esickDMG=%RANDOM% * %eTossHP% / 32768 + 1
 set /a epresDMG=%esickDMG / 2
 set /a ebatteredDMG=%RANDOM% * 10 / 32768 + 1
-if %EmaxHP% GTR 1000 (set /a Crptdmg=%random% * %eTossHP2% / 32768 + 1) else (set /a Crptdmg=%random% * 20 / 32768 + 1)
+set /a Crptdmg=%random% * %eTossHP3% / 32768 + 1
 set /a InfDmg=%random% * %eTossHP2% + %esickDMG% / 32768 + 1
 if %Crptdmg% LSS 0 set /a Crptdmg=-%Crptdmg%
 
@@ -74,6 +81,14 @@ if %InfDmg% LSS 0 set /a Crptdmg=-%Crptdmg%
 echo %enemy% seems to have been infected by... something.
 echo %enemy% takes %InfDmg% HP!
 set /a EcurrentHP = %EcurrentHP% - %InfDmg%
+)
+
+if %EhealthStatus% == Enraged (
+if %scalingfactor% LEQ 10 echo %enemy% looks pretty angry specifically at you.
+if %scalingfactor% LEQ 16 echo %enemy% has grudges. Who did you kill?
+if %scalingfactor% LEQ 20 echo %enemy% looks furious!
+if %scalingfactor% GEQ 23 echo %enemy% and anything left alive wants you dead.
+if %scalingfactor% GEQ 40 echo Things don't look right anywhere anymore...
 )
 
 exit /b

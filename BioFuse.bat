@@ -1,14 +1,15 @@
 @echo off
 
-set version=1.9.0
-set vmsg=The lil things were flavored (Bugfixes + Win11 support)
-set vmsg2=A lot of things actually...
+set version=1.10.0
+set vmsg=There's a special project a cooking... keep an eye out for it.
+set vmsg2=Seriously, it's about Biofuse.
 
 :: DEFINE VARIABLES 
 
 set resetSwitch=0 
 title BioFuse
 :redef
+set scalingfactor=2
 set dmg=5
 set item=0
 set nodes=0
@@ -48,6 +49,7 @@ set weaponarray=0
 set weaponname=Fists
 set weapondmg=0
 set weaponmod=Nothing
+set scene=0
 
 set canCastLvl=0
 set enemySpell=nul
@@ -233,7 +235,10 @@ set /p weaponarray=
 set /p weaponname=
 set /p weapondmg=
 set /p weaponmod=
+set /p scene=
 )<bin/sav/%lbnam%.set
+:: Sets scaling factor right away. Redundant, but works.
+set /a scalingfactor=2+((%level%-30)/3)
 ping localhost -n 2 >nul
 if not %versionnum% == %version% goto outdated 
 echo Load was successful.
@@ -420,6 +425,7 @@ if exist bin/sav (
 (echo %weaponname%) >> bin/sav/%lbnam%.set
 (echo %weapondmg%) >> bin/sav/%lbnam%.set
 (echo %weaponmod%) >> bin/sav/%lbnam%.set
+(echo %scene%) >> bin/sav/%lbnam%.set
 ping localhost -n 2 >nul 
 echo Game successfully made and saved.
 )
@@ -487,6 +493,7 @@ goto musicToggleGame
 :C_Menu
 set /a statThrow=%DMG%+%weapondmg%
 set /a statThrow2=%statThrow%*%critMult%
+set /a scalingfactor=2+((%level%-30)/3)
 cls
 echo Status: %healthStatus%
 echo HP: %currentHP% / %maxHP%
@@ -495,6 +502,7 @@ echo Nodes: %nodes%  XNodes: %Xnodes%
 echo EXP: %exp% / %expToNextLevel%
 echo Weapon: %weaponname%
 echo Weapon Mod: %weaponmod%
+if %level% GEQ 30 echo Enemy Aggravation Level: %scalingfactor%
 echo.
 echo Damage: %DMG%
 echo Total Possible Damage: %statThrow%
@@ -966,6 +974,7 @@ if not exist bin/sav echo FATAL ERROR 4, system cannot save. && echo This means 
 (echo %weaponname%) >> bin/sav/%lbnam%.set
 (echo %weapondmg%) >> bin/sav/%lbnam%.set
 (echo %weaponmod%) >> bin/sav/%lbnam%.set 
+(echo %scene%) >> bin/sav/%lbnam%.set
 echo Saving your game... don't close^!
 ping localhost -n 2 >nul
 echo Save complete.
@@ -1079,34 +1088,41 @@ goto President_EnemyFind
 
 :Outside_EnemyFind
 call bin/battle/b_var/outside.bat
+if %level% GEQ 30 call bin/battle/getScaling.bat
 if "%enemy%" == "BlotBlot" set clientSound=ExaDevLowFid.mp3 && call bin\handler\jukebox.bat
 goto Battle
 
 :Flatlands_EnemyFind
 call bin/battle/b_var/flatlands.bat
+if %level% GEQ 30 call bin/battle/getScaling.bat
 goto Battle
 
 :Forest_EnemyFind
 call bin/battle/b_var/forest.bat
+if %level% GEQ 30 call bin/battle/getScaling.bat
 goto Battle
 
 :Junkyard_EnemyFind
 call bin/battle/b_var/junkyard.bat
+if %level% GEQ 30 call bin/battle/getScaling.bat
 if "%enemy%" == "Government Patrol Assembly" set clientSound=ExaDevBeats.mp3 && call bin\handler\jukebox.bat
 goto Battle
 
 :Trainyard_EnemyFind
 call bin/battle/b_var/trainyard.bat
+if %level% GEQ 30 call bin/battle/getScaling.bat
 if "%enemy%" == "Military Government Patrol Assembly" set clientSound=ExaDevByte0.mp3 && call bin\handler\jukebox.bat
 goto Battle
 
 :DeepForest_EnemyFind
 call bin/battle/b_var/deepforest.bat
+if %level% GEQ 30 call bin/battle/getScaling.bat
 if "%enemy%" == "Wendigo" set clientSound=ExaDevLowFid4.mp3 && call bin\handler\jukebox.bat
 goto Battle
 
 :President_EnemyFind
 call bin/battle/b_var/president.bat
+if %level% GEQ 30 call bin/battle/getScaling.bat
 if "%enemy%" == "Mr. President" set clientSound=ExaDevSillicone.mp3
 if "%enemy%" == "The President" set clientSound=ExaDevBeats2.mp3
 if "%enemy%" == "Deprecated President" set clientSound=ExaDevLowFid6.mp3
@@ -1498,6 +1514,8 @@ set healthStatus=Healthy
 echo Congratulations, %lbnam%, you've reached Level %level%^!
 if %nulbool% == 1 echo input var is %input%
 pause
+if %level%==30 goto LevelUp6 
+if %level% GTR 30 if %scene% == 0 goto LevelUp6
 :levelUp1
 cls
 echo You have 5 stat points to divide up throughout your stats. 
@@ -1722,6 +1740,31 @@ goto doubleCheck
 )
 goto levelUp5
 
+:LevelUp6
+set scene=1
+echo The shopkeep pulls you aside!
+echo Shopkeep: Wait!!! Some of you keep flying about!
+echo Shopkeep: Do I have your attention???
+echo.
+ping localhost -n 8 >nul
+echo Shopkeep: Good...
+ping localhost -n 5 >nul
+cls
+echo Shopkeep: Listen, you've been... doing a lot out there.
+ping localhost -n 5 >nul
+echo Shopkeep: I support you in equipping you with your weapons but...
+ping localhost -n 7 >nul
+echo Shopkeep: The things you've done with my wares has upset the balance!!
+echo The Shopkeep looks visibly distressed. 
+ping localhost -n 8 >nul
+echo Shopkeep: Things might start fighting back a little harder, be careful.
+ping localhost -n 4 >nul
+echo The Shopkeep left back to his building...
+ping localhost -n 4 >nul
+echo Is this mission to defeat the President worth doing? It must be.
+pause
+goto levelUp
+
 :doubleCheck
 if %exp% GEQ %expToNextLevel% goto levelUp
 goto q_SAV 
@@ -1828,7 +1871,8 @@ if %versionnum% == 1.2.0 set specialmsg=3
 if %versionnum% == 1.8.0 set specialmsg=4
 if %versionnum% == 1.8.1 set specialmsg=5
 if %versionnum% == 1.8.2 set specialmsg=5
-if %versionnum% == 1.9.0 set specialmsg=6
+if %versionnum% == 1.9.1 set specialmsg=6
+if %versionnum% == 1.10.1 set specialmsg=7
 set versionnum=%version%
 echo Oh no! Your save file is out of date! We'll take the liberty of 
 echo updating your files for you. Don't want to have a bad save, right? 
@@ -1842,7 +1886,8 @@ if %specialmsg% == 2 echo (1.3.0 - 1.5.0)I won't lie, I have no idea how this wi
 if %specialmsg% == 3 echo (1.2.0 - 1.2.1)This can go either way. I won't support anything on the ye olde biofuse saves.
 if %specialmsg% == 4 echo (1.8.0)Due to an oversight on my part, saves coming from 1.7.2 may suffer slight corruption. The 1.8.1 patch fixes that.
 if %specialmsg% == 5 echo (1.8.0-1.8.2)Weapon has been unequipped to prevent data loss from new weapon in 1.8.3
-if %specialmsg% == 6 echo (1.9.x+)But.. I haven't even got to that part yet.
+if %specialmsg% == 6 echo (1.10.0)Added a scene variable thats necessary for showing cutscenes to people level 30+
+if %specialmsg% == 7 echo (1.10.x+)But.. I haven't even got to that part yet. Also unlikely...
 if %specialmsg% == 0 echo (?.?.?)BioFuse couldn't identify what version this save is. Is it from 0.2.7? This fixer WILL erase everything and start the file anew. && echo If you don't want this, exit the game.
 pause 
 if %specialmsg% == 0 set resetSwitch=1 && echo (Unknown save fallback, resetting variables.) && call :redef && ping localhost -n 2 >nul && echo Redef verified... saving... && set resetSwitch=0 && ping localhost -n 2 >nul
