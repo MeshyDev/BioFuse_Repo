@@ -59,7 +59,7 @@ if %resetSwitch% == 14 (
 )
 
 if %resetSwitch% == 15 (
-    if %nodes% LSS 1000 (echo Shopkeep: Dude, you got the Finger. How can you not afford this?? && pause && set resetSwitch=0 && exit /b) else (set /a nodes=%nodes%-1000 && set weaponmod=Finger && echo Gods Finger glows, curious why you didn't just re-equip it in the armory. && pause && set resetSwitch=0 && exit /b))
+    if %nodes% LSS 1000 (echo Shopkeep: Dude, you got the Finger. How can you not afford this?? && pause && set resetSwitch=0 && exit /b) else (set /a nodes=%nodes%-1000 && set weaponmod=Finger && echo Your weapon glows with a warm hue. Big Finger Energy. && pause && set resetSwitch=0 && exit /b))
 )
 
 exit /b

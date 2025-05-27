@@ -320,3 +320,5 @@ the CustomDeathMessage script will get all upset and won't display. It works fin
 - Added a cutscene at Level 30 involving the Shopkeep
 - Added logic to trigger cutscene for people level 30+
 - Changed how Corruption works on enemies (instead of self destructing, it only gets minorly hurt)
+- Fixed a bug where God Finger wouldn't show up as equipped
+- Tweaked text for imbuing finger energy
