@@ -325,3 +325,4 @@ the CustomDeathMessage script will get all upset and won't display. It works fin
 - Fixed a case where CDM wasn't processing correctly. 
 - Added 283 new lines of Custom Death Messages. 
 - Added 3 new tiers of CDM's based on how much killing you've done :) 
+- Added ability to test CDM tiers in Debug Room
