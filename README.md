@@ -10,7 +10,7 @@ Seriously, it's gonna be pretty cool.
 Current changes so far:
 **1.10.0**
 
-`- Added a level scaling system that triggers at Level 30. Starts at 2 @ lvl 30. It increments by 1 every 3 levels after 30. 
+- Added a level scaling system that triggers at Level 30. Starts at 2 @ lvl 30. It increments by 1 every 3 levels after 30. 
 - Added a line to Character Stats page that shows "Enemy Aggravation Level".
 - Added a cutscene at Level 30 involving the Shopkeep
 - Added logic to trigger cutscene for people level 30+
@@ -20,4 +20,4 @@ Current changes so far:
 - Fixed a case where CDM wasn't processing correctly. 
 - Added 283 new lines of Custom Death Messages. 
 - Added 3 new tiers of CDM's based on how much killing you've done :) 
-- Added ability to test CDM tiers in Debug Room`
+- Added ability to test CDM tiers in Debug Room
