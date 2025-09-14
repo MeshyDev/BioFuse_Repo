@@ -873,6 +873,11 @@ echo 3) Stage 3 CDM
 echo 4) Stage 4 CDM
 echo What stage?
 set /p dbmenucdm=:: 
+echo *shaka
+ping localhost -n 1 >nul
+echo       shaka*
+echo your death message is:
+echo.
 if %dbmenucdm% == 1 goto CDMStage1
 if %dbmenucdm% == 2 goto CDMStage2
 if %dbmenucdm% == 3 goto CDMStage3
@@ -1434,7 +1439,7 @@ if %CDMRand% == 54 echo The silence of death is deafening. && pause && goto A_Me
 if %CDMRand% == 55 echo The walls drip with proof of your violence. && pause && goto A_Menu
 if %CDMRand% == 56 echo The laughter in your head isn't yours. && pause && goto A_Menu
 if %CDMRand% == 57 echo You hear whispers in the blood. && pause && goto A_Menu
-if %CDMRand% == 58 echo You tear away what remained of %enemy%'s humanity. && pause && goto A_Menu
+if %CDMRand% == 58 echo You tear away what remained of %enemy%'s life they had left. && pause && goto A_Menu
 if %CDMRand% == 59 echo The light hates you now. && pause && goto A_Menu
 if %CDMRand% == 60 echo Every death stains you darker. && pause && goto A_Menu
 if %CDMRand% == 61 echo This is no longer survival. && pause && goto A_Menu
@@ -1574,7 +1579,7 @@ if %CDMRand% == 86 echo How many more deaths will it take to satisfy you? && pau
 if %CDMRand% == 87 echo You're feared, yes. && pause && echo But loved? && pause && echo Never. && pause && goto A_Menu
 if %CDMRand% == 88 echo You call it progress. && pause && echo I call it obsession. && pause && goto A_Menu
 if %CDMRand% == 89 echo Another meaningless death. && pause && echo Another meaningless you. && pause && goto A_Menu
-if %CDMRand% == 90 echo You've stopped being humanS. && pause && echo Now you're just hunger in a body. && pause && goto A_Menu
+if %CDMRand% == 90 echo You've stopped being human. && pause && echo Now you're just hunger in a body. && pause && goto A_Menu
 if %CDMRand% == 91 echo Every monster you kill looks more familiar. && pause && echo Almost like a mirror. && pause && goto A_Menu
 if %CDMRand% == 92 echo You've forgotten why you started. && pause && echo But you'll never forget how to kill. && pause && goto A_Menu
 if %CDMRand% == 93 echo They won't write songs about you. && pause && echo They'll write warnings. && pause && goto A_Menu
