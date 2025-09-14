@@ -10,8 +10,8 @@
 :: EmaxEP = 100
 :: Edmg=0/999999
 if %level% LEQ 29 set /a Eattack=%RANDOM% * %Edmg% / 32768 + 1
-if %level% GEQ 30 set /a Eattack=%RANDOM% * %Edmg% / 32768 + 1 
-if %level% GEQ 30 set /a Eattack=%Edmg% * %scalingfactor%
+if %level% GEQ 30 set /a EattackToss=%RANDOM% * %Edmg% / 32768 + 1 
+if %level% GEQ 30 set /a Eattack=%EattackToss% * %scalingfactor%
 if %resetSwitch% == 0 echo %enemy% attacks! It did %Eattack% damage to you!
 if %resetSwitch% == 0 set /a currentHP=%currentHP% - %Eattack%
 if %resetSwitch% == 2 set /a Eattack=%Eattack% / 3
