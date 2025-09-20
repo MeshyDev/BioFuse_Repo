@@ -15,6 +15,7 @@ if %weaponmodCnc% == 8 echo Your weapon gleams in a fiery orange hue! You set %e
 :: Finger basically gives chances for a mini crit essentially
 if "%weaponmod%" == "Finger " (
 if %weaponmodCnc% == 14 echo As you squash your enemy with Gods Finger, lightning sparks from its fingertips, doubling your attack! && set /a attack=%attack%+%attack%
+if %Edmg% LEQ %attack% set /a attack=%attack%+%Eattack% && echo The finger levels the playing field, adding their strength to your own power...
 )
 if "%weaponmod%" == "Sickness " (
 if %weaponmodCnc% == 12 echo Your weapon gleams with a gross green glow, making %enemy% sick. && set EHealthStatus=Sick
