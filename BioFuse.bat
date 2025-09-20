@@ -841,7 +841,7 @@ echo 4: Fight Yourself
 echo 5: Add 50k XP
 echo 6: Actions/Main Screen
 echo 7: Test CustomDeathMessage
-if %exp% GEQ %expToNextLevel% echo 7: Level up
+if %exp% GEQ %expToNextLevel% echo 8: Level up
 echo Save: BE CAREFUL WITH THIS IF YOUVE BEEN PLAYING WITH VARIABLES
 echo.
 set /p dbmenu=:: 
@@ -852,7 +852,7 @@ if %dbmenu% == 4 goto debugFightYourself
 if %dbmenu% == 5 goto XP_Menu
 if %dbmenu% == 6 goto MainScreen
 if %dbmenu% == 7 goto TestCDM
-if %exp% GEQ %expToNextLevel% if %dbmenu% == 7 goto levelUp
+if %exp% GEQ %expToNextLevel% if %dbmenu% == 8 goto levelUp
 if %dbmenu% == Save goto q_SAV
 goto Debug_Menu
 
