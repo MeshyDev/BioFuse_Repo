@@ -326,3 +326,9 @@ the CustomDeathMessage script will get all upset and won't display. It works fin
 - Added 283 new lines of Custom Death Messages. 
 - Added 3 new tiers of CDM's based on how much killing you've done :) 
 - Added ability to test CDM tiers in Debug Room
+TODO=Add 3 new weapons, 2 less than god finger to fill the gap and 1 more than god finger for funsies
+TODO=Revamp math on status effects
+TODO=Perhaps a complete rebalancing is in order
+TODO=Add 5 new enemies per level 
+TODO=Restrict certain locations to certain levels
+TODO=Add modifier for finger status to also add the enemies damage to the output
