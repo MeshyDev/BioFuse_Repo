@@ -27,7 +27,8 @@ if "%weaponmod%" == "Infection " (
 if %weaponmodCnc% == 10 echo Something... odd is happening with your weapon. On use, it spat out some sickly brown sludge that infects %enemy%. && set EHealthStatus=Infected
 )
 if %nulbool% == 1 set testvar=1 && echo Made it to test attack, weaponmod check succeeded %testvar% && pause &&  set /a testvar=%testvar% + 1 
-if "%weaponname%" == "Fists " echo You attack^! You did %attack% damage to %enemy%^! 
+if "%weaponname%" == "Fists" echo You swing your fists! You did %attack% damage to %enemy%! 
+if "%weaponname%" == "Fists " echo You swing your fists! You did %attack% damage to %enemy%!
 if "%weaponname%" == "Dagger " echo You stab your dagger forth, doing %attack% damage to %enemy%!
 if "%weaponname%" == "Sword " echo You swing your sword, slashing %enemy% for %attack% damage!
 if "%weaponname%" == "Flame Sword " echo Light wisps of flame dances from each slash. You do %attack% damage to %enemy%
