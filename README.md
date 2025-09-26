@@ -26,6 +26,8 @@ Current changes so far:
 - Changed how the Finger's effect works, later levels will love it
 - Imbuing weapons has been locked to level 30+
 - Presidents Office now shows up at level 30, however I don't think you'll survive it
+- Fixed a bug where swinging your fists wouldn't show up as expected
+- Changed the text on the fists after 10+ years I'm pretty sure
 - TODO=Add 3 new weapons, 2 less than god finger to fill the gap and 1 more than god finger for funsies
 - TODO=Revamp math on status effects
 - TODO=Perhaps a complete rebalancing is in order
