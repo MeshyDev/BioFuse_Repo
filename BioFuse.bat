@@ -1764,7 +1764,7 @@ goto Battle
 :: FIXME
 :getEP
 :: Subroutine
-if %nulbool% == 2  call bin/battle/getFire.bat
+if %nulbool% == 2 call bin/battle/getFire.bat
 if %nulbool% == 3 call bin/battle/getHPdrain.bat 
 exit /b
 
@@ -1834,7 +1834,7 @@ echo You feel rejuvenated^! (EP Restored)
 pause 
 call bin/battle/getBlock.bat
 if %resetSwitch% == 0 call bin/battle/getEATK.bat
-if %resetSwitch% == 2 call bin/battle/getEATK.bat 
+if %resetSwitch% == 2 call bin/battle/getEATK.bat
 set /a eppot=%eppot%-1
 pause
 cls
@@ -2127,7 +2127,7 @@ echo 6) Bot Buster (+115 DMG, 45000 Nodes)
 echo 7) Portable Death Laser (+750 DMG, 750000 Nodes)
 echo 8) +1 EP Potion (50 Nodes) 
 echo 9) +1 HP Potion (25 Nodes)
-echo 10) Imbue Weapon
+if %level% GEQ 30 echo 10) Imbue Weapon
 if %level% GEQ 100 echo 11) God's Finger (+3500 DMG, 1000000 Nodes)
 if "%lbnam%" == "TheLoof" echo Finger) God's Middle Finger (+5500 DMG, for the chosen one)
 echo back) Back to map
@@ -2142,7 +2142,7 @@ if %shopMenu% == 6 set resetSwitch=8 && call bin/item/shopKeep.bat && goto Shop_
 if %shopMenu% == 7 set resetSwitch=9 && call bin/item/shopKeep.bat && goto Shop_Menu
 if %shopMenu% == 8 set resetSwitch=6 && call bin/item/shopKeep.bat && goto Shop_Menu
 if %shopMenu% == 9 set resetSwitch=5 && call bin/item/shopKeep.bat && goto Shop_Menu
-if %shopMenu% == 10 goto imbueWep
+if %level% GEQ 30 if %shopMenu% == 10 goto imbueWep
 if %level% GEQ 100 if %shopMenu% == 11 set resetSwitch=10 && call bin/item/shopKeep.bat && goto Shop_Menu
 if "%lbnam%" == "TheLoof" if "%shopMenu%" == "Finger" set resetSwitch=10 && call bin/item/shopKeep.bat && goto Shop_Menu
 if %shopMenu% == back goto Map
@@ -2184,6 +2184,9 @@ echo remember where I left all the code lol
 echo.
 echo In the meantime should I ever make this happen again, I'd just rely
 echo on GameJolt to update everything. 
+echo.
+echo If you're a good nougat though, you should actually visit my Github.
+echo         https://github.com/MeshyDev/BioFuse_Repo
 pause 
 goto start
 ::                                      I MIDDLE
