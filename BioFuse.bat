@@ -1023,7 +1023,7 @@ echo 5. Deep Forest
 echo 6. Junkyard
 echo 7. Trainyard
 echo 8. Shop
-if %level% GEQ 85 echo 9. President's Office
+if %level% GEQ 30 echo 9. President's Office
 if %nulbool%==1 echo 10. Debug/Fight Menu
 set /p M_Inp=::
 if %M_Inp% == 1 (
