@@ -1,3 +1,5 @@
+:: This should only be called! This is a subroutine, not a fully accessible block. 
+
 set nodesGained=0
 set expGained=0
 
