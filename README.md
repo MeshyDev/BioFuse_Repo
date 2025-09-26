@@ -10,6 +10,8 @@ Seriously, it's gonna be pretty cool.
 Current changes so far:
 **1.10.0**
 
+1.10.0
+
 - Added a level scaling system that triggers at Level 30. Starts at 2 @ lvl 30. It increments by 1 every 3 levels after 30. 
 - Added a line to Character Stats page that shows "Enemy Aggravation Level".
 - Added a cutscene at Level 30 involving the Shopkeep
@@ -21,3 +23,11 @@ Current changes so far:
 - Added 283 new lines of Custom Death Messages. 
 - Added 3 new tiers of CDM's based on how much killing you've done :) 
 - Added ability to test CDM tiers in Debug Room
+- Changed how the Finger's effect works, later levels will love it
+- Imbuing weapons has been locked to level 30+
+- Presidents Office now shows up at level 30, however I don't think you'll survive it
+TODO=Add 3 new weapons, 2 less than god finger to fill the gap and 1 more than god finger for funsies
+TODO=Revamp math on status effects
+TODO=Perhaps a complete rebalancing is in order
+TODO=Add 5 new enemies per level 
+TODO=Restrict certain locations to certain levels
