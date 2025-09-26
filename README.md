@@ -26,8 +26,8 @@ Current changes so far:
 - Changed how the Finger's effect works, later levels will love it
 - Imbuing weapons has been locked to level 30+
 - Presidents Office now shows up at level 30, however I don't think you'll survive it
-TODO=Add 3 new weapons, 2 less than god finger to fill the gap and 1 more than god finger for funsies
-TODO=Revamp math on status effects
-TODO=Perhaps a complete rebalancing is in order
-TODO=Add 5 new enemies per level 
-TODO=Restrict certain locations to certain levels
+- TODO=Add 3 new weapons, 2 less than god finger to fill the gap and 1 more than god finger for funsies
+- TODO=Revamp math on status effects
+- TODO=Perhaps a complete rebalancing is in order
+- TODO=Add 5 new enemies per level 
+- TODO=Restrict certain locations to certain levels
