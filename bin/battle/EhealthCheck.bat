@@ -65,8 +65,7 @@ set /a EcurrentHP=%EcurrentHP% - %ebatteredDMG%
 if %nulbool% == 1 set testvar=1 && echo Made it to test, enemy HP check %testvar% && pause &&  set /a testvar=%testvar% + 1 
 
 if %EhealthStatus% == Dying (
-echo %enemy%'s wounds look pretty fatal. 
-echo.
+echo %enemy%'s wounds look pretty fatal.
 )
 if %nulbool% == 1 set testvar=1 && echo Made it to test, enemy HP success %testvar% && pause &&  set /a testvar=%testvar% + 1 
 
