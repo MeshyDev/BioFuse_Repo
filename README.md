@@ -31,10 +31,10 @@ Current changes so far:
 - Added flavor text for when enemy is either at 0 HP and attacks, or below 0 HP
 ---
 ## TODO! I'm trying to eventually complete these <3
--[ ] Add 3 new weapons, 2 less than god finger to fill the gap and 1 more than god finger for funsies
--[ ] Revamp math on status effects
--[ ] Add one more status effect modifier for mobs, this means that instead of a mob ceasing to be sick when 
+- Add 3 new weapons, 2 less than god finger to fill the gap and 1 more than god finger for funsies
+- Revamp math on status effects
+- Add one more status effect modifier for mobs, this means that instead of a mob ceasing to be sick when 
 engulfed in flames, it'll be burning AND sick. I think I might make the enemies heal spell cure sickness *shrug*
--[ ] Perhaps a complete rebalancing is in order
--[ ] Add 5 new enemies per level 
--[ ] Restrict certain locations to certain levels
+- Perhaps a complete rebalancing is in order
+- Add 5 new enemies per level 
+- Restrict certain locations to certain levels
