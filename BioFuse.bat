@@ -1304,7 +1304,7 @@ if %CDMRand% == 26 echo Goodbye %enemy%, we hardly knew ye. && pause && goto A_M
 if %CDMRand% == 27 echo %enemy% ceases to exist in every timeline. && pause && goto A_Menu
 if %CDMRand% == 28 echo That was overkill. %enemy% is dust. && pause && goto A_Menu
 if %CDMRand% == 29 echo %enemy% evaporated like spilled soda. && pause && goto A_Menu
-if %CDMRand% == 30 echo %enemy% fell down, got up, and fell down again—permanently. && pause && goto A_Menu
+if %CDMRand% == 30 echo %enemy% fell down, got up, and fell down again-permanently. && pause && goto A_Menu
 if %CDMRand% == 31 echo You've ruined %enemy%'s subscription to life. && pause && goto A_Menu
 if %CDMRand% == 32 echo %enemy% has been voted off the island. && pause && goto A_Menu
 if %CDMRand% == 33 echo Wow, %enemy% didn't even drop good loot. && pause && goto A_Menu
@@ -1490,14 +1490,14 @@ goto CustomDeathMessage
 
 :CDMStage3
 :: Stage 3, inner monologue calls player out for the massacre
-if %CDMRand% == 1 echo You're cruel. && pause && echo Not powerful, not clever—just cruel. && pause && goto A_Menu
+if %CDMRand% == 1 echo You're cruel. && pause && echo Not powerful, not clever-just cruel. && pause && goto A_Menu
 if %CDMRand% == 2 echo Another one? && pause && echo Do you even remember their faces anymore? && pause && goto A_Menu
 if %CDMRand% == 3 echo You don't fight to survive. && pause && echo You fight because you like it. && pause && goto A_Menu
 if %CDMRand% == 4 echo The blood on your hands doesn't wash away. && pause && echo Not after ninety-nine kills. && pause && echo Not ever. && pause && goto A_Menu
 if %CDMRand% == 5 echo Was that necessary? && pause && echo Or did you just enjoy it? && pause && goto A_Menu
 if %CDMRand% == 6 echo You've stopped killing enemies. && pause && echo Now you're killing excuses. && pause && goto A_Menu
 if %CDMRand% == 7 echo Don't look away. && pause && echo This death is yours. && pause && goto A_Menu
-if %CDMRand% == 8 echo Tell me—do you even feel anything anymore? && pause && goto A_Menu
+if %CDMRand% == 8 echo Tell me-do you even feel anything anymore? && pause && goto A_Menu
 if %CDMRand% == 9 echo Heroes don't leave piles of corpses. && pause && echo So what does that make you? && pause && goto A_Menu
 if %CDMRand% == 10 echo Look at you. && pause && echo Level %level% and hollow. && pause && echo What a legacy. && pause && goto A_Menu
 if %CDMRand% == 11 echo You laugh at the weak. && pause && echo But the truth is, you need them. && pause && echo Without them, you're nothing. && pause && goto A_Menu
@@ -1510,19 +1510,19 @@ if %CDMRand% == 17 echo You should've stopped long ago. && pause && echo Now the
 if %CDMRand% == 18 echo Another corpse at your feet. && pause && echo Another excuse in your mouth. && pause && goto A_Menu
 if %CDMRand% == 19 echo You could've let it live. && pause && echo But you didn't. && pause && goto A_Menu
 if %CDMRand% == 20 echo Do you feel proud? && pause && echo Or just… empty? && pause && goto A_Menu
-if %CDMRand% == 21 echo You've killed so many. && pause && echo But tell me—what did it change? && pause && goto A_Menu
+if %CDMRand% == 21 echo You've killed so many. && pause && echo But tell me-what did it change? && pause && goto A_Menu
 if %CDMRand% == 22 echo The world isn't safer. && pause && echo You just made it quieter. && pause && goto A_Menu
 if %CDMRand% == 23 echo Every victory looks the same now. && pause && echo A smear of red, a pile of nothing. && pause && goto A_Menu
 if %CDMRand% == 24 echo You've stopped chasing glory. && pause && echo Now you only chase blood. && pause && goto A_Menu
 if %CDMRand% == 25 echo Do you think anyone is proud of you? && pause && echo Or do they whisper instead? && pause && goto A_Menu
 if %CDMRand% == 26 echo You win every fight. && pause && echo And lose a little more of yourself each time. && pause && goto A_Menu
 if %CDMRand% == 27 echo Not every kill is justice. && pause && echo This one was just indulgence. && pause && goto A_Menu
-if %CDMRand% == 28 echo You've been here before. && pause && echo The battlefield never changes—only the bodies. && pause && goto A_Menu
+if %CDMRand% == 28 echo You've been here before. && pause && echo The battlefield never changes-only the bodies. && pause && goto A_Menu
 if %CDMRand% == 29 echo Even victory feels hollow now, doesn't it? && pause && goto A_Menu
 if %CDMRand% == 30 echo You're not unstoppable. && pause && echo You're just unwilling to stop. && pause && goto A_Menu
 if %CDMRand% == 31 echo Another death for the pile. && pause && echo You stopped counting ages ago. && pause && goto A_Menu
 if %CDMRand% == 32 echo Did you notice the fear in its eyes? && pause && echo Or were you too busy smiling? && pause && goto A_Menu
-if %CDMRand% == 33 echo You tell yourself they deserved it. && pause && echo But deep down—you know better. && pause && goto A_Menu
+if %CDMRand% == 33 echo You tell yourself they deserved it. && pause && echo But deep down-you know better. && pause && goto A_Menu
 if %CDMRand% == 34 echo You could quit any time. && pause && echo But you won't, will you? && pause && goto A_Menu
 if %CDMRand% == 35 echo This isn't survival anymore. && pause && echo This is addiction. && pause && goto A_Menu
 if %CDMRand% == 36 echo Do you think the dead forgive you? && pause && echo Or do they wait for you in silence? && pause && goto A_Menu
@@ -1550,7 +1550,7 @@ if %CDMRand% == 57 echo There's no challenge left. && pause && echo Only slaught
 if %CDMRand% == 58 echo When was the last time you hesitated? && pause && goto A_Menu
 if %CDMRand% == 59 echo You don't rest. && pause && echo You only kill. && pause && goto A_Menu
 if %CDMRand% == 60 echo You call it victory. && pause && echo The rest of us call it loss. && pause && goto A_Menu
-if %CDMRand% == 61 echo Every swing, every strike—practiced cruelty. && pause && goto A_Menu
+if %CDMRand% == 61 echo Every swing, every strike-practiced cruelty. && pause && goto A_Menu
 if %CDMRand% == 62 echo You're not playing anymore. && pause && echo You're feeding. && pause && goto A_Menu
 if %CDMRand% == 63 echo Another broken body. && pause && echo Another broken piece of you. && pause && goto A_Menu
 if %CDMRand% == 64 echo It was never about survival. && pause && echo It was about control. && pause && goto A_Menu
@@ -1570,7 +1570,7 @@ if %CDMRand% == 77 echo Death follows you. && pause && echo Not as an enemy, but
 if %CDMRand% == 78 echo Every step you take is over graves now. && pause && goto A_Menu
 if %CDMRand% == 79 echo You didn't just kill it. && pause && echo You erased it. && pause && goto A_Menu
 if %CDMRand% == 80 echo You've built your throne out of corpses. && pause && echo Comfortable? && pause && goto A_Menu
-if %CDMRand% == 81 echo You're cruel. && pause && echo Not powerful, not clever—just cruel. && pause && goto A_Menu
+if %CDMRand% == 81 echo You're cruel. && pause && echo Not powerful, not clever-just cruel. && pause && goto A_Menu
 if %CDMRand% == 82 echo You could stop at any time. && pause && echo But you won't. && pause && echo You like this too much. && pause && goto A_Menu
 if %CDMRand% == 83 echo You've stopped noticing the screams. && pause && echo That should terrify you. && pause && goto A_Menu
 if %CDMRand% == 84 echo Mercy is a word you forgot. && pause && goto A_Menu
