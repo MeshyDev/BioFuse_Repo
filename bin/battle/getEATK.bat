@@ -20,7 +20,9 @@ if %level% GEQ 30 set /a Eattack=%EattackToss% * %scalingfactor%
 :: since it makes the attacks completely broken at later stages... I've been testing the 
 :: extreme limits throughout the years and I keep finding things. 
 
-if %resetSwitch% == 0 echo %enemy% attacks! It did %Eattack% damage to you!
+if %resetSwitch% == 0 if %EcurrentHP% GTR 0 echo %enemy% attacks! It did %Eattack% damage to you!
+if %resetSwitch% == 0 if %EcurrentHP% == 0 echo %enemy% is nearly gone, yet it lunges out and strikes you! It did %Eattack% damage to you! 
+if %resetSwitch% == 0 if %EcurrentHP% LSS 0 echo It's beaten, battered and dying and yet with its final breath, %enemy% attacks! && echo It did %Eattack% damage to you! 
 if %resetSwitch% == 0 set /a currentHP=%currentHP% - %Eattack
 :: resetSwitch 0 is a completely normal attack, effectively default state
 :: resetSwitch 1 is used elsewhere so...
