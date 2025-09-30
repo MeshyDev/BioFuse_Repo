@@ -27,8 +27,8 @@ set Edmg=60
 )
 if %enemyFind%==3 (
 set enemy=Specialized Railyard Repairbot
-set canCast=0
-set castLvl=0
+set canCast=1
+set castLvl=3
 set EcurrentHP=150
 set EmaxHP=150
 set EcurrentEP=500
@@ -38,7 +38,7 @@ set Edmg=70
 if %enemyFind%==4 (
 set enemy=Enhanced Railyard Repairbot
 set canCast=1
-set castLvl=2
+set castLvl=3
 set EcurrentHP=180
 set EmaxHP=180
 set EcurrentEP=500
@@ -48,7 +48,7 @@ set Edmg=100
 if %enemyFind%==5 (
 set enemy=Pristine Government Android
 set canCast=1
-set castLvl=3
+set castLvl=4
 set EcurrentHP=500
 set EmaxHP=500
 set EcurrentEP=1000
