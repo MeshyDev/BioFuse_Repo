@@ -7,38 +7,52 @@ Seriously, it's gonna be pretty cool.
 
 ******
 
-Current changes so far:
-**1.10.0**
+# 🕹️ Game Changelog
 
-1.10.0
+Welcome to the official changelog for **Version 1.10.0**. This update introduces major gameplay enhancements, new features, and a heap of flavor and bug fixes. Buckle up—Level 30 just got interesting.
 
-- Added a level scaling system that triggers at Level 30. Starts at 2 @ lvl 30. It increments by 1 every 3 levels after 30. 
-- Added a line to Character Stats page that shows "Enemy Aggravation Level".
-- Added a cutscene at Level 30 involving the Shopkeep
-- Added logic to trigger cutscene for people level 30+
-- Changed how Corruption works on enemies (instead of self destructing, it only gets minorly hurt)
-- Fixed a bug where God Finger wouldn't show up as equipped
-- Tweaked text for imbuing finger energy
-- Fixed a case where CDM wasn't processing correctly. 
-- Added 283 new lines of Custom Death Messages. 
-- Added 3 new tiers of CDM's based on how much killing you've done :) 
-- Added ability to test CDM tiers in Debug Room
-- Changed how the Finger's effect works, later levels will love it
-- Imbuing weapons has been locked to level 30+
-- Presidents Office now shows up at level 30, however I don't think you'll survive it
-- Fixed a bug where swinging your fists wouldn't show up as expected
-- Changed the text on the fists after 10+ years I'm pretty sure
-- Added flavor text for when enemy is either at 0 HP and attacks, or below 0 HP
-- Added several flavor texts and different mechanics for when the enemy uses spells at 0 hp or below
-- Increased EP usage of Level 3 spells from 25 to 40
-- Increased EP usage of Level 4 spells from 30 to 50
-- Made EP Spell page more dynamic, having spells appear depending on how much EP you currently have
-- Added a new spell, Guaranteed Crit! The name is self explanatory, except you can only use it if you have 150 EP.
-- Fixed enemies not being able to use spells if you use a spell
-- Pristine Government Android now casts level 4 spells instead of level 3
-- Enhanced Railyard Repairbot now casts level 3 spells instead of level 2
-- Specialized Railyard Repairbot can now cast, and casts at level 3
 ---
+
+## 🧠 Version 1.10.0
+
+### 🚀 New Features
+- **Level Scaling System**: Activates at Level 30, starting at 2. Increases by 1 every 3 levels thereafter.
+- **Enemy Aggravation Level**: Now displayed on the Character Stats page.
+- **Level 30 Cutscene**: New cutscene featuring the Shopkeep, triggered for players Level 30+.
+- **Custom Death Messages (CDM)**:
+  - Added 283 new lines.
+  - Introduced 3 new tiers based on kill count.
+  - Debug Room now supports CDM tier testing.
+- **New Spell – Guaranteed Crit!**: Requires 150 EP. Delivers exactly what it promises.
+
+### 🛠 Gameplay Changes & Improvements
+- **Corruption Mechanic**: Enemies no longer self-destruct; they now take minor damage.
+- **Finger Effect**: Reworked for better scaling at higher levels.
+- **Weapon Imbuing**: Now restricted to Level 30+.
+- **Presidents Office**: Unlocks at Level 30. Survival not guaranteed.
+- **EP Spell System (Player)**:
+  - Spell page now dynamically displays spells based on current EP.
+- **Enemy Spellcasting**:
+  - Level 3 spell EP cost increased from 25 → 40.
+  - Level 4 spell EP cost increased from 30 → 50.
+  - Fixed issue preventing enemies from casting spells after player spell use.
+  - Pristine Government Android now casts Level 4 spells.
+  - Enhanced Railyard Repairbot upgraded to Level 3 spells.
+  - Specialized Railyard Repairbot now casts Level 3 spells.
+
+### ✨ Flavor & Text Updates
+- Added flavor text for enemies attacking at 0 or negative HP.
+- Expanded spellcasting flavor for enemies at 0 or negative HP.
+- Updated imbuing finger energy text.
+- Revised fist-swinging text (finally, after 10+ years!).
+
+### 🐛 Bug Fixes
+- Fixed God Finger not appearing as equipped.
+- Fixed CDM processing issues.
+- Fixed fist-swinging visuals not displaying correctly.
+
+---
+
 ## TODO! I'm trying to eventually complete these <3
 - Add 3 new weapons, 2 less than god finger to fill the gap and 1 more than god finger for funsies
 - Revamp math on status effects
@@ -47,3 +61,5 @@ engulfed in flames, it'll be burning AND sick. I think I might make the enemies 
 - Perhaps a complete rebalancing is in order
 - Add 5 new enemies per level 
 - Restrict certain locations to certain levels
+---
+If you encounter any issues or have feedback, feel free to open an issue or start a discussion. Thanks for playing!
