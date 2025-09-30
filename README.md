@@ -7,12 +7,6 @@ Seriously, it's gonna be pretty cool.
 
 ******
 
-# 🕹️ Game Changelog
-
-Welcome to the official changelog for **Version 1.10.0**. This update introduces major gameplay enhancements, new features, and a heap of flavor and bug fixes. Buckle up—Level 30 just got interesting.
-
----
-
 ## 🧠 Version 1.10.0
 
 ### 🚀 New Features
