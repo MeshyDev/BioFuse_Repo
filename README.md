@@ -6,7 +6,7 @@ This is the branch for [![1.10.0](https://img.shields.io/badge/1.10.0-orange)](h
 Seriously, it's gonna be pretty cool.
 
 ******
-## ![Version](https://img.shields.io/badge/version-1.10.0%20in%20progress...-orange)
+![Version](https://img.shields.io/badge/version-1.10.0%20in%20progress...-orange)
 
 ### 🚀 New Features
 - **Level Scaling System**: Activates at Level 30, starting at 2. Increases by 1 every 3 levels thereafter.
