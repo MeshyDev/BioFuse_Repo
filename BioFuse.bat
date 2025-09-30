@@ -1298,7 +1298,7 @@ if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Woodpecker" echo How'd yo
 if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Hare" echo That was a funny looking rabbit. && echo It was a hairy hare too. && echo Does that make you... && pause && echo Scared? && pause && goto A_Menu
 if %CDMRand% == 22 echo As it perishes, papers fall from its clutched arms revealing invites to a retirement party. && pause && echo One of them was for you... && pause && goto A_Menu
 if %CDMRand% == 23 echo %enemy% spontaneously combusts. && pause && goto A_Menu
-if %CDMRand% == 24 echo %enemy% collapsed like a bad soufflé. && pause && goto A_Menu
+if %CDMRand% == 24 echo %enemy% collapsed like a bad souffle. && pause && goto A_Menu
 if %CDMRand% == 25 echo %enemy% has been thoroughly un-alived. && pause && goto A_Menu
 if %CDMRand% == 26 echo Goodbye %enemy%, we hardly knew ye. && pause && goto A_Menu
 if %CDMRand% == 27 echo %enemy% ceases to exist in every timeline. && pause && goto A_Menu
@@ -1706,20 +1706,26 @@ cls
 echo EP: %currentEP% / %MaxEP% 
 echo %enemy% HP: %EcurrentHP%/%EmaxHP% 
 echo. 
-echo 1) Flame Attack^! 
-echo You cast a fireball, does 0-%mDMG% on impact and 
-echo does between 0-%mDmg% damage every round until the
-echo status effect changes or the enemy dies.
-echo Costs: 35 EP
+if %currentEP% LSS 35 echo You don't have enough EP for any spells!
+if %currentEP% GEQ 35 echo 1) Flame Attack! 
+if %currentEP% GEQ 35 echo You cast a fireball, does 0-%mDMG% on impact and 
+if %currentEP% GEQ 35 echo does between 0-%mDmg% damage every round until the
+if %currentEP% GEQ 35 echo status effect changes or the enemy dies.
+if %currentEP% GEQ 35 echo Costs: 35 EP
+if %currentEP% GEQ 35 echo.
+if %currentEP% GEQ 50 echo 2) Life Drain! 
+if %currentEP% GEQ 50 echo Drains between 0-%maxHP% HP and adds it to your own. 
+if %currentEP% GEQ 50 echo Costs: 50 EP 
+if %currentEP% GEQ 50 echo. 
+if %currentEP% GEQ 150 echo 3) Guaranteed Crit
+if %currentEP% GEQ 150 echo Guarantees you one critical hit!
+if %currentEP% GEQ 150 echo Costs: 150 EP
 echo.
-echo 2) Life Drain^! 
-echo Drains between 0-%maxHP% HP and adds it to your own. 
-echo Costs: 50 EP 
-echo. 
 echo back) Return to previous screen
 set /p input=Choice?:: 
-if %input% == 1 goto mgcFinFire
-if %input% == 2 goto mgcFinDrain
+if %currentEP% GEQ 35 if %input% == 1 goto mgcFinFire
+if %currentEP% GEQ 50 if %input% == 2 goto mgcFinDrain
+if %currentEP% GEQ 150 if %input% == 3 goto mgcFinCrit
 if %input% == back cls && goto Battle 
 echo That was not a valid option^!  
 pause 
@@ -1734,9 +1740,12 @@ call bin/battle/healthCheck.bat
 call bin/battle/EhealthCheck.bat
 call bin/battle/healthRandom.bat
 call :getEP
+set /a mgkChnc=%RANDOM% * 4 / 32768 + 1
+if %mgkChnc% == 1 set resetSwitch=3
 call bin/battle/getBlock.bat
 if %resetSwitch% == 0 call bin/battle/getEATK.bat
 if %resetSwitch% == 2 call bin/battle/getEATK.bat
+if %resetSwitch% == 3 call bin/battle/getEmgk.bat
 pause
 cls
 set resetSwitch=0 
@@ -1751,9 +1760,46 @@ call bin/battle/healthCheck.bat
 call bin/battle/EhealthCheck.bat
 call bin/battle/healthRandom.bat
 call :getEP
+set /a mgkChnc=%RANDOM% * 4 / 32768 + 1
+if %mgkChnc% == 1 set resetSwitch=3
 call bin/battle/getBlock.bat
 if %resetSwitch% == 0 call bin/battle/getEATK.bat
 if %resetSwitch% == 2 call bin/battle/getEATK.bat
+if %resetSwitch% == 3 call bin/battle/getEmgk.bat
+pause
+cls
+set resetSwitch=0 
+set nulbool=0
+goto Battle
+
+:mgcFinCrit
+cls
+set nulbool=4
+set /a currentEP=%currentEP% - 150
+call bin/battle/drawBattle.bat
+call bin/battle/healthCheck.bat
+call bin/battle/EhealthCheck.bat
+call bin/battle/healthRandom.bat
+call bin/battle/getCritDMG.bat
+if not %weaponarray% == 8 (
+if %critDMG% GTR 450 echo You put your back into your attack!
+if %critDMG% GTR 1000 echo Your body flexes with the force of the attack.
+if %critDMG% GTR 5000 echo God forbid something survives after this crit. 
+if %critDMG% GTR 30000 echo The wind ripples around you dramatically!
+if %critDMG% GTR 100000 echo You are now outputting enough power to destroy the planet.
+if %critDMG% GTR 200000 echo Uncle, are you nuking your enemies again?
+) else (
+if %critDMG% GTR 10000 echo Gods finger twitches...
+if %critDMG% GTR 100000 echo Gods finger flexes...
+if %critDMG% GTR 900000 echo GODS FINGER SMITES THEE!
+)
+echo You did %critDMG% damage to %enemy%^!
+set /a mgkChnc=%RANDOM% * 4 / 32768 + 1
+if %mgkChnc% == 1 set resetSwitch=3
+call bin/battle/getBlock.bat
+if %resetSwitch% == 0 call bin/battle/getEATK.bat
+if %resetSwitch% == 2 call bin/battle/getEATK.bat
+if %resetSwitch% == 3 call bin/battle/getEmgk.bat
 pause
 cls
 set resetSwitch=0 
