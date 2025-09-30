@@ -29,6 +29,15 @@ Current changes so far:
 - Fixed a bug where swinging your fists wouldn't show up as expected
 - Changed the text on the fists after 10+ years I'm pretty sure
 - Added flavor text for when enemy is either at 0 HP and attacks, or below 0 HP
+- Added several flavor texts and different mechanics for when the enemy uses spells at 0 hp or below
+- Increased EP usage of Level 3 spells from 25 to 40
+- Increased EP usage of Level 4 spells from 30 to 50
+- Made EP Spell page more dynamic, having spells appear depending on how much EP you currently have
+- Added a new spell, Guaranteed Crit! The name is self explanatory, except you can only use it if you have 150 EP.
+- Fixed enemies not being able to use spells if you use a spell
+- Pristine Government Android now casts level 4 spells instead of level 3
+- Enhanced Railyard Repairbot now casts level 3 spells instead of level 2
+- Specialized Railyard Repairbot can now cast, and casts at level 3
 ---
 ## TODO! I'm trying to eventually complete these <3
 - Add 3 new weapons, 2 less than god finger to fill the gap and 1 more than god finger for funsies
