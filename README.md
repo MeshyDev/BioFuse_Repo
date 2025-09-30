@@ -1,13 +1,12 @@
 # Welcome to the Biofuse Repo
 
-I've compiled a version history from 1.2.0 => current.
+I've compiled a version history from [![1.2.0](https://img.shields.io/badge/1.2.0-purple)](https://github.com/MeshyDev/BioFuse_Repo/commit/0c287aa0aa7d741304aed0a55f97146b0272a5db) => current.
 
-This is the branch for 1.10.0, it's being developed alongside another project *relating* to Biofuse.
+This is the branch for [![1.10.0](https://img.shields.io/badge/1.10.0-orange)](https://github.com/MeshyDev/BioFuse_Repo/compare/main...1.10.0?diff=split&w), it's being developed alongside another project *relating* to Biofuse.
 Seriously, it's gonna be pretty cool.
 
 ******
-
-## 🧠 Version 1.10.0
+## ![Version](https://img.shields.io/badge/version-1.10.0%20in%20progress...-orange)
 
 ### 🚀 New Features
 - **Level Scaling System**: Activates at Level 30, starting at 2. Increases by 1 every 3 levels thereafter.
@@ -47,7 +46,7 @@ Seriously, it's gonna be pretty cool.
 
 ---
 
-## TODO! I'm trying to eventually complete these <3
+## ![TODO](https://img.shields.io/badge/TODO-red) I'm trying to eventually complete these <3
 - Add 3 new weapons, 2 less than god finger to fill the gap and 1 more than god finger for funsies
 - Revamp math on status effects
 - Add one more status effect modifier for mobs, this means that instead of a mob ceasing to be sick when 
