@@ -17,6 +17,10 @@ Seriously, it's gonna be pretty cool.
   - Introduced 3 new tiers based on kill count.
   - Debug Room now supports CDM tier testing.
 - **New Spell – Guaranteed Crit!**: Requires 150 EP. Delivers exactly what it promises.
+- **New Spell - Corruption**:
+Requires 50 EP. Corrupts your enemy. Can only use while corrupted.
+- **New Spell - Presidential Corruption**:
+Requires 1 EP. ???
 
 ### 🛠 Gameplay Changes & Improvements
 - **Corruption Mechanic**: Enemies no longer self-destruct; they now take minor damage.
@@ -38,11 +42,13 @@ Seriously, it's gonna be pretty cool.
 - Expanded spellcasting flavor for enemies at 0 or negative HP.
 - Updated imbuing finger energy text.
 - Revised fist-swinging text (finally, after 10+ years!).
+- Added flavor text for really angry Car Frames
 
 ### 🐛 Bug Fixes
 - Fixed God Finger not appearing as equipped.
 - Fixed CDM processing issues.
 - Fixed fist-swinging visuals not displaying correctly.
+- Fixed an old bug in the Battle Inventory where an invalid value would either crash the game or try to use an HP potion
 
 ---
 

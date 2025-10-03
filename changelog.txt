@@ -341,6 +341,11 @@ the CustomDeathMessage script will get all upset and won't display. It works fin
 - Pristine Government Android now casts level 4 spells instead of level 3
 - Enhanced Railyard Repairbot now casts level 3 spells instead of level 2
 - Specialized Railyard Repairbot can now cast, and casts at level 3
+- Added Greater EP and HP Potions
+- Fixed an old bug where inputting an invalid command on the Battle Inventory page would either crash the game or tries to use HP Potions
+- Added new spell that can only be used while Corrupted.
+- Added new spell that can only be used while Presidentially-Corrupted
+- Added flavor text for Car Frame at certain player levels.
 TODO=Add 3 new weapons, 2 less than god finger to fill the gap and 1 more than god finger for funsies
 TODO=Revamp math on status effects
 TODO=Add one more status effect modifier for mobs, this means that instead of a mob ceasing to be sick when 
