@@ -50,6 +50,8 @@ set weaponname=Fists
 set weapondmg=0
 set weaponmod=Nothing
 set scene=0
+set geppot=0
+set ghppot=0
 
 set canCastLvl=0
 set enemySpell=nul
@@ -236,6 +238,8 @@ set /p weaponname=
 set /p weapondmg=
 set /p weaponmod=
 set /p scene=
+set /p geppot=
+set /p ghppot=
 )<bin/sav/%lbnam%.set
 :: Sets scaling factor right away. Redundant, but works.
 set /a scalingfactor=2+((%level%-30)/3)
@@ -426,6 +430,8 @@ if exist bin/sav (
 (echo %weapondmg%) >> bin/sav/%lbnam%.set
 (echo %weaponmod%) >> bin/sav/%lbnam%.set
 (echo %scene%) >> bin/sav/%lbnam%.set
+(echo %geppot%) >> bin/sav/%lbnam%.set
+(echo %hhppot%) >> bin/sav/%lbnam%.set
 ping localhost -n 2 >nul 
 echo Game successfully made and saved.
 )
@@ -1005,6 +1011,8 @@ if not exist bin/sav echo FATAL ERROR 4, system cannot save. && echo This means 
 (echo %weapondmg%) >> bin/sav/%lbnam%.set
 (echo %weaponmod%) >> bin/sav/%lbnam%.set 
 (echo %scene%) >> bin/sav/%lbnam%.set
+(echo %geppot%) >> bin/sav/%lbnam%.set
+(echo %ghppot%) >> bin/sav/%lbnam%.set
 echo Saving your game... don't close^!
 ping localhost -n 2 >nul
 echo Save complete.
@@ -1720,12 +1728,23 @@ if %currentEP% GEQ 50 echo.
 if %currentEP% GEQ 150 echo 3) Guaranteed Crit
 if %currentEP% GEQ 150 echo Guarantees you one critical hit!
 if %currentEP% GEQ 150 echo Costs: 150 EP
+if %currentEP% GEQ 150 echo.
+if %currentEP% GEQ 50 if %healthStatus% == Corrupted echo 100) CORRUPT INFECT CORRUPT INFECT
+if %currentEP% GEQ 50 if %healthStatus% == Corrupted echo CORRUPTS enemy. CORRUPTS enemy. CORRUPTS enemy.
+if %currentEP% GEQ 50 if %healthStatus% == Corrupted echo Costs: 50 EP
+if %currentEP% GEQ 50 if %healthStatus% == Corrupted echo.
+if %currentEP% GEQ 1 if %healthStatus% == Presidential-Corruption echo 101) Use the Presidents Power
+if %currentEP% GEQ 1 if %healthStatus% == Presidential-Corruption echo CORRUPTS the enemy from the power directly from the President.
+if %currentEP% GEQ 1 if %healthStatus% == Presidential-Corruption echo Costs: 1 EP
+if %currentEP% GEQ 1 if %healthStatus% == Presidential-Corruption echo.
 echo.
 echo back) Return to previous screen
 set /p input=Choice?:: 
 if %currentEP% GEQ 35 if %input% == 1 goto mgcFinFire
 if %currentEP% GEQ 50 if %input% == 2 goto mgcFinDrain
 if %currentEP% GEQ 150 if %input% == 3 goto mgcFinCrit
+if %currentEP% GEQ 50 if %healthStatus% == Corrupted if %input% == 100 goto mgcFinCORRUPT
+if %currentEP% GEQ 1 if %healthStatus% == Presidential-Corruption if %input% == 101 goto mgcFinPresidentialCORRUPT
 if %input% == back cls && goto Battle 
 echo That was not a valid option^!  
 pause 
@@ -1774,7 +1793,6 @@ goto Battle
 
 :mgcFinCrit
 cls
-set nulbool=4
 set /a currentEP=%currentEP% - 150
 call bin/battle/drawBattle.bat
 call bin/battle/healthCheck.bat
@@ -1787,7 +1805,8 @@ if %critDMG% GTR 1000 echo Your body flexes with the force of the attack.
 if %critDMG% GTR 5000 echo God forbid something survives after this crit. 
 if %critDMG% GTR 30000 echo The wind ripples around you dramatically!
 if %critDMG% GTR 100000 echo You are now outputting enough power to destroy the planet.
-if %critDMG% GTR 200000 echo Uncle, are you nuking your enemies again?
+if %critDMG% GTR 200000 echo The damage... it's crazy!!!
+if %critDMG% GTR 200000 if %EcurrentHP% GTR 0 echo And yet it survives! Hit it HARDER!
 ) else (
 if %critDMG% GTR 10000 echo Gods finger twitches...
 if %critDMG% GTR 100000 echo Gods finger flexes...
@@ -1806,6 +1825,53 @@ set resetSwitch=0
 set nulbool=0
 goto Battle
 
+:mgcFinCORRUPT
+cls
+set /a currentEP= %currentEP% - 50
+call bin/battle/drawBattle.bat
+call bin/battle/healthCheck.bat
+call bin/battle/EhealthCheck.bat
+call bin/battle/healthRandom.bat
+echo Your body twitches in unnatural ways, joints crackling violently.
+echo Suddenly, your hand reaches out toward %enemy%, CORRUPTing them!
+set EHealthStatus=Corrupted
+set /a mgkChnc=%RANDOM% * 4 / 32768 + 1
+if %mgkChnc% == 1 set resetSwitch=3
+call bin/battle/getBlock.bat
+if %resetSwitch% == 0 call bin/battle/getEATK.bat
+if %resetSwitch% == 2 call bin/battle/getEATK.bat
+if %resetSwitch% == 3 call bin/battle/getEmgk.bat
+pause
+cls
+set resetSwitch=0
+set nulbool=0
+goto Battle 
+
+:mgcFinPresidentialCORRUPT
+cls
+set /a currentEP= %currentEP% - 1
+call bin/battle/drawBattle.bat
+call bin/battle/healthCheck.bat
+call bin/battle/EhealthCheck.bat
+call bin/battle/healthRandom.bat
+echo Your body is surrounded in a dark miasma...
+if %level% LEQ 30 echo The President: %lbnam%, you cannot use my power.
+if %level% GEQ 31 echo Your body contorts, but due to your becoming stronger...
+if %level% GEQ 31 if EhealthStatus == Presidential-Corruption echo The enemy is already corrupted this way... goto Cbypass
+if %level% GEQ 31 set EhealthStatus=Presidential-Corruption
+if %level% GEQ 31 echo The miasma blurs your vision, but you know for a fact %enemy% is more corrupt than usual.
+:Cbypass
+set /a mgkChnc=%RANDOM% * 4 / 32768 + 1
+if %mgkChnc% == 1 set resetSwitch=3
+call bin/battle/getBlock.bat
+if %resetSwitch% == 0 call bin/battle/getEATK.bat
+if %resetSwitch% == 2 call bin/battle/getEATK.bat
+if %resetSwitch% == 3 call bin/battle/getEmgk.bat
+pause
+cls
+set resetSwitch=0
+set nulbool=0
+goto Battle
 
 :: FIXME
 :getEP
@@ -1827,12 +1893,16 @@ echo Status: %healthStatus%
 echo.
 echo 1:HP Potions: %hppot%
 echo 2:EP Potions: %eppot%
-echo 3:Back
+echo 3:Greater HP Potions: %ghppot%
+echo 4:Greater EP Potions: %geppot%
+echo 5:Back
 set /p input=Choose one::
 if %input%==1 goto hppot
 if %input%==2 goto eppot
-if %input%==3 cls && goto Battle
-
+if %input%==3 goto ghppot
+if %input%==4 goto geppot
+if %input%==5 cls && goto Battle
+goto Battle_Inventory
 
 :hppot
 if %hppot% LEQ 0 (
@@ -2162,6 +2232,7 @@ cls
 echo Welcome to the shop^! Here you can buy all of your weapon needs.
 echo %lbnam% has %Nodes% nodes available.
 echo You have %eppot% EP potions and %hppot% potions.
+echo You have %geppot% Greater EP Potions and %ghppot% Greater HP Potions
 echo.
 echo What can we get for you?
 echo 1) Dagger (+5 DMG, 150 Nodes)
@@ -2171,10 +2242,12 @@ echo 4) Rocket Launcher (+35 DMG, 5000 Nodes)
 echo 5) Death Machine (+65 DMG, 10000 Nodes)
 echo 6) Bot Buster (+115 DMG, 45000 Nodes)
 echo 7) Portable Death Laser (+750 DMG, 750000 Nodes)
-echo 8) +1 EP Potion (50 Nodes) 
-echo 9) +1 HP Potion (25 Nodes)
-if %level% GEQ 30 echo 10) Imbue Weapon
-if %level% GEQ 100 echo 11) God's Finger (+3500 DMG, 1000000 Nodes)
+echo 8) +1 EP Potion (50 Nodes) (Restores 40)
+echo 9) +1 HP Potion (25 Nodes (Restores 40)
+echo 10) +1 Greater EP Potion (750 Nodes) (Restores 500)
+echo 11) +1 Greater HP Potion (500 Nodes) (Restores 500)
+if %level% GEQ 30 echo 12) Imbue Weapon
+if %level% GEQ 100 echo 13) God's Finger (+3500 DMG, 1000000 Nodes)
 if "%lbnam%" == "TheLoof" echo Finger) God's Middle Finger (+5500 DMG, for the chosen one)
 echo back) Back to map
 echo.
@@ -2188,8 +2261,10 @@ if %shopMenu% == 6 set resetSwitch=8 && call bin/item/shopKeep.bat && goto Shop_
 if %shopMenu% == 7 set resetSwitch=9 && call bin/item/shopKeep.bat && goto Shop_Menu
 if %shopMenu% == 8 set resetSwitch=6 && call bin/item/shopKeep.bat && goto Shop_Menu
 if %shopMenu% == 9 set resetSwitch=5 && call bin/item/shopKeep.bat && goto Shop_Menu
-if %level% GEQ 30 if %shopMenu% == 10 goto imbueWep
-if %level% GEQ 100 if %shopMenu% == 11 set resetSwitch=10 && call bin/item/shopKeep.bat && goto Shop_Menu
+if %shopMenu% == 10 set resetSwitch=16 && call bin/item/shopKeep.bat && goto Shop_Menu
+if %shopMenu% == 11 set resetSwitch==17 && call bin/item/shopKeep.bat && goto Shop_Menu
+if %level% GEQ 30 if %shopMenu% == 12 goto imbueWep
+if %level% GEQ 100 if %shopMenu% == 13 set resetSwitch=10 && call bin/item/shopKeep.bat && goto Shop_Menu
 if "%lbnam%" == "TheLoof" if "%shopMenu%" == "Finger" set resetSwitch=10 && call bin/item/shopKeep.bat && goto Shop_Menu
 if %shopMenu% == back goto Map
 if %shopMenu% == Back goto Map
@@ -2277,7 +2352,7 @@ if %specialmsg% == 2 echo (1.3.0 - 1.5.0)I won't lie, I have no idea how this wi
 if %specialmsg% == 3 echo (1.2.0 - 1.2.1)This can go either way. I won't support anything on the ye olde biofuse saves.
 if %specialmsg% == 4 echo (1.8.0)Due to an oversight on my part, saves coming from 1.7.2 may suffer slight corruption. The 1.8.1 patch fixes that.
 if %specialmsg% == 5 echo (1.8.0-1.8.2)Weapon has been unequipped to prevent data loss from new weapon in 1.8.3
-if %specialmsg% == 6 echo (1.10.0)Added a scene variable thats necessary for showing cutscenes to people level 30+
+if %specialmsg% == 6 echo (1.10.0)Added several new variables! More save updating! Somehow though, I feel like nobody will see this stuff.
 if %specialmsg% == 7 echo (1.10.x+)But.. I haven't even got to that part yet. Also unlikely...
 if %specialmsg% == 0 echo (?.?.?)BioFuse couldn't identify what version this save is. Is it from 0.2.7? This fixer WILL erase everything and start the file anew. && echo If you don't want this, exit the game.
 pause 
