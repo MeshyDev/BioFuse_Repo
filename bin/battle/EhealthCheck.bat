@@ -87,6 +87,7 @@ if %scalingfactor% LEQ 10 echo %enemy% looks pretty angry specifically at you.
 if %scalingfactor% LEQ 16 echo %enemy% has grudges. Who did you kill?
 if %scalingfactor% LEQ 20 echo %enemy% looks furious!
 if %scalingfactor% GEQ 23 echo %enemy% and anything left alive wants you dead.
+if %scalingfactor% GEQ 23 if "%enemy%" == "Car Frame" echo Buuuut... it's a Car Frame so... are you losing it?
 if %scalingfactor% GEQ 40 echo Things don't look right anywhere anymore...
 )
 
