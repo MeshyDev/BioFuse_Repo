@@ -2,7 +2,7 @@
 
 I've compiled a version history from [![1.2.0](https://img.shields.io/badge/1.2.0-purple)](https://github.com/MeshyDev/BioFuse_Repo/commit/0c287aa0aa7d741304aed0a55f97146b0272a5db) => current.
 
-There is a branch for [![1.10.0](https://img.shields.io/badge/1.10.0-orange)](https://github.com/MeshyDev/BioFuse_Repo/compare/main...1.10.0?diff=split&w), it's being developed alongside another project *relating* to Biofuse.
+There is a branch for [![1.10.0](https://img.shields.io/badge/1.10.0-orange)]([https://github.com/MeshyDev/BioFuse_Repo/compare/main...1.10.0?diff=split&w](https://github.com/MeshyDev/BioFuse_Repo/tree/1.10.0)), it's being developed alongside another project *relating* to Biofuse.
 Seriously, it's gonna be pretty cool.
 ******
 [![Version](https://img.shields.io/badge/version-1.9.0-blue)](https://github.com/MeshyDev/BioFuse_Repo/tree/main)
