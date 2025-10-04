@@ -58,7 +58,9 @@ Requires 1 EP. ???
 - Add one more status effect modifier for mobs, this means that instead of a mob ceasing to be sick when 
 engulfed in flames, it'll be burning AND sick. I think I might make the enemies heal spell cure sickness *shrug*
 - Perhaps a complete rebalancing is in order
-- Add 5 new enemies per level 
+- Add 1 new enemy per zone
+- Add 1 new zone  
 - Restrict certain locations to certain levels
+- Redesign key menus
 ---
 If you encounter any issues or have feedback, feel free to open an issue or start a discussion. Thanks for playing!

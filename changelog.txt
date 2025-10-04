@@ -351,5 +351,7 @@ TODO=Revamp math on status effects
 TODO=Add one more status effect modifier for mobs, this means that instead of a mob ceasing to be sick when 
 engulfed in flames, it'll be burning AND sick. I think I might make the enemies heal spell cure sickness *shrug*
 TODO=Perhaps a complete rebalancing is in order
-TODO=Add 5 new enemies per level 
+TODO=Add 1 new enemy per zone
+TODO=Add 1 new zone 
 TODO=Restrict certain locations to certain levels
+TODO=Redesign menus
