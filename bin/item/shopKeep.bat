@@ -62,6 +62,16 @@ if %resetSwitch% == 15 (
     if %nodes% LSS 1000 (echo Shopkeep: Dude, you got the Finger. How can you not afford this?? && pause && set resetSwitch=0 && exit /b) else (set /a nodes=%nodes%-1000 && set weaponmod=Finger && echo Your weapon glows with a warm hue. Big Finger Energy. && pause && set resetSwitch=0 && exit /b))
 )
 
+:: adds Greater HP/EP pots
+
+if %resetSwitch% == 16 (
+    if %Nodes% LSS 750 (echo Shopkeep: You cannot afford that item! && set resetSwitch=0 && pause && exit /b) else (set /a Nodes=%Nodes% - 750 && set /a geppot=%geppot% + 1 && echo Shopkeep: Purchase successful. && set resetSwitch=0 && pause && exit /b)
+)
+
+if %resetSwitch% == 17 (
+    if %Nodes% LSS 500 (echo Shopkeep: You cannot afford that item! && set resetSwitch=0 && pause && exit /b) else (set /a Nodes=%Nodes% - 500 && set /a ghppot=%ghppot% + 1 && echo Shopkeep: Purchase successful. && set resetSwitch=0 && pause && exit /b)
+)
+
 exit /b
 :: I would like to point out that I wasn't expecting it to work so well.
 
