@@ -2337,7 +2337,7 @@ if %versionnum% == 1.2.0 set specialmsg=3
 if %versionnum% == 1.8.0 set specialmsg=4
 if %versionnum% == 1.8.1 set specialmsg=5
 if %versionnum% == 1.8.2 set specialmsg=5
-if %versionnum% == 1.9.1 set specialmsg=6
+if %versionnum% == 1.9.0 set specialmsg=6
 if %versionnum% == 1.10.1 set specialmsg=7
 set versionnum=%version%
 echo Oh no! Your save file is out of date! We'll take the liberty of 
