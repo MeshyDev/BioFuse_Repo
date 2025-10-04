@@ -1956,6 +1956,16 @@ pause
 cls
 goto Battle
 
+:: Literally there's a cat on my chest and I can't see the whole screen fully...
+:: So this lives here for now.
+:geppot
+:ghppot
+cls 
+echo Incomplete implementation!!!
+echo Finish soon!
+pause
+goto Battle_Inventory
+ 
 
 :LevelUp
 cls
@@ -2220,6 +2230,9 @@ ping localhost -n 4 >nul
 echo The Shopkeep left back to his building...
 ping localhost -n 4 >nul
 echo Is this mission to defeat the President worth doing? It must be.
+ping localhost -n 4 >nul
+echo The Shopkeep left a flier, it states that he is now handling weapon imbuements.
+echo Furthermore, the Presidents Office is now an available location.
 pause
 goto levelUp
 
