@@ -38,7 +38,9 @@ echo You take %crushDMG% damage... ouch.
 exit /b
 
 :Level5MagicAttack
-if %EcurrentEP% LSS 50 echo %enemy% attempted to cast a spell, but didn't have enough EP! && exit /b
+if %EcurrentEP% LSS 50 echo %enemy% attempted to call an orbital death laser, but the batteries died! && exit /b
+if %EcurrentHP% LSS 0 echo %enemy% reaches for the remote for the orbital death laser, but dies just short of it. && exit /b
+if %EcurrentHP% == 0 echo %enemy% reaches for the remote for the orbital death laser... successfully!!!
 set /a EcurrentEP=%EcurrentEP% - 50
 set /a boltDMG=%RANDOM% * 500 / 32768 + 1
 set /a currentHP=%currentHP% - %boltDMG%
@@ -70,8 +72,8 @@ set /a mgkBurn=%RANDOM% * %EmaxHP% / 32768 + 1
 if %mgkBurn% LSS 0 set /a mgkBurn=-%mgkBurn% && echo WHOA! Who are you fighting with THAT much HP!?
 set /a CorrDMG=%RANDOM% * 50 / 32768 + 1
 if %EcurrentHP% GTR 0 if %EhealthStatus% == Corrupted echo %enemy% twitches, reaching out suddenly and piercing your body! && echo You've been corrupted! && set healthStatus=Corrupted && set /a currentHP=%currentHP% - %CorrDMG% && exit /b
-if %EcurrentHP% == 0 if %EHealthStatus% == Corrupted echo %enemy% SCREAMS! It sounds completely unnatural, it LOOKS completely unnatural... && exit /b
-if %EcurrentHP% LSS 0 if %EHealthStatus% == Corrupted echo %enemy% moves in front of you, faster than you'd ever expect and shoves its fist deep in your chest. && echo The corruption is && echo. && set healthStatus=Presidential-Corruption && echo LETHAL! Do not eng && echo age in COMBAT! && exit /b
+if %EcurrentHP% LSS 0 if %EHealthStatus% == Corrupted echo %enemy% SCREAMS! It sounds completely unnatural, it LOOKS completely unnatural... && exit /b
+if %EcurrentHP% == 0 if %EHealthStatus% == Corrupted echo %enemy% moves in front of you, faster than you'd ever expect and shoves its fist deep in your chest. && echo The corruption is && echo. && set healthStatus=Presidential-Corruption && echo LETHAL! Do not eng && echo age in COMBAT! && exit /b
 ::
 if %EcurrentHP% GTR 0 echo %enemy% casts a large mass of superheated air!
 if %EcurrentHP% GTR 0 echo The heat burns your skin for %mgkBurn% damage.

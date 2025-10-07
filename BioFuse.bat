@@ -600,6 +600,8 @@ if %healthStatus% == Sick echo Despite your sickly nap, you feel well rested aft
 if %healthStatus% == Dying echo You met death during your nap, but pursuaded him out if it. && set healthStatus=Healthy
 if %healthStatus% == Corrupted echo The twitching darkness visited you in your sleep, but you snap out of it. && set healthStatus=Healthy
 if %healthStatus% == Presidential-Corruption echo Dark, twitching faces with their faces distorted in a horrible scream left your ears in pain. It was hard to sleep through this one. && set healthStatus=Healthy
+if %healthStatus% == Exhausted echo You hit the bed harder than usual... && set healthStatus=Healthy && if %currentEP% LSS 0 set currentEP=0
+if %healthStatus% == Overcharged echo But despite trying to nap, you just couldn't. Your insides feel like they're burning up!
 pause
 goto A_Menu
 
@@ -1208,8 +1210,9 @@ goto loadGame
 if %EcurrentHP% LSS 1 call bin/battle/checkVar.bat && goto A_Menu
 if %EcurrentHP% == 0 echo %enemy% didn't hear no bell. It seems like it wants one last shot at you.
 if %EcurrentHP% LEQ -1 goto CustomDeathMessage
+:: Changed this from setting currentHP back to maxHP to just setting the health status
 if %currentHP% GTR %maxHP% (
-set currentHP=%maxHP%
+set healthStatus=Overhealed
 )
 echo %lbnam%
 echo HP: %currentHP% / %maxHP%
@@ -1234,6 +1237,7 @@ if %input%==2 goto EPATK
 if %input%==3 goto Battle_Inventory
 if %input%==4 goto FleeBattle
 if %input%==debugmode set nulbool=1 && cls && goto Battle
+if %input%==debugandflee set nulbool=1 && set flee=69420 && goto DebugFleeBattle
 if %input%==BOLSTER set EmaxHP=100001 && set EcurrentHP=100001 && set EmaxEP=200 && set EcurrentEP=9001 && set EhealthStatus=Sick && cls && goto Battle
 if %input%==SICK set EmaxHP=9001 && set EcurrentHP=9001 && set EmaxEP=15 && set EcurrentEP=15 && set EhealthStatus=Sick && cls && goto Battle
 if %input%==CORRUPT set EhealthStatus=Corrupted
@@ -1800,7 +1804,9 @@ call bin/battle/EhealthCheck.bat
 call bin/battle/healthRandom.bat
 call bin/battle/getCritDMG.bat
 if not %weaponarray% == 8 (
-if %critDMG% GTR 450 echo You put your back into your attack!
+if %critDMG% LEQ 200 echo You used the Crit Spell! But it wasn't very good...
+if %critDMG% LEQ 449 echo You used the Crit Spell!
+if %critDMG% GEQ 450 echo You put your back into your attack!
 if %critDMG% GTR 1000 echo Your body flexes with the force of the attack.
 if %critDMG% GTR 5000 echo God forbid something survives after this crit. 
 if %critDMG% GTR 30000 echo The wind ripples around you dramatically!
@@ -1922,9 +1928,12 @@ if %trashVar% GTR %maxHP% set currentHP=%maxHP%
 set currentHP=%trashVar% 
 echo You feel refreshed. (Restored some HP)
 pause
+set /a mgkChnc=%RANDOM% * 4 / 32768 + 1
+if %mgkChnc% == 1 set resetSwitch=3
 call bin/battle/getBlock.bat
-if %resetSwitch% == 0 call bin/battle/getEATK.bat 
+if %resetSwitch% == 0 call bin/battle/getEATK.bat
 if %resetSwitch% == 2 call bin/battle/getEATK.bat
+if %resetSwitch% == 3 call bin/battle/getEmgk.bat
 set /a hppot=%hppot%-1
 set resetSwitch=0
 pause
@@ -1948,9 +1957,12 @@ goto Battle_Inventory
 set /a currentEP=%currentEP% + 40
 echo You feel rejuvenated^! (EP Restored)
 pause 
+set /a mgkChnc=%RANDOM% * 4 / 32768 + 1
+if %mgkChnc% == 1 set resetSwitch=3
 call bin/battle/getBlock.bat
 if %resetSwitch% == 0 call bin/battle/getEATK.bat
 if %resetSwitch% == 2 call bin/battle/getEATK.bat
+if %resetSwitch% == 3 call bin/battle/getEmgk.bat
 set /a eppot=%eppot%-1
 pause
 cls
@@ -1959,12 +1971,52 @@ goto Battle
 :: Literally there's a cat on my chest and I can't see the whole screen fully...
 :: So this lives here for now.
 :geppot
-:ghppot
-cls 
-echo Incomplete implementation!!!
-echo Finish soon!
+if %geppot% LEQ 0 (
+echo You're out of Greater EP Potions.
 pause
+cls
 goto Battle_Inventory
+)
+echo You guzzle the potion, body starting to vibrate upon ingestion...
+set /a currentEP=%currentEP% + 500
+if %currentEP% GTR %maxEP% echo Your aura is now visibly leaving you, you're overcharged! 
+if %currentEP% GTR %maxEP% echo It feels like you're burning up from the inside!
+pause
+set /a mgkChnc=%RANDOM% * 4 / 32768 + 1
+if %mgkChnc% == 1 set resetSwitch=3
+call bin/battle/getBlock.bat
+if %resetSwitch% == 0 call bin/battle/getEATK.bat
+if %resetSwitch% == 2 call bin/battle/getEATK.bat
+if %resetSwitch% == 3 call bin/battle/getEmgk.bat
+set /a geppot=%geppot%-1
+pause
+cls
+goto Battle
+
+
+:ghppot
+if %ghppot% LEQ 0 (
+echo You're out of Greater HP Potions.
+pause
+cls
+goto Battle_Inventory
+)
+if %currentHP% GEQ (%maxHP%-1) (
+echo You guzzle the potion, body starting to vibrate upon ingestion...
+set /a currentHP=%currentHP% + 500
+if %currentHP% GTR %maxHP% echo The muscles in your body ripple, you feel amazing!
+if %currentHP% GTR %maxHP% set healthStatus=Overhealed
+pause
+set /a mgkChnc=%RANDOM% * 4 / 32768 + 1
+if %mgkChnc% == 1 set resetSwitch=3
+call bin/battle/getBlock.bat
+if %resetSwitch% == 0 call bin/battle/getEATK.bat
+if %resetSwitch% == 2 call bin/battle/getEATK.bat
+if %resetSwitch% == 3 call bin/battle/getEmgk.bat
+set /a ghppot=%ghppot%-1
+pause
+cls
+goto Battle
  
 
 :LevelUp
@@ -2329,6 +2381,7 @@ goto start
 :outdated
 set specialmsg=0
 cls
+
 if %versionnum% == 1.8.0 set weaponeight=0 && set weaponarray=0 && set weaponname=Fists && set weapondmg=0 && set weaponmod=Nothing
 if %versionnum% == 1.8.1 set weaponeight=0 && set weaponarray=0 && set weaponname=Fists && set weapondmg=0 && set weaponmod=Nothing
 if %versionnum% == 1.8.2 set weaponeight=0 && set weaponarray=0 && set weaponname=Fists && set weapondmg=0 && set weaponmod=Nothing
@@ -2365,7 +2418,7 @@ if %specialmsg% == 2 echo (1.3.0 - 1.5.0)I won't lie, I have no idea how this wi
 if %specialmsg% == 3 echo (1.2.0 - 1.2.1)This can go either way. I won't support anything on the ye olde biofuse saves.
 if %specialmsg% == 4 echo (1.8.0)Due to an oversight on my part, saves coming from 1.7.2 may suffer slight corruption. The 1.8.1 patch fixes that.
 if %specialmsg% == 5 echo (1.8.0-1.8.2)Weapon has been unequipped to prevent data loss from new weapon in 1.8.3
-if %specialmsg% == 6 echo (1.10.0)Added several new variables! More save updating! Somehow though, I feel like nobody will see this stuff.
+if %specialmsg% == 6 echo (1.9.0)Added several new variables! More save updating! Somehow though, I feel like nobody will see this stuff.
 if %specialmsg% == 7 echo (1.10.x+)But.. I haven't even got to that part yet. Also unlikely...
 if %specialmsg% == 0 echo (?.?.?)BioFuse couldn't identify what version this save is. Is it from 0.2.7? This fixer WILL erase everything and start the file anew. && echo If you don't want this, exit the game.
 pause 
