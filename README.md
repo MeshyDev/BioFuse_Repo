@@ -21,6 +21,13 @@ Seriously, it's gonna be pretty cool.
 Requires 50 EP. Corrupts your enemy. Can only use while corrupted.
 - **New Spell - Presidential Corruption**:
 Requires 1 EP. ???
+- **New Player Status Effects**:
+  - "Overcharged" - DoT that is applied when your EP is past MaxEP. It drains both EP and HP per turn.
+  - "Overhealed" - Text only effect
+  - "Exhausted" - Text only effect, triggered when EP is below 0
+- **New, more powerful potions!**:
+  - Greater EP Potion, restores 500 EP regardless of MaxEP! (750 Nodes)
+  - Greater HP Potion, restores 500 HP regardless of MaxHP! (500 Nodes)
 
 ### 🛠 Gameplay Changes & Improvements
 - **Corruption Mechanic**: Enemies no longer self-destruct; they now take minor damage.
@@ -33,6 +40,7 @@ Requires 1 EP. ???
   - Level 3 spell EP cost increased from 25 → 40.
   - Level 4 spell EP cost increased from 30 → 50.
   - Fixed issue preventing enemies from casting spells after player spell use.
+  - Fixed issue preventing enemies from casting spells after player item use.
   - Pristine Government Android now casts Level 4 spells.
   - Enhanced Railyard Repairbot upgraded to Level 3 spells.
   - Specialized Railyard Repairbot now casts Level 3 spells.
@@ -49,6 +57,8 @@ Requires 1 EP. ???
 - Fixed CDM processing issues.
 - Fixed fist-swinging visuals not displaying correctly.
 - Fixed an old bug in the Battle Inventory where an invalid value would either crash the game or try to use an HP potion
+- Fixed game not correctly setting Battered or Healthy Statuses when you're healed past minimum Battered threshold. 
+- Fixed Overhealed status effect not working as intended... or at all
 
 ---
 
@@ -57,10 +67,10 @@ Requires 1 EP. ???
 - Revamp math on status effects
 - Add one more status effect modifier for mobs, this means that instead of a mob ceasing to be sick when 
 engulfed in flames, it'll be burning AND sick. I think I might make the enemies heal spell cure sickness *shrug*
-- Perhaps a complete rebalancing is in order
-- Add 1 new enemy per zone
+- ![INPROG](https://img.shields.io/badge/IN%20PROGRESS-blue) Perhaps a complete rebalancing is in order 
+- ![INPROG](https://img.shields.io/badge/IN%20PROGRESS-blue) Add 1 new enemy per zone
 - Add 1 new zone  
 - Restrict certain locations to certain levels
-- Redesign key menus
+- ![INPROG](https://img.shields.io/badge/IN%20PROGRESS-blue) Redesign key menus
 ---
 If you encounter any issues or have feedback, feel free to open an issue or start a discussion. Thanks for playing!
