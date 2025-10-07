@@ -1797,7 +1797,7 @@ goto Battle
 
 :mgcFinCrit
 cls
-set /a currentEP=%currentEP% - 150
+set /a currentEP=%currentEP%-150
 call bin/battle/drawBattle.bat
 call bin/battle/healthCheck.bat
 call bin/battle/EhealthCheck.bat
