@@ -451,17 +451,18 @@ pause
 goto start
 )
 if %exp% GEQ %expToNextLevel% goto levelUp
+echo #---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#
 echo %lbnam%, Level %level%
 echo EXP: %exp% / %expToNextLevel%
 echo HP: %currentHP% / %maxHP%
 echo EP: %currentEP% / %maxEP%
 echo Status: %healthStatus%
 echo Location: %loc%
-echo.
-echo 1:Actions
-echo 2:Save Game
-echo 3:Character Stats
-echo 4:Toggle Music
+echo #---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#
+echo 1) Actions
+echo 2) Save Game
+echo 3) Character Stats
+echo 4) Toggle Music
 set /p input=Choice?::
 if %input%==1 goto A_Menu
 if %input%==2 goto q_SAV
@@ -501,6 +502,7 @@ set /a statThrow=%DMG%+%weapondmg%
 set /a statThrow2=%statThrow%*%critMult%
 set /a scalingfactor=2+((%level%-30)/3)
 cls
+echo #---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#
 echo Status: %healthStatus%
 echo HP: %currentHP% / %maxHP%
 echo EP: %currentEP% / %maxEP%
@@ -509,7 +511,7 @@ echo EXP: %exp% / %expToNextLevel%
 echo Weapon: %weaponname%
 echo Weapon Mod: %weaponmod%
 if %level% GEQ 30 echo Enemy Aggravation Level: %scalingfactor%
-echo.
+echo #---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#
 echo Damage: %DMG%
 echo Total Possible Damage: %statThrow%
 echo Max Possible Crit Damage: %statThrow2%
@@ -520,7 +522,7 @@ echo Crit Multiplier: %critMult%
 echo Evade Chance: %evadecnce%
 echo Magic Damage: %mDmg% 
 echo EP Power: %eppower%
-echo.
+echo #---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#
 pause
 cls
 goto MainScreen
@@ -559,18 +561,19 @@ set eloc=0
 goto A_Menu
 :Home_Menu
 cls
+echo #---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#
 echo HP: %currentHP% / %maxHP%
 if %currentHP% GTR %maxHP% set currentHP=%maxHP%
 echo EP: %currentEP% / %maxEP%
 echo Status: %healthStatus%
 echo Location: %loc%
-echo.
+echo #---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#
 echo 1) Take a nap (Restores HP)
 echo 2) Take EP Potion (%eppot% energy potions left) (Restores EP)
 echo 3) Change Location
 echo 4) Equip Items
 echo 5) Back
-echo.
+echo #---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#---#
 set /p H_Inp=::
 if %H_Inp% == 1 goto H_Nap
 if %H_Inp% == 2 goto H_EPOT
