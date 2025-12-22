@@ -349,6 +349,8 @@ the CustomDeathMessage script will get all upset and won't display. It works fin
 - Fixed game not correctly setting Battered or Healthy Statuses when you're healed past minimum Battered threshold. 
 - Added new status effect, "Overcharged". It is a DoT that is applied when your EP is past MaxEP. It drains both EP and HP until your EP is normal.
 - Fixed Overheal status effect not working as intended... or at all
+- Added logic to napping that accounts for EP Debt
+- Added flavor text that accounts for trying to nap at full HP and also overhealed
 TODO=Add 3 new weapons, 2 less than god finger to fill the gap and 1 more than god finger for funsies
 TODO=Revamp math on status effects
 TODO=Add one more status effect modifier for mobs, this means that instead of a mob ceasing to be sick when 
