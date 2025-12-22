@@ -582,7 +582,9 @@ if %H_Inp% == 4 goto H_Equip
 if %H_Inp% == 5 goto MainScreen
 :H_Nap
 if %currentHP% GEQ %maxHP% (
-echo You're not tired. Actually, you feel great^!
+if %currentEP% GEQ 0 echo You're not tired. Actually, you feel great^!
+if %healthStatus% == Overhealed echo Better than usual now that you think of it.
+if %currentEP% LSS 0 echo Your body hits the bed harder than usual... && set currentEP=0
 if not %healthStatus% == Healthy (
 if %healthStatus% == Burning echo You douse your smoldering body in water. && set healthStatus=Healthy
 if %healthStatus% == Battered echo You apply guaze to your wounds and rest for a bit. && set healthStatus=Healthy 
