@@ -51,6 +51,7 @@ Requires 1 EP. ???
 - Updated imbuing finger energy text.
 - Revised fist-swinging text (finally, after 10+ years!).
 - Added flavor text for really angry Car Frames
+- Extra logic in napping that accounts for more *specific* status effects
 
 ### 🐛 Bug Fixes
 - Fixed God Finger not appearing as equipped.
