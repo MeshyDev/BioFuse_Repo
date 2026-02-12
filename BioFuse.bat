@@ -1029,17 +1029,24 @@ goto MainScreen
 
 :Map
 cls
-echo Location List:
-echo 1. Home
-echo 2. Outside
-echo 3. Flatlands
-echo 4. Forest
-echo 5. Deep Forest
-echo 6. Junkyard
-echo 7. Trainyard
-echo 8. Shop
-if %level% GEQ 30 echo 9. President's Office
-if %nulbool%==1 echo 10. Debug/Fight Menu
+echo.
+if %level% LSS 30 echo        [??] Unknown Area
+if %level% GEQ 30 echo        [9] President's Office
+if %level% GEQ 30 echo                 I
+echo            [5] Deep Forest
+echo                 I
+echo            [4] Forest
+echo                 I
+echo [6] Junkyard - [3] Flatlands - [7] Trainyard
+echo                 I
+echo            [2] Outside
+echo                 I
+echo            [1] Home
+echo                 I
+echo            [8] Shop
+if %nulbool%==1 echo.
+if %nulbool%==1 echo        [10] Debug/Fight Menu
+echo.
 set /p M_Inp=::
 if %M_Inp% == 1 (
 set loc=Home
@@ -2318,7 +2325,7 @@ echo 10) +1 Greater EP Potion (750 Nodes) (Restores 500)
 echo 11) +1 Greater HP Potion (500 Nodes) (Restores 500)
 if %level% GEQ 30 echo 12) Imbue Weapon
 if %level% GEQ 100 echo 13) God's Finger (+3500 DMG, 1000000 Nodes)
-if "%lbnam%" == "TheLoof" echo Finger) God's Middle Finger (+5500 DMG, for the chosen one)
+if "%lbnam%" == "TheLoof" echo Finger) God's Middle Finger (+5500 DMG, for the chosen Loof)
 echo back) Back to map
 echo.
 set /p shopMenu=:: 
@@ -2426,6 +2433,7 @@ if %specialmsg% == 5 echo (1.8.0-1.8.2)Weapon has been unequipped to prevent dat
 if %specialmsg% == 6 echo (1.9.0)Added several new variables! More save updating! Somehow though, I feel like nobody will see this stuff.
 if %specialmsg% == 7 echo (1.10.x+)But.. I haven't even got to that part yet. Also unlikely...
 if %specialmsg% == 0 echo (?.?.?)BioFuse couldn't identify what version this save is. Is it from 0.2.7? This fixer WILL erase everything and start the file anew. && echo If you don't want this, exit the game.
+:: Alternatively, if you're creating your own version I'd recommend adding your own entry. 
 pause 
 if %specialmsg% == 0 set resetSwitch=1 && echo (Unknown save fallback, resetting variables.) && call :redef && ping localhost -n 2 >nul && echo Redef verified... saving... && set resetSwitch=0 && ping localhost -n 2 >nul
 goto q_SAV
