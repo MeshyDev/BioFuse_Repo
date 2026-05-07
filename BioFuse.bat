@@ -1,6 +1,6 @@
 @echo off
 
-set version=1.10.0
+set version=1.10.0_5626
 set vmsg=There's a special project a cooking... keep an eye out for it.
 set vmsg2=Seriously, it's about Biofuse.
 
@@ -61,10 +61,10 @@ if %resetSwitch% == 1 exit /b
 setlocal
 for /f "tokens=4-5 delims=. " %%i in ('ver') do set VERSION=%%i.%%j
 if "%version%" == "10.0" mode 800 
-if "%version%" == "6.3" mode con: cols=70 lines=60 
-if "%version%" == "6.2" mode con: cols=70 lines=60 
-if "%version%" == "6.1" mode con: cols=70 lines=60 
-if "%version%" == "6.0" mode con: cols=70 lines=60
+if "%version%" == "6.3" mode con: cols=73 lines=60 
+if "%version%" == "6.2" mode con: cols=73 lines=60 
+if "%version%" == "6.1" mode con: cols=73 lines=60 
+if "%version%" == "6.0" mode con: cols=73 lines=60
 endlocal
 
 :: Music prerequsites
@@ -437,6 +437,7 @@ echo Game successfully made and saved.
 )
 
 :MainScreen
+mode con: cols=73 lines=20
 cls
 if %currentHP% LSS 0 ( 
 ::                                                                        i < line limit 
@@ -477,6 +478,7 @@ goto MainScreen
 
 :musicToggleGame
 cls
+mode con: cols=73 lines=15
 echo                           Music Toggle
 echo.
 echo Want music? Toggle it here to enable it! Just a heads up though, Win 11
@@ -2417,6 +2419,8 @@ if %versionnum% == 1.8.1 set specialmsg=5
 if %versionnum% == 1.8.2 set specialmsg=5
 if %versionnum% == 1.9.0 set specialmsg=6
 if %versionnum% == 1.10.1 set specialmsg=7
+if %versionnum% == 1.10.0 set specialmsg=8
+if %versionnum% == 1.10.0_5226 set specialmsg=9
 set versionnum=%version%
 echo Oh no! Your save file is out of date! We'll take the liberty of 
 echo updating your files for you. Don't want to have a bad save, right? 
@@ -2432,6 +2436,8 @@ if %specialmsg% == 4 echo (1.8.0)Due to an oversight on my part, saves coming fr
 if %specialmsg% == 5 echo (1.8.0-1.8.2)Weapon has been unequipped to prevent data loss from new weapon in 1.8.3
 if %specialmsg% == 6 echo (1.9.0)Added several new variables! More save updating! Somehow though, I feel like nobody will see this stuff.
 if %specialmsg% == 7 echo (1.10.x+)But.. I haven't even got to that part yet. Also unlikely...
+if %specialmsg% == 8 echo (1.10.0) Soo, this is a little awkward. I've implemented a very basic version check, but I forgot to update it for 1.10.0. && echo If you see this, congrats! You found a secret message! Please tell me about it on GameJolt or something, I wanna know if anyone actually sees this. && echo or if... this is just some old artifact. Who knows?
+if %specialmsg% == 9 echo (1.10.0_5626) There's no change to the save file structure. Check GitHub for deeper details.
 if %specialmsg% == 0 echo (?.?.?)BioFuse couldn't identify what version this save is. Is it from 0.2.7? This fixer WILL erase everything and start the file anew. && echo If you don't want this, exit the game.
 :: Alternatively, if you're creating your own version I'd recommend adding your own entry. 
 pause 
