@@ -2391,7 +2391,7 @@ goto imbueWep
 
 echo Downloading latest updater...
 
-if exist temp_update rmdir /S /Q temp_update
+if exist temp_update del temp_update && rmdir /S /Q temp_update
 mkdir temp_update
 
 curl -L -o temp_update\updater.bat ^
