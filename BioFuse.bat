@@ -135,6 +135,7 @@ if %MainMenuInput% == 2 goto loadGame
 if %MainMenuInput% == 3 goto infoBlock
 if %MainMenuInput% == 4 goto musicToggle
 if %MainMenuInput% == 5 exit
+if %MainMenuInput% == update goto Checkforupdates
 echo Sorry, but I don't understand that. Could you try that again please?
 pause
 cls
@@ -2383,8 +2384,32 @@ goto imbueWep
 ::
 ::
 
-
 :Checkforupdates
+:: =========================================================
+:: MAIN GAME UPDATE HANDLER
+:: =========================================================
+
+echo Downloading latest updater...
+
+if exist temp_update rmdir /S /Q temp_update
+mkdir temp_update
+
+curl -L -o temp_update\updater.bat ^
+https://raw.githubusercontent.com/MeshyDev/BioFuse_Repo/refs/heads/1.10.0/update_code/updater.bat?nocache=%random%
+
+if not exist temp_update\updater.bat (
+    echo Failed to download updater.
+    pause
+    exit /b
+)
+
+:: Call updater with inherited variables
+call temp_update\updater.bat
+pause
+goto start
+
+
+:Checkforupdates2
 ::                                                                        i < line limit 
 :: I wish I could just update the game remotely without having to do this whole rigamarole, but I don't have the means to do so.
 :: As in the language itself I'm using is too flimsy with Github to be able to download a file this way.

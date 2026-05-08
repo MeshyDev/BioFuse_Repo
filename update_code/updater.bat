@@ -1,1 +1,4 @@
-1.10.0_5826
+cls 
+echo Update code receieved successfully!
+pause
+exit /b

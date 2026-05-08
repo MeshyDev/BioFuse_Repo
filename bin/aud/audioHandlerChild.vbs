@@ -1,5 +1,5 @@
 Set Sound = CreateObject("WMPlayer.OCX.7")
-Sound.URL = "bin/aud/null.mp3 "
+Sound.URL = "bin/aud/null.mp3"
 Sound.Controls.play
 Sound.Settings.Volume = 30
 do while Sound.currentmedia.duration = 0
