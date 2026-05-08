@@ -1,6 +1,6 @@
 @echo off
 
-set version=1.10.0_5626
+set version=1.10.0_5826
 set vmsg=There's a special project a cooking... keep an eye out for it.
 set vmsg2=Seriously, it's about Biofuse.
 
@@ -52,6 +52,8 @@ set weaponmod=Nothing
 set scene=0
 set geppot=0
 set ghppot=0
+set locX=0
+set locY=0
 
 set canCastLvl=0
 set enemySpell=nul
@@ -240,6 +242,8 @@ set /p weaponmod=
 set /p scene=
 set /p geppot=
 set /p ghppot=
+set /p locX=
+set /p locY=
 )<bin/sav/%lbnam%.set
 :: Sets scaling factor right away. Redundant, but works.
 set /a scalingfactor=2+((%level%-30)/3)
@@ -256,7 +260,6 @@ echo But if you do want to exist, go to 'new game' next time.
 pause
 cls
 goto start
-
 
 :createGame
 call :redef
@@ -432,12 +435,15 @@ if exist bin/sav (
 (echo %scene%) >> bin/sav/%lbnam%.set
 (echo %geppot%) >> bin/sav/%lbnam%.set
 (echo %hhppot%) >> bin/sav/%lbnam%.set
+(echo %locX%) >> bin/sav/%lbnam%.set
+(echo %locY%) >> bin/sav/%lbnam%.set
 ping localhost -n 2 >nul 
 echo Game successfully made and saved.
 )
 
 :MainScreen
 mode con: cols=73 lines=20
+:: scale the screen to fit the content, and make it look nicer.
 cls
 if %currentHP% LSS 0 ( 
 ::                                                                        i < line limit 
@@ -689,6 +695,10 @@ if "%equipRm%" == "Back" goto Home_Menu
 if "%equipRm%" == "back" goto Home_Menu
 goto H_Equip 
 
+:: 
+:: WHOA THERE PARTNER, there's the Menus for each location below this! 
+:: 
+
 :Outside_Menu
 if %exp% GEQ %expToNextLevel% goto levelUp
 cls
@@ -837,6 +847,11 @@ pause
 cls
 goto President_Menu
 
+::
+:: If you like playing with stats, this menu is pretty fun.
+:: Not to mention, if you'd like to add your own things, this is a good place to test them out without having to worry about breaking your save file... i think.
+::
+
 :Debug_Menu
 set debugEnemySelect=None
 set debugEnemyStatus=None
@@ -942,6 +957,11 @@ if %plrMusic%==1 call bin\handler\jukebox.bat
 cls
 goto Battle
 
+
+:: EXTREMELY DANGEROUS MENU.
+:: But what does it do? It's basic function is changing any variable to anything. 
+:: This has the power to bust pretty much everything.
+:: This ALSO coincidentally has the power to CREATE variables. I mean not that it can do much, but it can do it.
 :debugSetVar
 cls
 echo Be VERY careful, and know what you're doing with this.
@@ -975,58 +995,13 @@ set clientSound=ExaDevLowFid4.mp3
 call bin\handler\jukebox.bat
 goto Battle
 
-:q_SAV
-cls
-if not exist bin/sav echo FATAL ERROR 4, system cannot save. && echo This means your SAV folder has gone missing^! && ping localhost -n 3 >nul && echo Deploying auto-fix. && if not exist bin\sav md bin\sav
-(echo %lbnam%) > bin/sav/%lbnam%.set
-:legacyReset
-(echo %dmg%) >> bin/sav/%lbnam%.set
-(echo %item%) >> bin/sav/%lbnam%.set
-(echo %nodes%) >> bin/sav/%lbnam%.set
-(echo %xnodes%) >> bin/sav/%lbnam%.set
-(echo %level%) >> bin/sav/%lbnam%.set
-(echo %exp%) >> bin/sav/%lbnam%.set
-(echo %expToNextLevel%) >> bin/sav/%lbnam%.set
-(echo %currentHP%) >> bin/sav/%lbnam%.set
-(echo %maxHP%) >> bin/sav/%lbnam%.set
-(echo %currentEP%) >> bin/sav/%lbnam%.set
-(echo %maxEP%) >> bin/sav/%lbnam%.set
-(echo %healthStatus%) >> bin/sav/%lbnam%.set
-(echo %opt_diff%) >> bin/sav/%lbnam%.set
-(echo %loc%) >> bin/sav/%lbnam%.set
-(echo %eloc%) >>bin/sav/%lbnam%.set
-(echo %eppot%) >> bin/sav/%lbnam%.set
-(echo %hppot%) >> bin/sav/%lbnam%.set
-(echo %defense%) >> bin/sav/%lbnam%.set
-(echo %blockcnce%) >> bin/sav/%lbnam%.set
-(echo %critcnce%) >> bin/sav/%lbnam%.set
-(echo %critMult%) >> bin/sav/%lbnam%.set 
-(echo %evadecnce%) >> bin/sav/%lbnam%.set
-(echo %mDmg%) >> bin/sav/%lbnam%.set
-(echo %eppower%) >> bin/sav/%lbnam%.set
-(echo %adventure%) >> bin/sav/%lbnam%.set
-(echo %versionnum%) >> bin/sav/%lbnam%.set
-(echo %weaponzero%) >> bin/sav/%lbnam%.set
-(echo %weaponone%) >> bin/sav/%lbnam%.set
-(echo %weapontwo%) >> bin/sav/%lbnam%.set
-(echo %weaponthree%) >> bin/sav/%lbnam%.set
-(echo %weaponfour%) >> bin/sav/%lbnam%.set
-(echo %weaponfive%) >> bin/sav/%lbnam%.set
-(echo %weaponsix%) >> bin/sav/%lbnam%.set
-(echo %weaponseven%) >> bin/sav/%lbnam%.set
-(echo %weaponeight%) >> bin/sav/%lbnam%.set
-(echo %weaponarray%) >> bin/sav/%lbnam%.set
-(echo %weaponname%) >> bin/sav/%lbnam%.set
-(echo %weapondmg%) >> bin/sav/%lbnam%.set
-(echo %weaponmod%) >> bin/sav/%lbnam%.set 
-(echo %scene%) >> bin/sav/%lbnam%.set
-(echo %geppot%) >> bin/sav/%lbnam%.set
-(echo %ghppot%) >> bin/sav/%lbnam%.set
-echo Saving your game... don't close^!
-ping localhost -n 2 >nul
-echo Save complete.
-ping localhost -n 2 >nul
-goto MainScreen
+::
+::
+:: THIS CONCLUDES THE AREA MENUS AND DEBUG MENU.
+:: Nowww yoouuu knowwwww... OH, below is the map and the enemy find hubs.
+::
+::
+
 
 
 :Map
@@ -1094,6 +1069,10 @@ echo Invalid Choice. Try again.
 pause
 goto Map
 
+::
+:: ENEMY HUBS STAAARRRTTT
+::
+
 :Ene_HUB_O
 cls
 SET /a RANval=%RANDOM% * 10 / 32768 + 1
@@ -1140,6 +1119,12 @@ cls
 goto President_EnemyFind
 :: Yep, 100% chance of finding the president.
 
+::
+::
+:: Enemy Hubs END, now the FINDS! 
+::
+::
+
 :Outside_EnemyFind
 call bin/battle/b_var/outside.bat
 if %level% GEQ 30 call bin/battle/getScaling.bat
@@ -1182,8 +1167,13 @@ if "%enemy%" == "The President" set clientSound=ExaDevBeats2.mp3
 if "%enemy%" == "Deprecated President" set clientSound=ExaDevLowFid6.mp3
 call bin\handler\jukebox.bat
 goto Battle
-
-
+:: 
+::
+Incidental empty space is incidental.
+Is this how comments work? Absolutely not, but it looks nice and breaks up the code a bit, so I'm rolling with it.
+OH YEAH, this is the start of the battle logic. 
+::
+::
 :Battle
 if %castLvl% == 0 (
     set enemySpell=Nothing
@@ -1261,376 +1251,6 @@ echo I'm sorry, I didn't get that. Could you repeat that please?
 pause
 cls
 goto Battle
-
-:CustomDeathMessage
-cls
-if not %clientSound% == null.mp3 (ping localhost -n 1 >nul)
-if not %clientSound% == null.mp3 (set clientSound=null.mp3 && call bin\handler\jukebox.bat && goto CustomDeathMessageBypass)
-:: Gotta make sure any music from special mobs is killed here.
-:: But also, flavor text for special mobs MUST go underneath CDM bypass. It's just how things work, okay?
-:CustomDeathMessageBypass
-set /a CDMRand=%RANDOM% * 100 / 32768 + 1
-set /a CDMRand2=%RANDOM% * 5 / 32768 + 1
-:: Boss death flavor text
-if "%enemy%" == "BlotBlot" echo What... even IS a BlotBlot to begin with?? && pause && goto A_Menu
-if "%enemy%" == "Government Patrol Assembly" echo They really upgraded their defenses for a Junkyard... && pause && goto A_Menu
-if "%enemy%" == "Military Government Patrol Assembly" echo The President must've sent that one just for you. && pause && goto A_Menu
-if "%enemy%" == "Wendigo" echo That THING was fierce! The shriek will haunt your dreams. && pause && goto A_Menu
-if "%enemy%" == "Mr. President" echo The President's clone was defeated... the real fight is yet to begin. && pause && goto A_Menu
-if "%enemy%" == "The President" echo You did it. && ping localhost -n 5 >nul && echo You defeated The President. && ping localhost -n 5 >nul && echo Enjoy the rewards you reap. && ping localhost -n 3 >nul && pause && if "%nulbool%" == "TheLoof" goto extraspecialmessage && goto A_Menu
-if "%enemy%" == "Deprecated President" echo Huh... didn't that one look like the last president? && pause && goto A_Menu
-if "%enemy%" == "%lbnam%" echo Like fighting a mirror, isn't it? && pause && goto A_Menu
-
-if %level% GEQ 200 goto CDMStage4
-if %level% GEQ 100 goto CDMStage3
-if %level% GEQ 50 goto CDMStage2
-
-:: Generic/Flavored flavor text <3
-:: Stage one stays a little wtf
-:CDMStage1
-:: Putting this here to help with the debug room
-if %CDMRand% == 1 echo %enemy%'s corpse slumps over, utterly evicerated. && pause && goto A_Menu
-if %CDMRand% == 2 echo %enemy%'s corpse falls over unceremoniously. As it should. && pause && goto A_Menu
-if %CDMRand% == 3 echo Wow, you obliterated %enemy%. Well done. && pause && goto A_Menu
-if %CDMRand% == 4 echo It is dead, not big surprise. && pause && goto A_Menu
-if %CDMRand% == 5 echo I hope its family didn't see that. && pause && goto A_Menu
-if %CDMRand% == 6 echo You monster, it was its birthday today. && pause && goto A_Menu
-if %CDMRand% == 7 echo Oh my god was that Hollywood Superstar Steve Buscemi? && echo Nope, just the annihilated remains of %enemy%. && pause && goto A_Menu
-if %CDMRand% == 8 echo Okay, now %enemy% had it coming. It owed me $25 bucks. && pause && goto A_Menu
-if %CDMRand% == 9 echo Okay, now %enemy% had it coming. It looked at you funny. && pause && goto A_Menu
-if %CDMRand% == 10 echo Okay, now %enemy% had it coming. Almost spilled yo mama's curry. && pause && goto A_Menu
-if %CDMRand% == 11 echo Aww, and it was having such a good day too. && pause && goto A_Menu
-if %CDMRand% == 12 echo Secretly, that %enemy% was named Joe. && pause && echo Rest in pieces, Joe. && pause && goto A_Menu
-if %CDMRand% == 13 if %EmaxHP% LSS 30 echo ...cmon, was it really a threat? && pause && goto A_Menu
-if %CDMRand% == 13 if %EmaxHP% GTR 30 echo ...I SUPPOSE its okay now. && pause && goto A_Menu
-if %CDMRand% == 14 if %EmaxHP% GEQ 100 echo Now that's a fight! %enemy% falls to pieces. && pause && goto A_Menu
-if %CDMRand% == 14 echo %enemy% looks like mashed grapes. && pause && goto A_Menu
-if %CDMRand% == 15 echo Secretly, that %enemy% was named Mitchel. && pause && echo Ripperoni in pepperoni, Mitchel. && pause && goto A_Menu
-if %CDMRand% == 16 echo Secretly, that %enemy% was named Mitchell. && pause && echo Buh bye, Mitchell. && pause && goto A_Menu
-if %CDMRand% == 17 echo Secretly, that %enemy% was a mass murderer. && pause && echo Well, Karma was out for it, I guess. && pause && goto A_Menu
-if %CDMRand% == 18 echo Are you surprised that %enemy% died? && pause && echo Me too, the trail of dead in your wake is rooting for you. && pause && goto A_Menu
-if %CDMRand% == 19 echo Secretly, that %enemy% was named Meshel. && pause && echo Meshel will return. && pause && goto A_Menu
-if %CDMRand% == 20 echo Secretly, that %enemy% was named Meshel. && pause && echo Meshel came back. && pause && goto A_Menu
-if %CDMRand% == 21 if %EmaxHP% LSS 30 echo HOW COULD YOU KILL SOMETHING SO CUTE? && pause && echo YOU MONSTER! && pause && goto A_Menu
-if %CDMRand% == 21 if %EmaxHP% GTR 30 echo It had ugly genes anyway. && pause && goto A_Menu
-if %CDMRand% == 21 echo %enemy% is beaten and battered. && pause && goto A_Menu
-if %CDMRand% == 22 if %loc% == Outside echo Huh, I think I saw that one on a missing poster. && pause && goto A_Menu
-if %CDMRand% == 22 if %loc% == Flatlands echo Having fun killing the local wildlife? && pause && goto A_Menu
-if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Moose" echo Y'know... you could've just run away from that GODDAMN MOOSE && pause && goto A_Menu
-if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Bear" echo We're pretty sure that bear was on drugs. && pause && echo That was a speedy bear && pause && goto A_Menu
-if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Beaver" echo Ahh, a fine collection for the "BEAVER" dam. && pause && goto A_Menu
-if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Small Beaver" echo These ones fill in the gaps for the "BEAVER" dam && pause && goto A_Menu
-if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Woodpecker" echo How'd you even HIT a Woodpecker? && pause && echo How'd you piss it off?? && pause && goto A_Menu
-if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Hare" echo That was a funny looking rabbit. && echo It was a hairy hare too. && echo Does that make you... && pause && echo Scared? && pause && goto A_Menu
-if %CDMRand% == 22 echo As it perishes, papers fall from its clutched arms revealing invites to a retirement party. && pause && echo One of them was for you... && pause && goto A_Menu
-if %CDMRand% == 23 echo %enemy% spontaneously combusts. && pause && goto A_Menu
-if %CDMRand% == 24 echo %enemy% collapsed like a bad souffle. && pause && goto A_Menu
-if %CDMRand% == 25 echo %enemy% has been thoroughly un-alived. && pause && goto A_Menu
-if %CDMRand% == 26 echo Goodbye %enemy%, we hardly knew ye. && pause && goto A_Menu
-if %CDMRand% == 27 echo %enemy% ceases to exist in every timeline. && pause && goto A_Menu
-if %CDMRand% == 28 echo That was overkill. %enemy% is dust. && pause && goto A_Menu
-if %CDMRand% == 29 echo %enemy% evaporated like spilled soda. && pause && goto A_Menu
-if %CDMRand% == 30 echo %enemy% fell down, got up, and fell down again-permanently. && pause && goto A_Menu
-if %CDMRand% == 31 echo You've ruined %enemy%'s subscription to life. && pause && goto A_Menu
-if %CDMRand% == 32 echo %enemy% has been voted off the island. && pause && goto A_Menu
-if %CDMRand% == 33 echo Wow, %enemy% didn't even drop good loot. && pause && goto A_Menu
-if %CDMRand% == 34 echo The obituary for %enemy% is already being drafted. && pause && goto A_Menu
-if %CDMRand% == 35 echo Congratulations, you've deleted %enemy%. && pause && goto A_Menu
-if %CDMRand% == 36 echo %enemy% is flatter than day-old soda. && pause && goto A_Menu
-if %CDMRand% == 37 echo That was less a fight, more a demolition. && pause && goto A_Menu
-if %CDMRand% == 38 echo Somebody call a janitor, %enemy% left a mess. && pause && goto A_Menu
-if %CDMRand% == 39 echo That was a murder speedrun on %enemy%. && pause && goto A_Menu
-if %CDMRand% == 40 echo Rest easy %enemy%, you were cannon fodder. && pause && goto A_Menu
-if %CDMRand% == 41 echo You yeeted %enemy% into the void. && pause && goto A_Menu
-if %CDMRand% == 42 echo %enemy% now understands the meaning of “Game Over.” && pause && goto A_Menu
-if %CDMRand% == 43 echo %enemy% was fragile, like fine china. && pause && goto A_Menu
-if %CDMRand% == 44 echo Critical hit? More like critical obliteration. && pause && goto A_Menu
-if %CDMRand% == 45 echo Poor %enemy% didn't even have health insurance. && pause && goto A_Menu
-if %CDMRand% == 46 echo Boom. Gone. No more %enemy%. && pause && goto A_Menu
-if %CDMRand% == 47 echo They'll be cleaning up %enemy% for weeks. && pause && goto A_Menu
-if %CDMRand% == 48 echo Ouch, %enemy% exploded like confetti. && pause && goto A_Menu
-if %CDMRand% == 49 echo Well, that escalated fatally for %enemy%. && pause && goto A_Menu
-if %CDMRand% == 50 echo Press F to pay respects to %enemy%. && pause && goto A_Menu
-if %CDMRand% == 51 echo The ground gladly accepts what's left of %enemy%. && pause && goto A_Menu
-if %CDMRand% == 52 echo %enemy% went from solid to abstract concept. && pause && goto A_Menu
-if %CDMRand% == 53 echo There goes %enemy%, canceled permanently. && pause && goto A_Menu
-if %CDMRand% == 54 echo Someone cue the sad violin for %enemy%. && pause && goto A_Menu
-if %CDMRand% == 55 echo Did you mean to completely erase %enemy%? && pause && goto A_Menu
-if %CDMRand% == 56 echo %enemy% bursts into non-refundable pieces. && pause && goto A_Menu
-if %CDMRand% == 57 echo That'll teach %enemy% to exist. && pause && goto A_Menu
-if %CDMRand% == 58 echo Rest in fragments, %enemy%. && pause && goto A_Menu
-if %CDMRand% == 59 echo Death by protagonist: %enemy%. && pause && goto A_Menu
-if %CDMRand% == 60 echo The respawn queue welcomes %enemy%. && pause && goto A_Menu
-if %CDMRand% == 61 echo %enemy% just rage quit reality. && pause && goto A_Menu
-if %CDMRand% == 62 echo You sent %enemy% to the shadow realm. && pause && goto A_Menu
-if %CDMRand% == 63 echo %enemy% is sleeping with the respawns. && pause && goto A_Menu
-if %CDMRand% == 64 echo All that's left of %enemy% is a vague memory. && pause && goto A_Menu
-if %CDMRand% == 65 echo That was brutal. I almost feel bad for %enemy%. && pause && goto A_Menu
-if %CDMRand% == 66 echo %enemy% fell apart like cheap IKEA furniture. && pause && goto A_Menu
-if %CDMRand% == 67 echo That wasn't a fight, that was bullying. && pause && goto A_Menu
-if %CDMRand% == 68 echo Someone please call %enemy%'s lawyer. && pause && goto A_Menu
-if %CDMRand% == 69 echo Nice one. %enemy% is paste now. && pause && goto A_Menu
-if %CDMRand% == 70 echo They'll tell tales of %enemy%... short tales. && pause && goto A_Menu
-if %CDMRand% == 71 echo You just sent %enemy% straight to the patch notes. && pause && goto A_Menu
-if %CDMRand% == 72 echo %enemy% was deleted like old save data. && pause && goto A_Menu
-if %CDMRand% == 73 echo GG, %enemy%. GG. && pause && goto A_Menu
-if %CDMRand% == 74 echo %enemy% is gone, but the trauma remains. && pause && goto A_Menu
-if %CDMRand% == 75 echo All that's left of %enemy% is regret. && pause && goto A_Menu
-if %CDMRand% == 76 echo Farewell %enemy%, your KD ratio is tanked. && pause && goto A_Menu
-if %CDMRand% == 77 echo %enemy% had one job: survive. Failed. && pause && goto A_Menu
-if %CDMRand% == 78 echo That was a flawless fatality on %enemy%. && pause && goto A_Menu
-if %CDMRand% == 79 echo So long %enemy%, and thanks for nothing. && pause && goto A_Menu
-if %CDMRand% == 80 echo That was over before it began for %enemy%. && pause && goto A_Menu
-if %CDMRand% == 81 echo Life.exe has stopped working for %enemy%. && pause && goto A_Menu
-if %CDMRand% == 82 echo There's no patch for what happened to %enemy%. && pause && goto A_Menu
-if %CDMRand% == 83 echo You speedran %enemy%'s funeral. && pause && goto A_Menu
-if %CDMRand% == 84 echo Yikes. That was graphic. Bye %enemy%. && pause && goto A_Menu
-if %CDMRand% == 85 echo You've turned %enemy% into abstract art. && pause && goto A_Menu
-if %CDMRand% == 86 echo Brutality unlocked: %enemy%. && pause && goto A_Menu
-if %CDMRand% == 87 echo Just like that, %enemy% is folklore. && pause && goto A_Menu
-if %CDMRand% == 88 echo Your overkill was sponsored by %enemy%. && pause && goto A_Menu
-if %CDMRand% == 89 echo %enemy% tripped into the afterlife. && pause && goto A_Menu
-if %CDMRand% == 90 echo That was the end of the road for %enemy%. && pause && goto A_Menu
-if %CDMRand% == 91 echo Lights out, %enemy%. && pause && goto A_Menu
-if %CDMRand% == 92 echo You clapped %enemy% out of existence. && pause && goto A_Menu
-if %CDMRand% == 93 echo The credits roll for %enemy%. && pause && goto A_Menu
-if %CDMRand% == 94 echo That looked painful, %enemy%. && pause && goto A_Menu
-if %CDMRand% == 95 echo %enemy% couldn't withstand your plot armor. && pause && goto A_Menu
-if %CDMRand% == 96 echo Boom. Dead. Next. && pause && goto A_Menu
-if %CDMRand% == 97 echo That fight was a tutorial for you, a grave for %enemy%. && pause && goto A_Menu
-if %CDMRand% == 98 echo You've taken %enemy% off the roster. && pause && goto A_Menu
-if %CDMRand% == 99 echo That was savage. RIP %enemy%. && pause && goto A_Menu
-if %CDMRand% == 100 echo A moment of silence for %enemy%. ...Okay, done. && pause && goto A_Menu
-if %CMDRand% == 101 echo Much to the ire of the developer, the code spat out a value that wasn't expected. Hooray??? && pause && goto A_Menu
-echo err. CDM didn't process correctly!
-pause
-goto CustomDeathMessage
-
-:CDMStage2
-:: Stage 2 gets dark.
-if %CDMRand% == 1 echo %enemy% is reduced to a crimson smear. && pause && goto A_Menu
-if %CDMRand% == 2 echo You watch %enemy% twitch one last time before going still. && pause && goto A_Menu
-if %CDMRand% == 3 echo Blood fills the cracks of the ground around %enemy%. && pause && goto A_Menu
-if %CDMRand% == 4 echo %enemy%'s final breath rattles in your ears. && pause && goto A_Menu
-if %CDMRand% == 5 echo The light drains from %enemy%'s eyes. && pause && goto A_Menu
-if %CDMRand% == 6 echo You stand over %enemy%, painted in gore. && pause && goto A_Menu
-if %CDMRand% == 7 echo The silence after %enemy%'s scream is deafening. && pause && goto A_Menu
-if %CDMRand% == 8 echo You broke %enemy% in ways that cannot be repaired. && pause && goto A_Menu
-if %CDMRand% == 9 echo The ground shakes as %enemy% falls lifeless. && pause && goto A_Menu
-if %CDMRand% == 10 echo You smell iron. && pause && echo It's %enemy%. && pause && goto A_Menu
-if %CDMRand% == 11 echo %enemy% clutches at its own wounds, in vain. && pause && goto A_Menu
-if %CDMRand% == 12 echo You could have stopped earlier. You didn't. && pause && goto A_Menu
-if %CDMRand% == 13 echo Your strike shattered more than bones. && pause && goto A_Menu
-if %CDMRand% == 14 echo There is no dignity in %enemy%'s death. && pause && goto A_Menu
-if %CDMRand% == 15 echo You split %enemy% open like rotten fruit. && pause && goto A_Menu
-if %CDMRand% == 16 echo Their blood paints the story you're writing. && pause && goto A_Menu
-if %CDMRand% == 17 echo You feel nothing as %enemy% ceases. && pause && goto A_Menu
-if %CDMRand% == 18 echo %enemy%'s cry is cut short, violently. && pause && goto A_Menu
-if %CDMRand% == 19 echo It takes three seconds for %enemy% to die. You count them. && pause && goto A_Menu
-if %CDMRand% == 20 echo The corpse leaks warmth across your hands. && pause && goto A_Menu
-if %CDMRand% == 21 echo The sound of breaking cartilage echoes. && pause && goto A_Menu
-if %CDMRand% == 22 echo You watch %enemy%'s body slacken, useless now. && pause && goto A_Menu
-if %CDMRand% == 23 echo A spray of blood blinds you for a moment. && pause && goto A_Menu
-if %CDMRand% == 24 echo The violence leaves fingerprints on your soul. && pause && goto A_Menu
-if %CDMRand% == 25 echo %enemy% drowns in its own blood. && pause && goto A_Menu
-if %CDMRand% == 26 echo You feel the crunch of ribs giving way. && pause && goto A_Menu
-if %CDMRand% == 27 echo The smell of death clings to you. && pause && goto A_Menu
-if %CDMRand% == 28 echo You've painted the arena with %enemy%. && pause && goto A_Menu
-if %CDMRand% == 29 echo The floor will never be clean again. && pause && goto A_Menu
-if %CDMRand% == 30 echo You know this won't be the last blood you spill. && pause && goto A_Menu
-if %CDMRand% == 31 echo The corpse stares at you accusingly. && pause && goto A_Menu
-if %CDMRand% == 32 echo You step over %enemy% without hesitation. && pause && goto A_Menu
-if %CDMRand% == 33 echo You hear bones grinding underfoot. && pause && goto A_Menu
-if %CDMRand% == 34 echo The taste of copper lingers in the air. && pause && goto A_Menu
-if %CDMRand% == 35 echo Nothing about this feels heroic. && pause && goto A_Menu
-if %CDMRand% == 36 echo You tear %enemy% apart in silence. && pause && goto A_Menu
-if %CDMRand% == 37 echo The world darkens around %enemy%'s corpse. && pause && goto A_Menu
-if %CDMRand% == 38 echo You can't unsee what you've done. && pause && goto A_Menu
-if %CDMRand% == 39 echo Their blood joins the countless others. && pause && goto A_Menu
-if %CDMRand% == 40 echo The cruelty was unnecessary. && pause && goto A_Menu
-if %CDMRand% == 41 echo The echo of %enemy%'s scream will follow you. && pause && goto A_Menu
-if %CDMRand% == 42 echo The corpse twitches once. Then silence. && pause && goto A_Menu
-if %CDMRand% == 43 echo You've left the battlefield unrecognizable. && pause && goto A_Menu
-if %CDMRand% == 44 echo The stench of death is your perfume now. && pause && goto A_Menu
-if %CDMRand% == 45 echo This was never a fair fight. && pause && goto A_Menu
-if %CDMRand% == 46 echo The way you killed %enemy% wasn't necessary. && pause && goto A_Menu
-if %CDMRand% == 47 echo You feel the warmth leave %enemy%'s body. && pause && goto A_Menu
-if %CDMRand% == 48 echo You don't even flinch anymore. && pause && goto A_Menu
-if %CDMRand% == 49 echo Death clings to you like a shadow. && pause && goto A_Menu
-if %CDMRand% == 50 echo You end lives with mechanical precision. && pause && goto A_Menu
-if %CDMRand% == 51 echo You've forgotten what mercy feels like. && pause && goto A_Menu
-if %CDMRand% == 52 echo Another one gone, and you remain. && pause && goto A_Menu
-if %CDMRand% == 53 echo You stand ankle-deep in blood. && pause && goto A_Menu
-if %CDMRand% == 54 echo The silence of death is deafening. && pause && goto A_Menu
-if %CDMRand% == 55 echo The walls drip with proof of your violence. && pause && goto A_Menu
-if %CDMRand% == 56 echo The laughter in your head isn't yours. && pause && goto A_Menu
-if %CDMRand% == 57 echo You hear whispers in the blood. && pause && goto A_Menu
-if %CDMRand% == 58 echo You tear away what remained of %enemy%'s life they had left. && pause && goto A_Menu
-if %CDMRand% == 59 echo The light hates you now. && pause && goto A_Menu
-if %CDMRand% == 60 echo Every death stains you darker. && pause && goto A_Menu
-if %CDMRand% == 61 echo This is no longer survival. && pause && goto A_Menu
-if %CDMRand% == 62 echo The smell of iron is all you know. && pause && goto A_Menu
-if %CDMRand% == 63 echo Blood drips from your hands. && pause && goto A_Menu
-if %CDMRand% == 64 echo The corpse looks at peace. You don't. && pause && goto A_Menu
-if %CDMRand% == 65 echo You shattered %enemy%'s story in one strike. && pause && goto A_Menu
-if %CDMRand% == 66 echo Violence is your only language. && pause && goto A_Menu
-if %CDMRand% == 67 echo You bury hope beneath each corpse. && pause && goto A_Menu
-if %CDMRand% == 68 echo You leave behind nothing but silence. && pause && goto A_Menu
-if %CDMRand% == 69 echo The blood glistens, mocking you. && pause && goto A_Menu
-if %CDMRand% == 70 echo You were merciless. && pause && goto A_Menu
-if %CDMRand% == 71 echo Their life was brief. Their death was not. && pause && goto A_Menu
-if %CDMRand% == 72 echo You didn't even hesitate. && pause && goto A_Menu
-if %CDMRand% == 73 echo Your shadow grows longer with every kill. && pause && goto A_Menu
-if %CDMRand% == 74 echo The weight of death follows you. && pause && goto A_Menu
-if %CDMRand% == 75 echo Another corpse joins your collection. && pause && goto A_Menu
-if %CDMRand% == 76 echo You are a butcher. && pause && goto A_Menu
-if %CDMRand% == 77 echo The blood won't wash away. && pause && goto A_Menu
-if %CDMRand% == 78 echo Their screams echo endlessly. && pause && goto A_Menu
-if %CDMRand% == 79 echo The horror in their eyes was real. && pause && goto A_Menu
-if %CDMRand% == 80 echo Your hands won't stop shaking. && pause && goto A_Menu
-if %CDMRand% == 81 echo The body count rises. && pause && goto A_Menu
-if %CDMRand% == 82 echo This is slaughter. && pause && goto A_Menu
-if %CDMRand% == 83 echo Blood runs in rivers. && pause && goto A_Menu
-if %CDMRand% == 84 echo You silence another life. && pause && goto A_Menu
-if %CDMRand% == 85 echo Mercy is dead. && pause && goto A_Menu
-if %CDMRand% == 86 echo The violence consumes you. && pause && goto A_Menu
-if %CDMRand% == 87 echo They begged. You didn't care. && pause && goto A_Menu
-if %CDMRand% == 88 echo You crush their last hope. && pause && goto A_Menu
-if %CDMRand% == 89 echo This is your legacy: death. && pause && goto A_Menu
-if %CDMRand% == 90 echo The blood sings for you. && pause && goto A_Menu
-if %CDMRand% == 91 echo You don't remember their names anymore. && pause && goto A_Menu
-if %CDMRand% == 92 echo You wear death like armor. && pause && goto A_Menu
-if %CDMRand% == 93 echo Your violence leaves nothing but ruin. && pause && goto A_Menu
-if %CDMRand% == 94 echo They never stood a chance. && pause && goto A_Menu
-if %CDMRand% == 95 echo The air grows heavier with each kill. && pause && goto A_Menu
-if %CDMRand% == 96 echo Their blood is warm on your face. && pause && goto A_Menu
-if %CDMRand% == 97 echo You've grown numb to death. && pause && goto A_Menu
-if %CDMRand% == 98 echo This is no longer a fight. It's an execution. && pause && goto A_Menu
-if %CDMRand% == 99 echo Nothing human remains in your strike. && pause && goto A_Menu
-if %CDMRand% == 100 echo You have become the ending of stories. && pause && goto A_Menu
-if %CMDRand% == 101 echo Much to the ire of the developer, the code spat out a value that wasn't expected. Hooray??? && pause && goto A_Menu
-echo err. CDMStage2 didn't process correctly!
-pause
-goto CustomDeathMessage
-
-
-:CDMStage3
-:: Stage 3, inner monologue calls player out for the massacre
-if %CDMRand% == 1 echo You're cruel. && pause && echo Not powerful, not clever-just cruel. && pause && goto A_Menu
-if %CDMRand% == 2 echo Another one? && pause && echo Do you even remember their faces anymore? && pause && goto A_Menu
-if %CDMRand% == 3 echo You don't fight to survive. && pause && echo You fight because you like it. && pause && goto A_Menu
-if %CDMRand% == 4 echo The blood on your hands doesn't wash away. && pause && echo Not after ninety-nine kills. && pause && echo Not ever. && pause && goto A_Menu
-if %CDMRand% == 5 echo Was that necessary? && pause && echo Or did you just enjoy it? && pause && goto A_Menu
-if %CDMRand% == 6 echo You've stopped killing enemies. && pause && echo Now you're killing excuses. && pause && goto A_Menu
-if %CDMRand% == 7 echo Don't look away. && pause && echo This death is yours. && pause && goto A_Menu
-if %CDMRand% == 8 echo Tell me-do you even feel anything anymore? && pause && goto A_Menu
-if %CDMRand% == 9 echo Heroes don't leave piles of corpses. && pause && echo So what does that make you? && pause && goto A_Menu
-if %CDMRand% == 10 echo Look at you. && pause && echo Level %level% and hollow. && pause && echo What a legacy. && pause && goto A_Menu
-if %CDMRand% == 11 echo You laugh at the weak. && pause && echo But the truth is, you need them. && pause && echo Without them, you're nothing. && pause && goto A_Menu
-if %CDMRand% == 12 echo It begged. && pause && echo You didn't even hesitate. && pause && goto A_Menu
-if %CDMRand% == 13 echo You used to call this fun. && pause && echo Now it's just habit. && pause && goto A_Menu
-if %CDMRand% == 14 echo You're not the hero of this story. && pause && echo You're the butcher. && pause && goto A_Menu
-if %CDMRand% == 15 echo How many more before it matters to you? && pause && echo A hundred? A thousand? && pause && goto A_Menu
-if %CDMRand% == 16 echo Do you even remember why you started fighting? && pause && echo Or was the reason already buried? && pause && echo %lbnam%: ...PRESIDENT... && pause && goto A_Menu
-if %CDMRand% == 17 echo You should've stopped long ago. && pause && echo Now there's no going back. && pause && goto A_Menu
-if %CDMRand% == 18 echo Another corpse at your feet. && pause && echo Another excuse in your mouth. && pause && goto A_Menu
-if %CDMRand% == 19 echo You could've let it live. && pause && echo But you didn't. && pause && goto A_Menu
-if %CDMRand% == 20 echo Do you feel proud? && pause && echo Or just… empty? && pause && goto A_Menu
-if %CDMRand% == 21 echo You've killed so many. && pause && echo But tell me-what did it change? && pause && goto A_Menu
-if %CDMRand% == 22 echo The world isn't safer. && pause && echo You just made it quieter. && pause && goto A_Menu
-if %CDMRand% == 23 echo Every victory looks the same now. && pause && echo A smear of red, a pile of nothing. && pause && goto A_Menu
-if %CDMRand% == 24 echo You've stopped chasing glory. && pause && echo Now you only chase blood. && pause && goto A_Menu
-if %CDMRand% == 25 echo Do you think anyone is proud of you? && pause && echo Or do they whisper instead? && pause && goto A_Menu
-if %CDMRand% == 26 echo You win every fight. && pause && echo And lose a little more of yourself each time. && pause && goto A_Menu
-if %CDMRand% == 27 echo Not every kill is justice. && pause && echo This one was just indulgence. && pause && goto A_Menu
-if %CDMRand% == 28 echo You've been here before. && pause && echo The battlefield never changes-only the bodies. && pause && goto A_Menu
-if %CDMRand% == 29 echo Even victory feels hollow now, doesn't it? && pause && goto A_Menu
-if %CDMRand% == 30 echo You're not unstoppable. && pause && echo You're just unwilling to stop. && pause && goto A_Menu
-if %CDMRand% == 31 echo Another death for the pile. && pause && echo You stopped counting ages ago. && pause && goto A_Menu
-if %CDMRand% == 32 echo Did you notice the fear in its eyes? && pause && echo Or were you too busy smiling? && pause && goto A_Menu
-if %CDMRand% == 33 echo You tell yourself they deserved it. && pause && echo But deep down-you know better. && pause && goto A_Menu
-if %CDMRand% == 34 echo You could quit any time. && pause && echo But you won't, will you? && pause && goto A_Menu
-if %CDMRand% == 35 echo This isn't survival anymore. && pause && echo This is addiction. && pause && goto A_Menu
-if %CDMRand% == 36 echo Do you think the dead forgive you? && pause && echo Or do they wait for you in silence? && pause && goto A_Menu
-if %CDMRand% == 37 echo You've become efficient. && pause && echo Too efficient. && pause && echo There's no humanity in your strikes anymore. && pause && goto A_Menu
-if %CDMRand% == 38 echo You never hesitate. && pause && echo That should scare you. && pause && goto A_Menu
-if %CDMRand% == 39 echo You're still swinging long after the body falls. && pause && goto A_Menu
-if %CDMRand% == 40 echo Every kill leaves a mark. && pause && echo You're covered in them. && pause && goto A_Menu
-if %CDMRand% == 41 echo That wasn't a fight. && pause && echo It was an execution. && pause && goto A_Menu
-if %CDMRand% == 42 echo You don't fight fair. && pause && echo But fairness died long before your enemies did. && pause && goto A_Menu
-if %CDMRand% == 43 echo You saw it struggle. && pause && echo You didn't stop. && pause && goto A_Menu
-if %CDMRand% == 44 echo Do you even flinch anymore? && pause && echo Or has death become your lullaby? && pause && goto A_Menu
-if %CDMRand% == 45 echo That wasn't justice. && pause && echo That was hunger. && pause && goto A_Menu
-if %CDMRand% == 46 echo You call this strength. && pause && echo But strength doesn't beg for more blood. && pause && goto A_Menu
-if %CDMRand% == 47 echo You've trained yourself to feel nothing. && pause && echo But numbness is not peace. && pause && goto A_Menu
-if %CDMRand% == 48 echo You crossed the line long ago. && pause && echo Now there's no lines left to cross. && pause && goto A_Menu
-if %CDMRand% == 49 echo This isn't who you were meant to be. && pause && goto A_Menu
-if %CDMRand% == 50 echo You're not feared because you're strong. && pause && echo You're feared because you never stop. && pause && goto A_Menu
-if %CDMRand% == 51 echo The battlefield is empty now. && pause && echo Only you remain. && pause && goto A_Menu
-if %CDMRand% == 52 echo You're a legend. && pause && echo Not the kind they'll sing about. && pause && goto A_Menu
-if %CDMRand% == 53 echo You never let them surrender. && pause && goto A_Menu
-if %CDMRand% == 54 echo It screamed. && pause && echo You smiled. && pause && goto A_Menu
-if %CDMRand% == 55 echo Even now, you're still hungry. && pause && goto A_Menu
-if %CDMRand% == 56 echo You are what monsters fear. && pause && echo But that doesn't make you human. && pause && goto A_Menu
-if %CDMRand% == 57 echo There's no challenge left. && pause && echo Only slaughter. && pause && goto A_Menu
-if %CDMRand% == 58 echo When was the last time you hesitated? && pause && goto A_Menu
-if %CDMRand% == 59 echo You don't rest. && pause && echo You only kill. && pause && goto A_Menu
-if %CDMRand% == 60 echo You call it victory. && pause && echo The rest of us call it loss. && pause && goto A_Menu
-if %CDMRand% == 61 echo Every swing, every strike-practiced cruelty. && pause && goto A_Menu
-if %CDMRand% == 62 echo You're not playing anymore. && pause && echo You're feeding. && pause && goto A_Menu
-if %CDMRand% == 63 echo Another broken body. && pause && echo Another broken piece of you. && pause && goto A_Menu
-if %CDMRand% == 64 echo It was never about survival. && pause && echo It was about control. && pause && goto A_Menu
-if %CDMRand% == 65 echo You don't leave survivors. && pause && echo You leave warnings. && pause && goto A_Menu
-if %CDMRand% == 66 echo Even in silence, the dead curse your name. && pause && goto A_Menu
-if %CDMRand% == 67 echo You're proud of this? && pause && echo Really? && pause && goto A_Menu
-if %CDMRand% == 68 echo You're not climbing higher. && pause && echo You're sinking deeper. && pause && goto A_Menu
-if %CDMRand% == 69 echo It wasn't a fair fight. && pause && echo It never is. && pause && goto A_Menu
-if %CDMRand% == 70 echo There's no honor in this. && pause && echo Only indulgence. && pause && goto A_Menu
-if %CDMRand% == 71 echo You crossed mercy off the list a long time ago. && pause && goto A_Menu
-if %CDMRand% == 72 echo You don't hesitate. && pause && echo That's not bravery. && pause && echo That's emptiness. && pause && goto A_Menu
-if %CDMRand% == 73 echo Another life wasted. && pause && echo Yours, not theirs. && pause && goto A_Menu
-if %CDMRand% == 74 echo The longer you fight, the less of you remains. && pause && goto A_Menu
-if %CDMRand% == 75 echo You can't keep blaming the world. && pause && echo This is all on you. && pause && goto A_Menu
-if %CDMRand% == 76 echo No one will thank you for this. && pause && goto A_Menu
-if %CDMRand% == 77 echo Death follows you. && pause && echo Not as an enemy, but as a partner. && pause && goto A_Menu
-if %CDMRand% == 78 echo Every step you take is over graves now. && pause && goto A_Menu
-if %CDMRand% == 79 echo You didn't just kill it. && pause && echo You erased it. && pause && goto A_Menu
-if %CDMRand% == 80 echo You've built your throne out of corpses. && pause && echo Comfortable? && pause && goto A_Menu
-if %CDMRand% == 81 echo You're cruel. && pause && echo Not powerful, not clever-just cruel. && pause && goto A_Menu
-if %CDMRand% == 82 echo You could stop at any time. && pause && echo But you won't. && pause && echo You like this too much. && pause && goto A_Menu
-if %CDMRand% == 83 echo You've stopped noticing the screams. && pause && echo That should terrify you. && pause && goto A_Menu
-if %CDMRand% == 84 echo Mercy is a word you forgot. && pause && goto A_Menu
-if %CDMRand% == 85 echo You're not a savior. && pause && echo You're a curse. && pause && goto A_Menu
-if %CDMRand% == 86 echo How many more deaths will it take to satisfy you? && pause && goto A_Menu
-if %CDMRand% == 87 echo You're feared, yes. && pause && echo But loved? && pause && echo Never. && pause && goto A_Menu
-if %CDMRand% == 88 echo You call it progress. && pause && echo I call it obsession. && pause && goto A_Menu
-if %CDMRand% == 89 echo Another meaningless death. && pause && echo Another meaningless you. && pause && goto A_Menu
-if %CDMRand% == 90 echo You've stopped being human. && pause && echo Now you're just hunger in a body. && pause && goto A_Menu
-if %CDMRand% == 91 echo Every monster you kill looks more familiar. && pause && echo Almost like a mirror. && pause && goto A_Menu
-if %CDMRand% == 92 echo You've forgotten why you started. && pause && echo But you'll never forget how to kill. && pause && goto A_Menu
-if %CDMRand% == 93 echo They won't write songs about you. && pause && echo They'll write warnings. && pause && goto A_Menu
-if %CDMRand% == 94 echo You're not ascending. && pause && echo You're circling the drain. && pause && goto A_Menu
-if %CDMRand% == 95 echo You kill without thinking. && pause && echo Without caring. && pause && goto A_Menu
-if %CDMRand% == 96 echo Your victories echo. && pause && echo Not with cheers, but with silence. && pause && goto A_Menu
-if %CDMRand% == 97 echo You've won every fight. && pause && echo And lost yourself along the way. && pause && goto A_Menu
-if %CDMRand% == 98 echo Do you even hear the screams anymore? && pause && goto A_Menu
-if %CDMRand% == 99 echo You've become what you swore to destroy. && pause && goto A_Menu
-if %CDMRand% == 100 echo This isn't triumph. && pause && echo This is tragedy. && pause && goto A_Menu
-if %CMDRand% == 101 echo Much to the ire of the developer, the code spat out a value that wasn't expected. Hooray??? && pause && goto A_Menu
-echo err. CDMStage3 didn't process correctly!
-pause
-goto CustomDeathMessage
-
-:CDMStage4
-:: God complex acquired
-if %CDMRand2% == 1 echo %enemy% does not die. && pause && echo It is unmade. && pause && echo The void knows your name. && pause && goto A_Menu
-if %CDMRand2% == 2 echo %enemy% collapses, not from your strike, but from recognition. && pause && echo They saw God in your eyes. && pause && goto A_Menu
-if %CDMRand2% == 3 echo The corpse of %enemy% glows faintly. && pause && echo It is not blood, but devotion spilling forth. && pause && echo They worship even in death. && pause && goto A_Menu
-if %CDMRand2% == 4 echo The world itself bends as %enemy% falls. && pause && echo Time pauses, space cracks. && pause && echo All of creation records your act. && pause && goto A_Menu
-if %CDMRand2% == 5 echo %enemy% was never alive. && pause && echo It was written only to meet you here. && pause && echo This moment was its only purpose. && pause && echo You are the author now. && pause && goto A_Menu
-echo err. CDMStage4 didn't process correctly!
-pause
-goto CustomDeathMessage
 
 :Battle_Attack
 set /a canCastLvl=%RANDOM% * 5 / 32768
@@ -2032,6 +1652,387 @@ pause
 cls
 goto Battle
  
+:: 
+::
+:: START OF CUSTOM DEATH MESSAGE BLOB
+::
+::
+
+:CustomDeathMessage
+cls
+if not %clientSound% == null.mp3 (ping localhost -n 1 >nul)
+if not %clientSound% == null.mp3 (set clientSound=null.mp3 && call bin\handler\jukebox.bat && goto CustomDeathMessageBypass)
+:: Gotta make sure any music from special mobs is killed here.
+:: But also, flavor text for special mobs MUST go underneath CDM bypass. It's just how things work, okay?
+:CustomDeathMessageBypass
+set /a CDMRand=%RANDOM% * 100 / 32768 + 1
+set /a CDMRand2=%RANDOM% * 5 / 32768 + 1
+:: Boss death flavor text
+if "%enemy%" == "BlotBlot" echo What... even IS a BlotBlot to begin with?? && pause && goto A_Menu
+if "%enemy%" == "Government Patrol Assembly" echo They really upgraded their defenses for a Junkyard... && pause && goto A_Menu
+if "%enemy%" == "Military Government Patrol Assembly" echo The President must've sent that one just for you. && pause && goto A_Menu
+if "%enemy%" == "Wendigo" echo That THING was fierce! The shriek will haunt your dreams. && pause && goto A_Menu
+if "%enemy%" == "Mr. President" echo The President's clone was defeated... the real fight is yet to begin. && pause && goto A_Menu
+if "%enemy%" == "The President" echo You did it. && ping localhost -n 5 >nul && echo You defeated The President. && ping localhost -n 5 >nul && echo Enjoy the rewards you reap. && ping localhost -n 3 >nul && pause && if "%nulbool%" == "TheLoof" goto extraspecialmessage && goto A_Menu
+if "%enemy%" == "Deprecated President" echo Huh... didn't that one look like the last president? && pause && goto A_Menu
+if "%enemy%" == "%lbnam%" echo Like fighting a mirror, isn't it? && pause && goto A_Menu
+
+if %level% GEQ 200 goto CDMStage4
+if %level% GEQ 100 goto CDMStage3
+if %level% GEQ 50 goto CDMStage2
+
+:: Generic/Flavored flavor text <3
+:: Stage one stays a little wtf
+:CDMStage1
+:: Putting this here to help with the debug room
+if %CDMRand% == 1 echo %enemy%'s corpse slumps over, utterly evicerated. && pause && goto A_Menu
+if %CDMRand% == 2 echo %enemy%'s corpse falls over unceremoniously. As it should. && pause && goto A_Menu
+if %CDMRand% == 3 echo Wow, you obliterated %enemy%. Well done. && pause && goto A_Menu
+if %CDMRand% == 4 echo It is dead, not big surprise. && pause && goto A_Menu
+if %CDMRand% == 5 echo I hope its family didn't see that. && pause && goto A_Menu
+if %CDMRand% == 6 echo You monster, it was its birthday today. && pause && goto A_Menu
+if %CDMRand% == 7 echo Oh my god was that Hollywood Superstar Steve Buscemi? && echo Nope, just the annihilated remains of %enemy%. && pause && goto A_Menu
+if %CDMRand% == 8 echo Okay, now %enemy% had it coming. It owed me $25 bucks. && pause && goto A_Menu
+if %CDMRand% == 9 echo Okay, now %enemy% had it coming. It looked at you funny. && pause && goto A_Menu
+if %CDMRand% == 10 echo Okay, now %enemy% had it coming. Almost spilled yo mama's curry. && pause && goto A_Menu
+if %CDMRand% == 11 echo Aww, and it was having such a good day too. && pause && goto A_Menu
+if %CDMRand% == 12 echo Secretly, that %enemy% was named Joe. && pause && echo Rest in pieces, Joe. && pause && goto A_Menu
+if %CDMRand% == 13 if %EmaxHP% LSS 30 echo ...cmon, was it really a threat? && pause && goto A_Menu
+if %CDMRand% == 13 if %EmaxHP% GTR 30 echo ...I SUPPOSE its okay now. && pause && goto A_Menu
+if %CDMRand% == 14 if %EmaxHP% GEQ 100 echo Now that's a fight! %enemy% falls to pieces. && pause && goto A_Menu
+if %CDMRand% == 14 echo %enemy% looks like mashed grapes. && pause && goto A_Menu
+if %CDMRand% == 15 echo Secretly, that %enemy% was named Mitchel. && pause && echo Ripperoni in pepperoni, Mitchel. && pause && goto A_Menu
+if %CDMRand% == 16 echo Secretly, that %enemy% was named Mitchell. && pause && echo Buh bye, Mitchell. && pause && goto A_Menu
+if %CDMRand% == 17 echo Secretly, that %enemy% was a mass murderer. && pause && echo Well, Karma was out for it, I guess. && pause && goto A_Menu
+if %CDMRand% == 18 echo Are you surprised that %enemy% died? && pause && echo Me too, the trail of dead in your wake is rooting for you. && pause && goto A_Menu
+if %CDMRand% == 19 echo Secretly, that %enemy% was named Meshel. && pause && echo Meshel will return. && pause && goto A_Menu
+if %CDMRand% == 20 echo Secretly, that %enemy% was named Meshel. && pause && echo Meshel came back. && pause && goto A_Menu
+if %CDMRand% == 21 if %EmaxHP% LSS 30 echo HOW COULD YOU KILL SOMETHING SO CUTE? && pause && echo YOU MONSTER! && pause && goto A_Menu
+if %CDMRand% == 21 if %EmaxHP% GTR 30 echo It had ugly genes anyway. && pause && goto A_Menu
+if %CDMRand% == 21 echo %enemy% is beaten and battered. && pause && goto A_Menu
+if %CDMRand% == 22 if %loc% == Outside echo Huh, I think I saw that one on a missing poster. && pause && goto A_Menu
+if %CDMRand% == 22 if %loc% == Flatlands echo Having fun killing the local wildlife? && pause && goto A_Menu
+if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Moose" echo Y'know... you could've just run away from that GODDAMN MOOSE && pause && goto A_Menu
+if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Bear" echo We're pretty sure that bear was on drugs. && pause && echo That was a speedy bear && pause && goto A_Menu
+if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Beaver" echo Ahh, a fine collection for the "BEAVER" dam. && pause && goto A_Menu
+if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Small Beaver" echo These ones fill in the gaps for the "BEAVER" dam && pause && goto A_Menu
+if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Woodpecker" echo How'd you even HIT a Woodpecker? && pause && echo How'd you piss it off?? && pause && goto A_Menu
+if %CDMRand% == 22 if %loc% == Forest if "%enemy%" == "Hare" echo That was a funny looking rabbit. && echo It was a hairy hare too. && echo Does that make you... && pause && echo Scared? && pause && goto A_Menu
+if %CDMRand% == 22 echo As it perishes, papers fall from its clutched arms revealing invites to a retirement party. && pause && echo One of them was for you... && pause && goto A_Menu
+if %CDMRand% == 23 echo %enemy% spontaneously combusts. && pause && goto A_Menu
+if %CDMRand% == 24 echo %enemy% collapsed like a bad souffle. && pause && goto A_Menu
+if %CDMRand% == 25 echo %enemy% has been thoroughly un-alived. && pause && goto A_Menu
+if %CDMRand% == 26 echo Goodbye %enemy%, we hardly knew ye. && pause && goto A_Menu
+if %CDMRand% == 27 echo %enemy% ceases to exist in every timeline. && pause && goto A_Menu
+if %CDMRand% == 28 echo That was overkill. %enemy% is dust. && pause && goto A_Menu
+if %CDMRand% == 29 echo %enemy% evaporated like spilled soda. && pause && goto A_Menu
+if %CDMRand% == 30 echo %enemy% fell down, got up, and fell down again-permanently. && pause && goto A_Menu
+if %CDMRand% == 31 echo You've ruined %enemy%'s subscription to life. && pause && goto A_Menu
+if %CDMRand% == 32 echo %enemy% has been voted off the island. && pause && goto A_Menu
+if %CDMRand% == 33 echo Wow, %enemy% didn't even drop good loot. && pause && goto A_Menu
+if %CDMRand% == 34 echo The obituary for %enemy% is already being drafted. && pause && goto A_Menu
+if %CDMRand% == 35 echo Congratulations, you've deleted %enemy%. && pause && goto A_Menu
+if %CDMRand% == 36 echo %enemy% is flatter than day-old soda. && pause && goto A_Menu
+if %CDMRand% == 37 echo That was less a fight, more a demolition. && pause && goto A_Menu
+if %CDMRand% == 38 echo Somebody call a janitor, %enemy% left a mess. && pause && goto A_Menu
+if %CDMRand% == 39 echo That was a murder speedrun on %enemy%. && pause && goto A_Menu
+if %CDMRand% == 40 echo Rest easy %enemy%, you were cannon fodder. && pause && goto A_Menu
+if %CDMRand% == 41 echo You yeeted %enemy% into the void. && pause && goto A_Menu
+if %CDMRand% == 42 echo %enemy% now understands the meaning of “Game Over.” && pause && goto A_Menu
+if %CDMRand% == 43 echo %enemy% was fragile, like fine china. && pause && goto A_Menu
+if %CDMRand% == 44 echo Critical hit? More like critical obliteration. && pause && goto A_Menu
+if %CDMRand% == 45 echo Poor %enemy% didn't even have health insurance. && pause && goto A_Menu
+if %CDMRand% == 46 echo Boom. Gone. No more %enemy%. && pause && goto A_Menu
+if %CDMRand% == 47 echo They'll be cleaning up %enemy% for weeks. && pause && goto A_Menu
+if %CDMRand% == 48 echo Ouch, %enemy% exploded like confetti. && pause && goto A_Menu
+if %CDMRand% == 49 echo Well, that escalated fatally for %enemy%. && pause && goto A_Menu
+if %CDMRand% == 50 echo Press F to pay respects to %enemy%. && pause >nul && echo Bahahaha just kidding, there's no respects to pay. && pause && goto A_Menu
+if %CDMRand% == 51 echo The ground gladly accepts what's left of %enemy%. && pause && goto A_Menu
+if %CDMRand% == 52 echo %enemy% went from solid to abstract concept. && pause && goto A_Menu
+if %CDMRand% == 53 echo There goes %enemy%, canceled permanently. && pause && goto A_Menu
+if %CDMRand% == 54 echo Someone cue the sad violin for %enemy%. && pause && goto A_Menu
+if %CDMRand% == 55 echo Did you mean to completely erase %enemy%? && pause && goto A_Menu
+if %CDMRand% == 56 echo %enemy% bursts into non-refundable pieces. && pause && goto A_Menu
+if %CDMRand% == 57 echo That'll teach %enemy% to exist. && pause && goto A_Menu
+if %CDMRand% == 58 echo Rest in fragments, %enemy%. && pause && goto A_Menu
+if %CDMRand% == 59 echo Death by protagonist: %enemy%. && pause && goto A_Menu
+if %CDMRand% == 60 echo The respawn queue welcomes %enemy%. && pause && goto A_Menu
+if %CDMRand% == 61 echo %enemy% just rage quit reality. && pause && goto A_Menu
+if %CDMRand% == 62 echo You sent %enemy% to the shadow realm. && pause && goto A_Menu
+if %CDMRand% == 63 echo %enemy% is sleeping with the respawns. && pause && goto A_Menu
+if %CDMRand% == 64 echo All that's left of %enemy% is a vague memory. && pause && goto A_Menu
+if %CDMRand% == 65 echo That was brutal. I almost feel bad for %enemy%. && pause && goto A_Menu
+if %CDMRand% == 66 echo %enemy% fell apart like cheap IKEA furniture. && pause && goto A_Menu
+if %CDMRand% == 67 echo That wasn't a fight, that was bullying. && pause && goto A_Menu
+if %CDMRand% == 68 echo Someone please call %enemy%'s lawyer. && pause && goto A_Menu
+if %CDMRand% == 69 echo Nice one. %enemy% is paste now. && pause && goto A_Menu
+if %CDMRand% == 70 echo They'll tell tales of %enemy%... short tales. && pause && goto A_Menu
+if %CDMRand% == 71 echo You just sent %enemy% straight to the shadow realm. && pause && goto A_Menu
+if %CDMRand% == 72 echo %enemy% was deleted like old save data. && pause && goto A_Menu
+if %CDMRand% == 73 echo GG, %enemy%. GG. && pause && goto A_Menu
+if %CDMRand% == 74 echo %enemy% is gone, but the trauma remains. && pause && goto A_Menu
+if %CDMRand% == 75 echo All that's left of %enemy% is regret. && pause && goto A_Menu
+if %CDMRand% == 76 echo Farewell %enemy%, your KD ratio is tanked. && pause && goto A_Menu
+if %CDMRand% == 77 echo %enemy% had one job: survive. Failed. && pause && goto A_Menu
+if %CDMRand% == 78 echo That was a flawless fatality on %enemy%. && pause && goto A_Menu
+if %CDMRand% == 79 echo So long %enemy%, and thanks for nothing. && pause && goto A_Menu
+if %CDMRand% == 80 echo That was over before it began for %enemy%. && pause && goto A_Menu
+if %CDMRand% == 81 echo Life.exe has stopped working for %enemy%. && pause && goto A_Menu
+if %CDMRand% == 82 echo There's no amount of hospitalization to fix what happened to %enemy%. && pause && goto A_Menu
+if %CDMRand% == 83 echo You speedran %enemy%'s funeral. && pause && goto A_Menu
+if %CDMRand% == 84 echo Yikes. That was graphic. Bye %enemy%. && pause && goto A_Menu
+if %CDMRand% == 85 echo You've turned %enemy% into abstract art. && pause && goto A_Menu
+if %CDMRand% == 86 echo Brutality unlocked: %enemy%. && pause && goto A_Menu
+if %CDMRand% == 87 echo Just like that, %enemy% is folklore. && pause && goto A_Menu
+if %CDMRand% == 88 echo Your overkill was sponsored by %enemy%. && pause && goto A_Menu
+if %CDMRand% == 89 echo %enemy% tripped into the afterlife. && pause && goto A_Menu
+if %CDMRand% == 90 echo That was the end of the road for %enemy%. && pause && goto A_Menu
+if %CDMRand% == 91 echo Lights out, %enemy%. && pause && goto A_Menu
+if %CDMRand% == 92 echo You clapped %enemy% out of existence. && pause && goto A_Menu
+if %CDMRand% == 93 echo The credits roll for %enemy%. && pause && goto A_Menu
+if %CDMRand% == 94 echo That looked painful, %enemy%. && pause && goto A_Menu
+if %CDMRand% == 95 echo %enemy% couldn't withstand your plot armor. && pause && goto A_Menu
+if %CDMRand% == 96 echo Boom. Dead. Next. && pause && goto A_Menu
+if %CDMRand% == 97 echo That fight was a tutorial for you, a grave for %enemy%. && pause && goto A_Menu
+if %CDMRand% == 98 echo You've taken %enemy% off the roster. && pause && goto A_Menu
+if %CDMRand% == 99 echo That was savage. RIP %enemy%. && pause && goto A_Menu
+if %CDMRand% == 100 echo A moment of silence for %enemy%. && pause >nul && ...Okay, done. && pause && goto A_Menu
+if %CMDRand% == 101 echo Much to the ire of the developer, the code spat out a value that wasn't expected. Hooray??? && pause && goto A_Menu
+echo err. CDM didn't process correctly!
+pause
+goto CustomDeathMessage
+
+:CDMStage2
+:: Stage 2 gets dark.
+if %CDMRand% == 1 echo %enemy% is reduced to a crimson smear. && pause && goto A_Menu
+if %CDMRand% == 2 echo You watch %enemy% twitch one last time before going still. && pause && goto A_Menu
+if %CDMRand% == 3 echo Blood fills the cracks of the ground around %enemy%. && pause && goto A_Menu
+if %CDMRand% == 4 echo %enemy%'s final breath rattles in your ears. && pause && goto A_Menu
+if %CDMRand% == 5 echo The light drains from %enemy%'s eyes. && pause && goto A_Menu
+if %CDMRand% == 6 echo You stand over %enemy%, painted in gore. && pause && goto A_Menu
+if %CDMRand% == 7 echo The silence after %enemy%'s scream is deafening. && pause && goto A_Menu
+if %CDMRand% == 8 echo You broke %enemy% in ways that cannot be repaired. && pause && goto A_Menu
+if %CDMRand% == 9 echo The ground shakes as %enemy% falls lifeless. && pause && goto A_Menu
+if %CDMRand% == 10 echo You smell iron. && pause && echo It's %enemy%. && pause && goto A_Menu
+if %CDMRand% == 11 echo %enemy% clutches at its own wounds, in vain. && pause && goto A_Menu
+if %CDMRand% == 12 echo You could have stopped earlier. You didn't. && pause && goto A_Menu
+if %CDMRand% == 13 echo Your strike shattered more than bones. && pause && goto A_Menu
+if %CDMRand% == 14 echo There is no dignity in %enemy%'s death. && pause && goto A_Menu
+if %CDMRand% == 15 echo You split %enemy% open like rotten fruit. && pause && goto A_Menu
+if %CDMRand% == 16 echo Their blood paints the story you're writing. && pause && goto A_Menu
+if %CDMRand% == 17 echo You feel nothing as %enemy% ceases. && pause && goto A_Menu
+if %CDMRand% == 18 echo %enemy%'s cry is cut short, violently. && pause && goto A_Menu
+if %CDMRand% == 19 echo It takes three seconds for %enemy% to die. You count them. && pause && goto A_Menu
+if %CDMRand% == 20 echo The corpse leaks warmth across your hands. && pause && goto A_Menu
+if %CDMRand% == 21 echo The sound of breaking cartilage echoes. && pause && goto A_Menu
+if %CDMRand% == 22 echo You watch %enemy%'s body slacken, useless now. && pause && goto A_Menu
+if %CDMRand% == 23 echo A spray of blood blinds you for a moment. && pause && goto A_Menu
+if %CDMRand% == 24 echo The violence leaves fingerprints on your soul. && pause && goto A_Menu
+if %CDMRand% == 25 echo %enemy% drowns in its own blood. && pause && goto A_Menu
+if %CDMRand% == 26 echo You feel the crunch of ribs giving way. && pause && goto A_Menu
+if %CDMRand% == 27 echo The smell of death clings to you. && pause && goto A_Menu
+if %CDMRand% == 28 echo You've painted the arena with %enemy%. && pause && goto A_Menu
+if %CDMRand% == 29 echo The floor will never be clean again. && pause && goto A_Menu
+if %CDMRand% == 30 echo You know this won't be the last blood you spill. && pause && goto A_Menu
+if %CDMRand% == 31 echo The corpse stares at you accusingly. && pause && goto A_Menu
+if %CDMRand% == 32 echo You step over %enemy% without hesitation. && pause && goto A_Menu
+if %CDMRand% == 33 echo You hear bones grinding underfoot. && pause && goto A_Menu
+if %CDMRand% == 34 echo The taste of copper lingers in the air. && pause && goto A_Menu
+if %CDMRand% == 35 echo Nothing about this feels heroic. && pause && goto A_Menu
+if %CDMRand% == 36 echo You tear %enemy% apart in silence. && pause && goto A_Menu
+if %CDMRand% == 37 echo The world darkens around %enemy%'s corpse. && pause && goto A_Menu
+if %CDMRand% == 38 echo You can't unsee what you've done. && pause && goto A_Menu
+if %CDMRand% == 39 echo Their blood joins the countless others. && pause && goto A_Menu
+if %CDMRand% == 40 echo The cruelty was unnecessary. && pause && goto A_Menu
+if %CDMRand% == 41 echo The echo of %enemy%'s scream will follow you. && pause && goto A_Menu
+if %CDMRand% == 42 echo The corpse twitches once. Then silence. && pause && goto A_Menu
+if %CDMRand% == 43 echo You've left the battlefield unrecognizable. && pause && goto A_Menu
+if %CDMRand% == 44 echo The stench of death is your perfume now. && pause && goto A_Menu
+if %CDMRand% == 45 echo This was never a fair fight. && pause && goto A_Menu
+if %CDMRand% == 46 echo The way you killed %enemy% wasn't necessary. && pause && goto A_Menu
+if %CDMRand% == 47 echo You feel the warmth leave %enemy%'s body. && pause && goto A_Menu
+if %CDMRand% == 48 echo You don't even flinch anymore. && pause && goto A_Menu
+if %CDMRand% == 49 echo Death clings to you like a shadow. && pause && goto A_Menu
+if %CDMRand% == 50 echo You end lives with mechanical precision. && pause && goto A_Menu
+if %CDMRand% == 51 echo You've forgotten what mercy feels like. && pause && goto A_Menu
+if %CDMRand% == 52 echo Another one gone, and you remain. && pause && goto A_Menu
+if %CDMRand% == 53 echo You stand ankle-deep in blood. && pause && goto A_Menu
+if %CDMRand% == 54 echo The silence of death is deafening. && pause && goto A_Menu
+if %CDMRand% == 55 echo The walls drip with proof of your violence. && pause && goto A_Menu
+if %CDMRand% == 56 echo The laughter in your head isn't yours. && pause && goto A_Menu
+if %CDMRand% == 57 echo You hear whispers in the blood. && pause && goto A_Menu
+if %CDMRand% == 58 echo You tear away what remained of %enemy%'s life they had left. && pause && goto A_Menu
+if %CDMRand% == 59 echo The light hates you now. && pause && goto A_Menu
+if %CDMRand% == 60 echo Every death stains you darker. && pause && goto A_Menu
+if %CDMRand% == 61 echo This is no longer survival. && pause && goto A_Menu
+if %CDMRand% == 62 echo The smell of iron is all you know. && pause && goto A_Menu
+if %CDMRand% == 63 echo Blood drips from your hands. && pause && goto A_Menu
+if %CDMRand% == 64 echo The corpse looks at peace. You don't. && pause && goto A_Menu
+if %CDMRand% == 65 echo You shattered %enemy%'s story in one strike. && pause && goto A_Menu
+if %CDMRand% == 66 echo Violence is your only language. && pause && goto A_Menu
+if %CDMRand% == 67 echo You bury hope beneath each corpse. && pause && goto A_Menu
+if %CDMRand% == 68 echo You leave behind nothing but silence. && pause && goto A_Menu
+if %CDMRand% == 69 echo The blood glistens, mocking you. && pause && goto A_Menu
+if %CDMRand% == 70 echo You were merciless. && pause && goto A_Menu
+if %CDMRand% == 71 echo Their life was brief. Their death was not. && pause && goto A_Menu
+if %CDMRand% == 72 echo You didn't even hesitate. && pause && goto A_Menu
+if %CDMRand% == 73 echo Your shadow grows longer with every kill. && pause && goto A_Menu
+if %CDMRand% == 74 echo The weight of death follows you. && pause && goto A_Menu
+if %CDMRand% == 75 echo Another corpse joins your collection. && pause && goto A_Menu
+if %CDMRand% == 76 echo You are a butcher. && pause && goto A_Menu
+if %CDMRand% == 77 echo The blood won't wash away. && pause && goto A_Menu
+if %CDMRand% == 78 echo Their screams echo endlessly. && pause && goto A_Menu
+if %CDMRand% == 79 echo The horror in their eyes was real. && pause && goto A_Menu
+if %CDMRand% == 80 echo Your hands won't stop shaking. && pause && goto A_Menu
+if %CDMRand% == 81 echo The body count rises. && pause && goto A_Menu
+if %CDMRand% == 82 echo This is slaughter. && pause && goto A_Menu
+if %CDMRand% == 83 echo Blood runs in rivers. && pause && goto A_Menu
+if %CDMRand% == 84 echo You silence another life. && pause && goto A_Menu
+if %CDMRand% == 85 echo Mercy is dead. && pause && goto A_Menu
+if %CDMRand% == 86 echo The violence consumes you. && pause && goto A_Menu
+if %CDMRand% == 87 echo They begged. You didn't care. && pause && goto A_Menu
+if %CDMRand% == 88 echo You crush their last hope. && pause && goto A_Menu
+if %CDMRand% == 89 echo This is your legacy: death. && pause && goto A_Menu
+if %CDMRand% == 90 echo The blood sings for you. && pause && goto A_Menu
+if %CDMRand% == 91 echo You don't remember their names anymore. && pause && goto A_Menu
+if %CDMRand% == 92 echo You wear death like armor. && pause && goto A_Menu
+if %CDMRand% == 93 echo Your violence leaves nothing but ruin. && pause && goto A_Menu
+if %CDMRand% == 94 echo They never stood a chance. && pause && goto A_Menu
+if %CDMRand% == 95 echo The air grows heavier with each kill. && pause && goto A_Menu
+if %CDMRand% == 96 echo Their blood is warm on your face. && pause && goto A_Menu
+if %CDMRand% == 97 echo You've grown numb to death. && pause && goto A_Menu
+if %CDMRand% == 98 echo This is no longer a fight. It's an execution. && pause && goto A_Menu
+if %CDMRand% == 99 echo Nothing human remains in your strike. && pause && goto A_Menu
+if %CDMRand% == 100 echo You have become the ending of stories. && pause && goto A_Menu
+if %CMDRand% == 101 echo Much to the ire of the developer, the code spat out a value that wasn't expected. Hooray??? && pause && goto A_Menu
+echo err. CDMStage2 didn't process correctly!
+pause
+goto CustomDeathMessage
+
+
+:CDMStage3
+:: Stage 3, inner monologue calls player out for the massacre
+if %CDMRand% == 1 echo You're cruel. && pause && echo Not powerful, not clever-just cruel. && pause && goto A_Menu
+if %CDMRand% == 2 echo Another one? && pause && echo Do you even remember their faces anymore? && pause && goto A_Menu
+if %CDMRand% == 3 echo You don't fight to survive. && pause && echo You fight because you like it. && pause && goto A_Menu
+if %CDMRand% == 4 echo The blood on your hands doesn't wash away. && pause && echo Not after ninety-nine kills. && pause && echo Not ever. && pause && goto A_Menu
+if %CDMRand% == 5 echo Was that necessary? && pause && echo Or did you just enjoy it? && pause && goto A_Menu
+if %CDMRand% == 6 echo You've stopped killing enemies. && pause && echo Now you're killing excuses. && pause && goto A_Menu
+if %CDMRand% == 7 echo Don't look away. && pause && echo This death is yours. && pause && goto A_Menu
+if %CDMRand% == 8 echo Tell me-do you even feel anything anymore? && pause && goto A_Menu
+if %CDMRand% == 9 echo Heroes don't leave piles of corpses. && pause && echo So what does that make you? && pause && goto A_Menu
+if %CDMRand% == 10 echo Look at you. && pause && echo Level %level% and hollow. && pause && echo What a legacy. && pause && goto A_Menu
+if %CDMRand% == 11 echo You laugh at the weak. && pause && echo But the truth is, you need them. && pause && echo Without them, you're nothing. && pause && goto A_Menu
+if %CDMRand% == 12 echo It begged. && pause && echo You didn't even hesitate. && pause && goto A_Menu
+if %CDMRand% == 13 echo You used to call this fun. && pause && echo Now it's just habit. && pause && goto A_Menu
+if %CDMRand% == 14 echo You're not the hero of this story. && pause && echo You're the butcher. && pause && goto A_Menu
+if %CDMRand% == 15 echo How many more before it matters to you? && pause && echo A hundred? A thousand? && pause && goto A_Menu
+if %CDMRand% == 16 echo Do you even remember why you started fighting? && pause && echo Or was the reason already buried? && pause && echo %lbnam%: ...PRESIDENT... && pause && goto A_Menu
+if %CDMRand% == 17 echo You should've stopped long ago. && pause && echo Now there's no going back. && pause && goto A_Menu
+if %CDMRand% == 18 echo Another corpse at your feet. && pause && echo Another excuse in your mouth. && pause && goto A_Menu
+if %CDMRand% == 19 echo You could've let it live. && pause && echo But you didn't. && pause && goto A_Menu
+if %CDMRand% == 20 echo Do you feel proud? && pause && echo Or just… empty? && pause && goto A_Menu
+if %CDMRand% == 21 echo You've killed so many. && pause && echo But tell me-what did it change? && pause && goto A_Menu
+if %CDMRand% == 22 echo The world isn't safer. && pause && echo You just made it quieter. && pause && goto A_Menu
+if %CDMRand% == 23 echo Every victory looks the same now. && pause && echo A smear of red, a pile of nothing. && pause && goto A_Menu
+if %CDMRand% == 24 echo You've stopped chasing glory. && pause && echo Now you only chase blood. && pause && goto A_Menu
+if %CDMRand% == 25 echo Do you think anyone is proud of you? && pause && echo Or do they whisper instead? && pause && goto A_Menu
+if %CDMRand% == 26 echo You win every fight. && pause && echo And lose a little more of yourself each time. && pause && goto A_Menu
+if %CDMRand% == 27 echo Not every kill is justice. && pause && echo This one was just indulgence. && pause && goto A_Menu
+if %CDMRand% == 28 echo You've been here before. && pause && echo The battlefield never changes-only the bodies. && pause && goto A_Menu
+if %CDMRand% == 29 echo Even victory feels hollow now, doesn't it? && pause && goto A_Menu
+if %CDMRand% == 30 echo You're not unstoppable. && pause && echo You're just unwilling to stop. && pause && goto A_Menu
+if %CDMRand% == 31 echo Another death for the pile. && pause && echo You stopped counting ages ago. && pause && goto A_Menu
+if %CDMRand% == 32 echo Did you notice the fear in its eyes? && pause && echo Or were you too busy smiling? && pause && goto A_Menu
+if %CDMRand% == 33 echo You tell yourself they deserved it. && pause && echo But deep down-you know better. && pause && goto A_Menu
+if %CDMRand% == 34 echo You could quit any time. && pause && echo But you won't, will you? && pause && goto A_Menu
+if %CDMRand% == 35 echo This isn't survival anymore. && pause && echo This is addiction. && pause && goto A_Menu
+if %CDMRand% == 36 echo Do you think the dead forgive you? && pause && echo Or do they wait for you in silence? && pause && goto A_Menu
+if %CDMRand% == 37 echo You've become efficient. && pause && echo Too efficient. && pause && echo There's no humanity in your strikes anymore. && pause && goto A_Menu
+if %CDMRand% == 38 echo You never hesitate. && pause && echo That should scare you. && pause && goto A_Menu
+if %CDMRand% == 39 echo You're still swinging long after the body falls. && pause && goto A_Menu
+if %CDMRand% == 40 echo Every kill leaves a mark. && pause && echo You're covered in them. && pause && goto A_Menu
+if %CDMRand% == 41 echo That wasn't a fight. && pause && echo It was an execution. && pause && goto A_Menu
+if %CDMRand% == 42 echo You don't fight fair. && pause && echo But fairness died long before your enemies did. && pause && goto A_Menu
+if %CDMRand% == 43 echo You saw it struggle. && pause && echo You didn't stop. && pause && goto A_Menu
+if %CDMRand% == 44 echo Do you even flinch anymore? && pause && echo Or has death become your lullaby? && pause && goto A_Menu
+if %CDMRand% == 45 echo That wasn't justice. && pause && echo That was hunger. && pause && goto A_Menu
+if %CDMRand% == 46 echo You call this strength. && pause && echo But strength doesn't beg for more blood. && pause && goto A_Menu
+if %CDMRand% == 47 echo You've trained yourself to feel nothing. && pause && echo But numbness is not peace. && pause && goto A_Menu
+if %CDMRand% == 48 echo You crossed the line long ago. && pause && echo Now there's no lines left to cross. && pause && goto A_Menu
+if %CDMRand% == 49 echo This isn't who you were meant to be. && pause && goto A_Menu
+if %CDMRand% == 50 echo You're not feared because you're strong. && pause && echo You're feared because you never stop. && pause && goto A_Menu
+if %CDMRand% == 51 echo The battlefield is empty now. && pause && echo Only you remain. && pause && goto A_Menu
+if %CDMRand% == 52 echo You're a legend. && pause && echo Not the kind they'll sing about. && pause && goto A_Menu
+if %CDMRand% == 53 echo You never let them surrender. && pause && goto A_Menu
+if %CDMRand% == 54 echo It screamed. && pause && echo You smiled. && pause && goto A_Menu
+if %CDMRand% == 55 echo Even now, you're still hungry. && pause && goto A_Menu
+if %CDMRand% == 56 echo You are what monsters fear. && pause && echo But that doesn't make you human. && pause && goto A_Menu
+if %CDMRand% == 57 echo There's no challenge left. && pause && echo Only slaughter. && pause && goto A_Menu
+if %CDMRand% == 58 echo When was the last time you hesitated? && pause && goto A_Menu
+if %CDMRand% == 59 echo You don't rest. && pause && echo You only kill. && pause && goto A_Menu
+if %CDMRand% == 60 echo You call it victory. && pause && echo The rest of us call it loss. && pause && goto A_Menu
+if %CDMRand% == 61 echo Every swing, every strike-practiced cruelty. && pause && goto A_Menu
+if %CDMRand% == 62 echo You're not playing anymore. && pause && echo You're feeding. && pause && goto A_Menu
+if %CDMRand% == 63 echo Another broken body. && pause && echo Another broken piece of you. && pause && goto A_Menu
+if %CDMRand% == 64 echo It was never about survival. && pause && echo It was about control. && pause && goto A_Menu
+if %CDMRand% == 65 echo You don't leave survivors. && pause && echo You leave warnings. && pause && goto A_Menu
+if %CDMRand% == 66 echo Even in silence, the dead curse your name. && pause && goto A_Menu
+if %CDMRand% == 67 echo You're proud of this? && pause && echo Really? && pause && goto A_Menu
+if %CDMRand% == 68 echo You're not climbing higher. && pause && echo You're sinking deeper. && pause && goto A_Menu
+if %CDMRand% == 69 echo It wasn't a fair fight. && pause && echo It never is. && pause && goto A_Menu
+if %CDMRand% == 70 echo There's no honor in this. && pause && echo Only indulgence. && pause && goto A_Menu
+if %CDMRand% == 71 echo You crossed mercy off the list a long time ago. && pause && goto A_Menu
+if %CDMRand% == 72 echo You don't hesitate. && pause && echo That's not bravery. && pause && echo That's emptiness. && pause && goto A_Menu
+if %CDMRand% == 73 echo Another life wasted. && pause && echo Yours, not theirs. && pause && goto A_Menu
+if %CDMRand% == 74 echo The longer you fight, the less of you remains. && pause && goto A_Menu
+if %CDMRand% == 75 echo You can't keep blaming the world. && pause && echo This is all on you. && pause && goto A_Menu
+if %CDMRand% == 76 echo No one will thank you for this. && pause && goto A_Menu
+if %CDMRand% == 77 echo Death follows you. && pause && echo Not as an enemy, but as a partner. && pause && goto A_Menu
+if %CDMRand% == 78 echo Every step you take is over graves now. && pause && goto A_Menu
+if %CDMRand% == 79 echo You didn't just kill it. && pause && echo You erased it. && pause && goto A_Menu
+if %CDMRand% == 80 echo You've built your throne out of corpses. && pause && echo Comfortable? && pause && goto A_Menu
+if %CDMRand% == 81 echo You're cruel. && pause && echo Not powerful, not clever-just cruel. && pause && goto A_Menu
+if %CDMRand% == 82 echo You could stop at any time. && pause && echo But you won't. && pause && echo You like this too much. && pause && goto A_Menu
+if %CDMRand% == 83 echo You've stopped noticing the screams. && pause && echo That should terrify you. && pause && goto A_Menu
+if %CDMRand% == 84 echo Mercy is a word you forgot. && pause && goto A_Menu
+if %CDMRand% == 85 echo You're not a savior. && pause && echo You're a curse. && pause && goto A_Menu
+if %CDMRand% == 86 echo How many more deaths will it take to satisfy you? && pause && goto A_Menu
+if %CDMRand% == 87 echo You're feared, yes. && pause && echo But loved? && pause && echo Never. && pause && goto A_Menu
+if %CDMRand% == 88 echo You call it progress. && pause && echo I call it obsession. && pause && goto A_Menu
+if %CDMRand% == 89 echo Another meaningless death. && pause && echo Another meaningless you. && pause && goto A_Menu
+if %CDMRand% == 90 echo You've stopped being human. && pause && echo Now you're just hunger in a body. && pause && goto A_Menu
+if %CDMRand% == 91 echo Every monster you kill looks more familiar. && pause && echo Almost like a mirror. && pause && goto A_Menu
+if %CDMRand% == 92 echo You've forgotten why you started. && pause && echo But you'll never forget how to kill. && pause && goto A_Menu
+if %CDMRand% == 93 echo They won't write songs about you. && pause && echo They'll write warnings. && pause && goto A_Menu
+if %CDMRand% == 94 echo You're not ascending. && pause && echo You're circling the drain. && pause && goto A_Menu
+if %CDMRand% == 95 echo You kill without thinking. && pause && echo Without caring. && pause && goto A_Menu
+if %CDMRand% == 96 echo Your victories echo. && pause && echo Not with cheers, but with silence. && pause && goto A_Menu
+if %CDMRand% == 97 echo You've won every fight. && pause && echo And lost yourself along the way. && pause && goto A_Menu
+if %CDMRand% == 98 echo Do you even hear the screams anymore? && pause && goto A_Menu
+if %CDMRand% == 99 echo You've become what you swore to destroy. && pause && goto A_Menu
+if %CDMRand% == 100 echo This isn't triumph. && pause && echo This is tragedy. && pause && goto A_Menu
+if %CMDRand% == 101 echo Much to the ire of the developer, the code spat out a value that wasn't expected. Hooray??? && pause && goto A_Menu
+echo err. CDMStage3 didn't process correctly!
+pause
+goto CustomDeathMessage
+
+:CDMStage4
+:: God complex acquired
+if %CDMRand2% == 1 echo %enemy% does not die. && pause && echo It is unmade. && pause && echo The void knows your name. && pause && goto A_Menu
+if %CDMRand2% == 2 echo %enemy% collapses, not from your strike, but from recognition. && pause && echo They saw God in your eyes. && pause && goto A_Menu
+if %CDMRand2% == 3 echo The corpse of %enemy% glows faintly. && pause && echo It is not blood, but devotion spilling forth. && pause && echo They worship even in death. && pause && goto A_Menu
+if %CDMRand2% == 4 echo The world itself bends as %enemy% falls. && pause && echo Time pauses, space cracks. && pause && echo All of creation records your act. && pause && goto A_Menu
+if %CDMRand2% == 5 echo %enemy% was never alive. && pause && echo It was written only to meet you here. && pause && echo This moment was its only purpose. && pause && echo You are the author now. && pause && goto A_Menu
+echo err. CDMStage4 didn't process correctly!
+pause
+goto CustomDeathMessage
+
+::
+::
+:: END OF CUSTOM DEATH MESSAGE BLOB
+::
+::
 
 :LevelUp
 cls
@@ -2303,6 +2304,7 @@ pause
 goto levelUp
 
 :doubleCheck
+:: Fast double check to make sure the level up process isn't skipping extra levels.
 if %exp% GEQ %expToNextLevel% goto levelUp
 goto q_SAV 
 
@@ -2375,8 +2377,18 @@ if %iWep% == Back goto Shop_Menu
 goto imbueWep
 
 
+::
+::
+:: BELOW IS ALMOST ALL UTILITY! It's either a collection of vestigial code from older versions, or just utility functions that don't fit anywhere else.
+::
+::
+
+
 :Checkforupdates
 ::                                                                        i < line limit 
+:: I wish I could just update the game remotely without having to do this whole rigamarole, but I don't have the means to do so.
+:: As in the language itself I'm using is too flimsy with Github to be able to download a file this way.
+
 
 cls
 echo I can actually provide updates remotely via old means if I can
@@ -2421,6 +2433,7 @@ if %versionnum% == 1.9.0 set specialmsg=6
 if %versionnum% == 1.10.1 set specialmsg=7
 if %versionnum% == 1.10.0 set specialmsg=8
 if %versionnum% == 1.10.0_5226 set specialmsg=9
+if %versionnum% == 1.10.0.5826 set specialmsg=10
 set versionnum=%version%
 echo Oh no! Your save file is out of date! We'll take the liberty of 
 echo updating your files for you. Don't want to have a bad save, right? 
@@ -2438,6 +2451,7 @@ if %specialmsg% == 6 echo (1.9.0)Added several new variables! More save updating
 if %specialmsg% == 7 echo (1.10.x+)But.. I haven't even got to that part yet. Also unlikely...
 if %specialmsg% == 8 echo (1.10.0) Soo, this is a little awkward. I've implemented a very basic version check, but I forgot to update it for 1.10.0. && echo If you see this, congrats! You found a secret message! Please tell me about it on GameJolt or something, I wanna know if anyone actually sees this. && echo or if... this is just some old artifact. Who knows?
 if %specialmsg% == 9 echo (1.10.0_5626) There's no change to the save file structure. Check GitHub for deeper details.
+if %specialmsg% == 10 echo (1.10.0_5826) Save file saves X and Y variables, which do nothing right now. Preparing to expand exploration on the Area menus. && echo New Updater in progress, should release soon with this update.
 if %specialmsg% == 0 echo (?.?.?)BioFuse couldn't identify what version this save is. Is it from 0.2.7? This fixer WILL erase everything and start the file anew. && echo If you don't want this, exit the game.
 :: Alternatively, if you're creating your own version I'd recommend adding your own entry. 
 pause 
@@ -2473,3 +2487,58 @@ pause
 set loc=DBMENU
 goto A_Menu
 
+:q_SAV
+cls
+if not exist bin/sav echo FATAL ERROR 4, system cannot save. && echo This means your SAV folder has gone missing^! && ping localhost -n 3 >nul && echo Deploying auto-fix. && if not exist bin\sav md bin\sav
+(echo %lbnam%) > bin/sav/%lbnam%.set
+:legacyReset
+(echo %dmg%) >> bin/sav/%lbnam%.set
+(echo %item%) >> bin/sav/%lbnam%.set
+(echo %nodes%) >> bin/sav/%lbnam%.set
+(echo %xnodes%) >> bin/sav/%lbnam%.set
+(echo %level%) >> bin/sav/%lbnam%.set
+(echo %exp%) >> bin/sav/%lbnam%.set
+(echo %expToNextLevel%) >> bin/sav/%lbnam%.set
+(echo %currentHP%) >> bin/sav/%lbnam%.set
+(echo %maxHP%) >> bin/sav/%lbnam%.set
+(echo %currentEP%) >> bin/sav/%lbnam%.set
+(echo %maxEP%) >> bin/sav/%lbnam%.set
+(echo %healthStatus%) >> bin/sav/%lbnam%.set
+(echo %opt_diff%) >> bin/sav/%lbnam%.set
+(echo %loc%) >> bin/sav/%lbnam%.set
+(echo %eloc%) >>bin/sav/%lbnam%.set
+(echo %eppot%) >> bin/sav/%lbnam%.set
+(echo %hppot%) >> bin/sav/%lbnam%.set
+(echo %defense%) >> bin/sav/%lbnam%.set
+(echo %blockcnce%) >> bin/sav/%lbnam%.set
+(echo %critcnce%) >> bin/sav/%lbnam%.set
+(echo %critMult%) >> bin/sav/%lbnam%.set 
+(echo %evadecnce%) >> bin/sav/%lbnam%.set
+(echo %mDmg%) >> bin/sav/%lbnam%.set
+(echo %eppower%) >> bin/sav/%lbnam%.set
+(echo %adventure%) >> bin/sav/%lbnam%.set
+(echo %versionnum%) >> bin/sav/%lbnam%.set
+(echo %weaponzero%) >> bin/sav/%lbnam%.set
+(echo %weaponone%) >> bin/sav/%lbnam%.set
+(echo %weapontwo%) >> bin/sav/%lbnam%.set
+(echo %weaponthree%) >> bin/sav/%lbnam%.set
+(echo %weaponfour%) >> bin/sav/%lbnam%.set
+(echo %weaponfive%) >> bin/sav/%lbnam%.set
+(echo %weaponsix%) >> bin/sav/%lbnam%.set
+(echo %weaponseven%) >> bin/sav/%lbnam%.set
+(echo %weaponeight%) >> bin/sav/%lbnam%.set
+(echo %weaponarray%) >> bin/sav/%lbnam%.set
+(echo %weaponname%) >> bin/sav/%lbnam%.set
+(echo %weapondmg%) >> bin/sav/%lbnam%.set
+(echo %weaponmod%) >> bin/sav/%lbnam%.set 
+(echo %scene%) >> bin/sav/%lbnam%.set
+(echo %geppot%) >> bin/sav/%lbnam%.set
+(echo %ghppot%) >> bin/sav/%lbnam%.set
+echo Saving your game... don't close^!
+ping localhost -n 2 >nul
+echo Save complete.
+ping localhost -n 2 >nul
+goto MainScreen
+
+:: Welcome to :eof, a strange place where code exists and yet doesn't.
+:: What, no actual :eof? I ook ok ok hold on. I'm trying to refactor code, and this is where I'm slapping code that I can't find a place for. yet.
