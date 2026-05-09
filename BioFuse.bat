@@ -124,6 +124,7 @@ echo.
 echo.
 ping localhost -n 5 >nul
 :start
+:returntostart
 color 0F
 cls 
 type MENUMOD.MOD
@@ -2404,12 +2405,12 @@ https://raw.githubusercontent.com/MeshyDev/BioFuse-Updater/refs/heads/main/updat
 
 ping localhost -n 2 >nul
 
-if not exist temp_update\updater.bat echo Failed to download updater. && pause && goto start
+if not exist temp_update\updater.bat echo Failed to download updater. && pause && goto returntostart
 
 call temp_update\updater.bat
 if %code% == 0 echo Code: %code%, Update was successful. && ping localhost -n 3 >nul && rmdir /s /q temp_update && rmdir /s /q temp_files && start BioFuse.bat && exit
-if %code% == 1 echo Code: %code%, Game is already up to date. && ping localhost -n 3 >nul && goto start
-if %code% == 0404 echo Code: %code%, Download failed. Please check your internet connection and try again. && pause && goto start
+if %code% == 1 echo Code: %code%, Game is already up to date. && ping localhost -n 3 >nul && goto returntostart
+if %code% == 0404 echo Code: %code%, Download failed. Please check your internet connection and try again. && pause && goto returntostart
 goto start
 
 
