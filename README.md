@@ -7,6 +7,8 @@ Seriously, it's gonna be pretty cool.
 ******
 [![Version](https://img.shields.io/badge/version-1.9.0-blue)](https://github.com/MeshyDev/BioFuse_Repo/tree/main)
 
+## v1.9.1 adds an updater that makes it easy to go from 1.9 to 1.10. I will not be doing this again.
+
 ### 🚀 New Features
 - Bundled with a Windows 11 launcher to fix some finicky OS behavior.
 - Added flavor text for each president upon death by presidential beatdown.

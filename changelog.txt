@@ -312,3 +312,7 @@ This also overrides the block entirely, breaking through your defense, dealing 1
 Known bug that turned into a feature: 
 - If you're as roided out as Uncle is, you'll find that if you kill two boss type enemies (with music)
 the CustomDeathMessage script will get all upset and won't display. It works fine, it's just bitchy.
+
+1.9.1
+
+- All this patch does is add the update code from v1.10.0_5926 so you can update easily from this version. 
