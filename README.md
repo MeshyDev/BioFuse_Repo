@@ -9,6 +9,7 @@ Seriously, it's gonna be pretty cool.
 ![Version](https://img.shields.io/badge/version-1.10.0%20in%20progress...-orange)
 
 ### 🚀 New Features
+- **Check for Updates**: (added *1.10.0_5626*) Remember when you could do this? Well now you can do it again! I've readded better logic!
 - **Level Scaling System**: Activates at Level 30, starting at 2. Increases by 1 every 3 levels thereafter.
 - **Enemy Aggravation Level**: Now displayed on the Character Stats page.
 - **Level 30 Cutscene**: New cutscene featuring the Shopkeep, triggered for players Level 30+.
@@ -64,6 +65,7 @@ Requires 1 EP. ???
 ---
 
 ## ![TODO](https://img.shields.io/badge/TODO-red) I'm trying to eventually complete these <3
+- ![INPROG](https://img.shields.io/badge/IN%20PROGRESS-red) Ability to move through zones instead of mindlessly searching for enemies
 - Add 3 new weapons, 2 less than god finger to fill the gap and 1 more than god finger for funsies
 - Revamp math on status effects
 - Add one more status effect modifier for mobs, this means that instead of a mob ceasing to be sick when 

@@ -351,6 +351,9 @@ the CustomDeathMessage script will get all upset and won't display. It works fin
 - Fixed Overheal status effect not working as intended... or at all
 - Added logic to napping that accounts for EP Debt
 - Added flavor text that accounts for trying to nap at full HP and also overhealed
+- Readded Check for Updates function, you can now participate in the occasional pushes I push on Github without having to reinstall everything
+- Created new repository for Biofuse Updater. 
+IN PROGRESS=Ability to move through zones instead of brainlessly checking for enemies
 TODO=Add 3 new weapons, 2 less than god finger to fill the gap and 1 more than god finger for funsies
 TODO=Revamp math on status effects
 TODO=Add one more status effect modifier for mobs, this means that instead of a mob ceasing to be sick when 
