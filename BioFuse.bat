@@ -1,8 +1,8 @@
 @echo off
 
-set version=1.9.0
+set version=1.9.1
 set vmsg=The lil things were flavored (Bugfixes + Win11 support)
-set vmsg2=A lot of things actually...
+set vmsg2=This version adds the updater.
 
 :: DEFINE VARIABLES 
 
@@ -128,7 +128,8 @@ if %MainMenuInput% == 1 set resetSwitch=1 && goto createGame
 if %MainMenuInput% == 2 goto loadGame
 if %MainMenuInput% == 3 goto infoBlock
 if %MainMenuInput% == 4 goto musicToggle
-if %MainMenuInput% == 5 exit
+if %MainMenuInput% == 5 goto Checkforupdates
+if %MainMenuInput% == 6 exit
 echo Sorry, but I don't understand that. Could you try that again please?
 pause
 cls
@@ -1791,15 +1792,26 @@ goto imbueWep
 
 
 :Checkforupdates
-::                                                                        i < line limit 
+:: =========================================================
+:: MAIN GAME UPDATE HANDLER
+:: =========================================================
 
+echo Downloading latest updater...
+
+if exist temp_update rmdir /S /Q temp_update
+mkdir temp_update
+
+curl -L -o temp_update\updater.bat ^
+https://raw.githubusercontent.com/MeshyDev/BioFuse-Updater/refs/heads/main/updater.bat?nocache=%random%
+
+ping localhost -n 2 >nul
 cls
-echo I can actually provide updates remotely via old means if I can
-echo remember where I left all the code lol
-echo.
-echo In the meantime should I ever make this happen again, I'd just rely
-echo on GameJolt to update everything. 
-pause 
+if not exist temp_update\updater.bat echo Code: 1404, Failed to download updater. && echo Please check your internet connection and try again. && pause && rmdir /s /q temp_update && goto start
+
+call temp_update\updater.bat
+if %code% == 0 echo Code: %code%, Update was successful. && ping localhost -n 3 >nul && rmdir /s /q temp_update && rmdir /s /q temp_files && goto start
+if %code% == 1 echo Code: %code%, Game is already up to date. && pause && rmdir /s /q temp_update && rmdir /s /q temp_files && goto start
+if %code% == 0404 echo Code: %code%, Main file download failed. Please check your internet connection and try again. && pause && rmdir /s /q temp_update && goto start
 goto start
 ::                                      I MIDDLE
 
@@ -1842,7 +1854,7 @@ if %specialmsg% == 2 echo (1.3.0 - 1.5.0)I won't lie, I have no idea how this wi
 if %specialmsg% == 3 echo (1.2.0 - 1.2.1)This can go either way. I won't support anything on the ye olde biofuse saves.
 if %specialmsg% == 4 echo (1.8.0)Due to an oversight on my part, saves coming from 1.7.2 may suffer slight corruption. The 1.8.1 patch fixes that.
 if %specialmsg% == 5 echo (1.8.0-1.8.2)Weapon has been unequipped to prevent data loss from new weapon in 1.8.3
-if %specialmsg% == 6 echo (1.9.x+)But.. I haven't even got to that part yet.
+if %specialmsg% == 6 echo (1.9.0) Heyyy looks like someone's a good nugget. Everything's okay though. Go download 1.10.0.
 if %specialmsg% == 0 echo (?.?.?)BioFuse couldn't identify what version this save is. Is it from 0.2.7? This fixer WILL erase everything and start the file anew. && echo If you don't want this, exit the game.
 pause 
 if %specialmsg% == 0 set resetSwitch=1 && echo (Unknown save fallback, resetting variables.) && call :redef && ping localhost -n 2 >nul && echo Redef verified... saving... && set resetSwitch=0 && ping localhost -n 2 >nul
