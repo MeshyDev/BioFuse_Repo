@@ -1,6 +1,8 @@
 @echo off
 
 if not exist bin/battle echo Game is missing essential files! Please redownload and retry! && pause && exit
+if exist temp_update rmdir /S /Q temp_update
+if exist temp_files rmdir /S /Q temp_files
 
 set version=1.10.0_5926
 set vmsg=There's a special project a cooking... keep an eye out for it.
@@ -2394,21 +2396,18 @@ goto imbueWep
 
 echo Downloading latest updater...
 
-if exist temp_update del /f /q temp_update && rmdir /S /Q temp_update
+if exist temp_update rmdir /S /Q temp_update
 mkdir temp_update
 
 curl -L -o temp_update\updater.bat ^
-https://raw.githubusercontent.com/MeshyDev/BioFuse-Updater/refs/heads/main/updater.bat?nocache=%random%
+https://raw.githubusercontent.com/MeshyDev/BioFuse-Updater/refs/heads/main/updater.bat?nocache=%random% >nul
 
-if not exist temp_update\updater.bat (
-    echo Failed to download updater.
-    pause
-    goto start
-)
+ping localhost -n 2 >nul
 
-:: Call updater with inherited variables
+if not exist temp_update\updater.bat && echo Failed to download updater. && pause && goto start
+
 call temp_update\updater.bat
-if %code% == 0 echo Code: %code%, Update was successful. && ping localhost -n 3 >nul && del /f /q temp_update && rmdir /s /q temp_update && rmdir /s /q temp_files && >nul && goto start
+if %code% == 0 echo Code: %code%, Update was successful. && ping localhost -n 3 >nul && rmdir /s /q temp_update && rmdir /s /q temp_files && start BioFuse.bat && exit
 if %code% == 1 echo Code: %code%, Game is already up to date. && ping localhost -n 3 >nul && goto start
 if %code% == 0404 echo Code: %code%, Download failed. Please check your internet connection and try again. && pause && goto start
 goto start
