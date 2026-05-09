@@ -65,7 +65,7 @@ if %resetSwitch% == 1 exit /b
 
 setlocal
 for /f "tokens=4-5 delims=. " %%i in ('ver') do set VERSION=%%i.%%j
-if "%version%" == "10.0" mode 800 
+if "%version%" == "10.0" mode con: cols=73 lines=60 
 if "%version%" == "6.3" mode con: cols=73 lines=60 
 if "%version%" == "6.2" mode con: cols=73 lines=60 
 if "%version%" == "6.1" mode con: cols=73 lines=60 
@@ -137,8 +137,8 @@ if %MainMenuInput% == 1 set resetSwitch=1 && goto createGame
 if %MainMenuInput% == 2 goto loadGame
 if %MainMenuInput% == 3 goto infoBlock
 if %MainMenuInput% == 4 goto musicToggle
-if %MainMenuInput% == 5 exit
-if %MainMenuInput% == update goto Checkforupdates
+if %MainMenuInput% == 5 goto Checkforupdates
+if %MainMenuInput% == 6 exit
 echo Sorry, but I don't understand that. Could you try that again please?
 pause
 cls
@@ -2482,6 +2482,7 @@ if %specialmsg% == 7 echo (1.10.x+)But.. I haven't even got to that part yet. Al
 if %specialmsg% == 8 echo (1.10.0) Soo, this is a little awkward. I've implemented a very basic version check, but I forgot to update it for 1.10.0. && echo If you see this, congrats! You found a secret message! Please tell me about it on GameJolt or something, I wanna know if anyone actually sees this. && echo or if... this is just some old artifact. Who knows?
 if %specialmsg% == 9 echo (1.10.0_5626) There's no change to the save file structure. Check GitHub for deeper details.
 if %specialmsg% == 10 echo (1.10.0_5826) Save file saves X and Y variables, which do nothing right now. Preparing to expand exploration on the Area menus. && echo New Updater in progress, should release soon with this update.
+if %specialmsg% == 11 echo (1.10.0_5926) More update code changes, save file changes from 5826 are still intact.
 if %specialmsg% == 0 echo (?.?.?)BioFuse couldn't identify what version this save is. Is it from 0.2.7? This fixer WILL erase everything and start the file anew. && echo If you don't want this, exit the game.
 :: Alternatively, if you're creating your own version I'd recommend adding your own entry. 
 pause 
