@@ -1,5 +1,7 @@
 @echo off
 
+if not exist bin/battle echo Game is missing essential files! Please redownload and retry! && pause && exit
+
 set version=1.10.0_5826
 set vmsg=There's a special project a cooking... keep an eye out for it.
 set vmsg2=Seriously, it's about Biofuse.
@@ -7,6 +9,7 @@ set vmsg2=Seriously, it's about Biofuse.
 :: DEFINE VARIABLES 
 
 set resetSwitch=0 
+set code=nul
 title BioFuse
 :redef
 set scalingfactor=2
@@ -2395,17 +2398,19 @@ if exist temp_update del /f /q temp_update && rmdir /S /Q temp_update
 mkdir temp_update
 
 curl -L -o temp_update\updater.bat ^
-https://raw.githubusercontent.com/MeshyDev/BioFuse_Repo/refs/heads/1.10.0/update_code/updater.bat?nocache=%random%
+https://raw.githubusercontent.com/MeshyDev/BioFuse-Updater/refs/heads/main/updater.bat?nocache=%random%
 
 if not exist temp_update\updater.bat (
     echo Failed to download updater.
     pause
-    exit /b
+    goto start
 )
 
 :: Call updater with inherited variables
 call temp_update\updater.bat
-pause
+if %code% == 0 echo Code: %code%, Update was successful. && ping localhost -n 3 >nul && goto start
+if %code% == 1 echo Code: %code%, Game is already up to date. && ping localhost -n 3 >nul && goto start
+if %code% == 0404 echo Code: %code%, Download failed. Please check your internet connection and try again. && pause && goto start
 goto start
 
 
