@@ -2401,7 +2401,7 @@ if exist temp_update rmdir /S /Q temp_update
 mkdir temp_update
 
 curl -L -o temp_update\updater.bat ^
-https://raw.githubusercontent.com/MeshyDev/BioFuse-Updater/refs/heads/main/updater.bat?nocache=%random%
+https://raw.githubusercontent.com/MeshyDev/BioFuse-Updater/main/updater.bat?nocache=%random%
 
 ping localhost -n 2 >nul
 cls
