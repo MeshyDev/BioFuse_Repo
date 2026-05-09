@@ -5,7 +5,7 @@ I've compiled a version history from [![1.2.0](https://img.shields.io/badge/1.2.
 There is a branch for [![1.10.0](https://img.shields.io/badge/1.10.0-orange)](https://github.com/MeshyDev/BioFuse_Repo/tree/1.10.0), it's being developed alongside another project *relating* to Biofuse.
 Seriously, it's gonna be pretty cool.
 ******
-[![Version](https://img.shields.io/badge/version-1.9.0-blue)](https://github.com/MeshyDev/BioFuse_Repo/tree/main)
+[![Version](https://img.shields.io/badge/version-1.9.1-purple)](https://github.com/MeshyDev/BioFuse_Repo/tree/main)
 
 ## v1.9.1 adds an updater that makes it easy to go from 1.9 to 1.10. I will not be doing this again.
 
