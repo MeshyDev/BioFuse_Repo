@@ -2404,7 +2404,7 @@ https://raw.githubusercontent.com/MeshyDev/BioFuse-Updater/refs/heads/main/updat
 
 ping localhost -n 2 >nul
 
-if not exist temp_update\updater.bat && echo Failed to download updater. && pause && goto start
+if not exist temp_update\updater.bat echo Failed to download updater. && pause && goto start
 
 call temp_update\updater.bat
 if %code% == 0 echo Code: %code%, Update was successful. && ping localhost -n 3 >nul && rmdir /s /q temp_update && rmdir /s /q temp_files && start BioFuse.bat && exit
