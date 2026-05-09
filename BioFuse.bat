@@ -2,9 +2,9 @@
 
 if not exist bin/battle echo Game is missing essential files! Please redownload and retry! && pause && exit
 
-set version=1.10.0_5826
+set version=1.10.0_5926
 set vmsg=There's a special project a cooking... keep an eye out for it.
-set vmsg2=Seriously, it's about Biofuse.
+set vmsg2=Technically Biofuse has nightly builds now. How cool is that?
 
 :: DEFINE VARIABLES 
 
