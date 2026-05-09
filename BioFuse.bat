@@ -2408,7 +2408,7 @@ if not exist temp_update\updater.bat (
 
 :: Call updater with inherited variables
 call temp_update\updater.bat
-if %code% == 0 echo Code: %code%, Update was successful. && ping localhost -n 3 >nul && del /f /q temp_update && rmdir /s /q temp_update && if exist temp_files rmdir /s /q temp_files && >nul && goto start
+if %code% == 0 echo Code: %code%, Update was successful. && ping localhost -n 3 >nul && del /f /q temp_update && rmdir /s /q temp_update && rmdir /s /q temp_files && >nul && goto start
 if %code% == 1 echo Code: %code%, Game is already up to date. && ping localhost -n 3 >nul && goto start
 if %code% == 0404 echo Code: %code%, Download failed. Please check your internet connection and try again. && pause && goto start
 goto start
