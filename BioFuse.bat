@@ -4,7 +4,7 @@ if not exist bin/battle echo Game is missing essential files! Please redownload 
 if exist temp_update rmdir /S /Q temp_update
 if exist temp_files rmdir /S /Q temp_files
 
-set version=1.10.0_5926
+set version=1.10.0_51326
 set vmsg=There's a special project a cooking... keep an eye out for it.
 set vmsg2=Technically Biofuse has nightly builds now. How cool is that?
 
@@ -560,15 +560,12 @@ if %loc% == DeepForest goto DeepForest_Menu
 if %loc% == President goto President_Menu
 if %loc% == Shop goto Shop_Menu
 if %loc% == DBMENU goto Debug_Menu
-echo Interesting, you seem to have gotten yourself trapped
-echo between dimensions^! An error may have occured in your
-echo save file. 
+echo Interesting, you fell into the void instead of a location...
+echo An error may have occured in your save file. 
 echo.
-echo It also could've happened with saving, or you
-echo simply hacked your save, essentially saying you
-echo hacked your life. What a shame...
-echo We're going to send you home now, with the benefit 
-echo of the doubt. :)
+echo It also could've happened with saving, or you simply hacked your save,
+echo essentially saying you hacked your life. What a shame...
+echo We're going to send you home now, with the benefit of the doubt. :)
 pause
 cls
 set loc=Home
@@ -1182,6 +1179,7 @@ OH YEAH, this is the start of the battle logic.
 ::
 ::
 :Battle
+mode con: cols=73 lines=20
 if %castLvl% == 0 (
     set enemySpell=Nothing
 ) else if %castLvl% == 1 (
@@ -1219,7 +1217,8 @@ call bin\handler\jukebox.bat
 goto loadGame
 )
 if %EcurrentHP% LSS 1 call bin/battle/checkVar.bat && goto A_Menu
-if %EcurrentHP% == 0 echo %enemy% didn't hear no bell. It seems like it wants one last shot at you.
+if %EcurrentHP% == 0 echo %enemy% didn't hear no bell. 
+if %EcurrentHP% == 0 echo It seems like it wants one last shot at you.
 if %EcurrentHP% LEQ -1 goto CustomDeathMessage
 :: Changed this from setting currentHP back to maxHP to just setting the health status
 if %currentHP% GTR %maxHP% (
@@ -1260,6 +1259,7 @@ cls
 goto Battle
 
 :Battle_Attack
+mode con: cols=73 lines=30
 set /a canCastLvl=%RANDOM% * 5 / 32768
 call bin/battle/healthCheck.bat
 call bin/battle/EhealthCheck.bat
@@ -1286,6 +1286,7 @@ set nulbool=0
 goto Battle
 
 :critsuccess
+mode con: cols=73 lines=30
 call bin/battle/getCritDMG.bat
 :: Crits are broken in a working way <3
 if not %weaponarray% == 8 (
@@ -1355,6 +1356,7 @@ goto A_Menu
 )
 
 :EPATK
+mode con: cols=73 lines=30
 cls 
 echo EP: %currentEP% / %MaxEP% 
 echo %enemy% HP: %EcurrentHP%/%EmaxHP% 
@@ -1397,6 +1399,7 @@ goto EPATK
 
 
 :mgcFinFire
+mode con: cols=73 lines=30
 cls
 set nulbool=2
 call bin/battle/drawBattle.bat
@@ -1417,6 +1420,7 @@ set nulbool=0
 goto Battle
 
 :mgcFinDrain
+mode con: cols=73 lines=30
 cls
 set nulbool=3
 call bin/battle/drawBattle.bat
@@ -1437,6 +1441,7 @@ set nulbool=0
 goto Battle
 
 :mgcFinCrit
+mode con: cols=73 lines=30
 cls
 set /a currentEP=%currentEP%-150
 call bin/battle/drawBattle.bat
@@ -1473,6 +1478,7 @@ set nulbool=0
 goto Battle
 
 :mgcFinCORRUPT
+mode con: cols=73 lines=30
 cls
 set /a currentEP= %currentEP% - 50
 call bin/battle/drawBattle.bat
@@ -1495,6 +1501,7 @@ set nulbool=0
 goto Battle 
 
 :mgcFinPresidentialCORRUPT
+mode con: cols=73 lines=30
 cls
 set /a currentEP= %currentEP% - 1
 call bin/battle/drawBattle.bat
@@ -1504,7 +1511,7 @@ call bin/battle/healthRandom.bat
 echo Your body is surrounded in a dark miasma...
 if %level% LEQ 30 echo The President: %lbnam%, you cannot use my power.
 if %level% GEQ 31 echo Your body contorts, but due to your becoming stronger...
-if %level% GEQ 31 if EhealthStatus == Presidential-Corruption echo The enemy is already corrupted this way... goto Cbypass
+if %level% GEQ 31 if EhealthStatus == Presidential-Corruption echo The enemy is already corrupted this way... && goto Cbypass
 if %level% GEQ 31 set EhealthStatus=Presidential-Corruption
 if %level% GEQ 31 echo The miasma blurs your vision, but you know for a fact %enemy% is more corrupt than usual.
 :Cbypass
